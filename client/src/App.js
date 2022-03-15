@@ -13,7 +13,7 @@ class App extends React.Component {
     //runs before our code in the contructor
     super();
     this.state = {count: 0};
-    let testList = ['test1', 'test2', 'test3'];
+    let testList = ['test1', 'test4', 'test3'];
     this.listItems = testList.map((item) => 
       <li key={item}>{item}</li>
     );
