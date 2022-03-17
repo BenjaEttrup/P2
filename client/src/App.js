@@ -1,45 +1,38 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Navbar from "./components/navbar";
+import HomePage from "./components/homepage";
+import ShoppingList from "./components/shoppingList";
+import SpinTheMeal from "./components/spinTheMeal";
+import MyStash from "./components/myStash";
 
-//This is a React class it extends a React component which 
-//means that you can use all the code from the React component and it runs the
-//standart code in the React component
-class App extends React.Component {
-  //This is a contructor this function gets called when a object gets created 
-  //from the App class. It is often used to set the values in the object
-  constructor() {
-    //Super has to be called as the first thing 
-    //this says that the code from the React component
-    //runs before our code in the contructor
-    super();
-    this.state = {count: 0};
-    let testList = ['test1', 'test4', 'test3'];
-    this.listItems = testList.map((item) => 
-      <li key={item}>{item}</li>
-    );
-  }
+export default function App() {
+  return (
+    <Router>
+      <div>
+        <Navbar />
 
-  //This is a function in the class 
-  //We can use this in the render function
-  clickFunction() {
-    this.setState({count: this.state.count + 1});
-  }
-
-  //This is the render function. This is where the
-  //html is. The button tag is an expample of a function being 
-  //called with the press of a button
-  render() {
-    return (
-      <div className="App">
-        <body>
-          <h1>TEST</h1>
-          <button type='button' className='btn btn-primary' onClick={() => this.clickFunction()}>Testing</button>
-          <p>{ this.state.count }</p>
-          <ul>{this.listItems}</ul>
-        </body>
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/shoppingList">
+            <ShoppingList />
+          </Route>
+          <Route path="/myStash">
+            <MyStash />
+          </Route>
+          <Route path="/spinTheMeal">
+            <SpinTheMeal />
+          </Route>
+          <Route path="/">
+            <HomePage />
+          </Route>
+        </Switch>
       </div>
-    );
-  }
+    </Router>
+  );
 }
-
-export default App;
