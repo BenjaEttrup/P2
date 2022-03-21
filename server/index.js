@@ -71,11 +71,11 @@ app.get('/findAllRecipes', async (req, res) => {
                 searchedRecipes.push(recipe);
             })
 
-            let notAlreadyChoosen = recipeObjects.recipes.filter((recipe) => {
+            let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
                 return !searchedRecipes.includes(recipe);
             })
 
-            stringIngredientSearch(req.query.search, notAlreadyChoosen).forEach((recipe) => {
+            stringIngredientSearch(req.query.search, notAlreadyChosen).forEach((recipe) => {
                 searchedRecipes.push(recipe)
             })
 
