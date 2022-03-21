@@ -28,10 +28,6 @@ app.get('/findProduct/:productName', async (req, res) => {
 app.get('/findAllRecipes', async (req, res) => {
     const recipeData = require('../opskrifter/recipes.json');
 
-    const config = {
-        headers: { 'Authorization': `Bearer ${token}`}
-    }
-
     var recipeObjects = {
         recipes: []
     };
@@ -50,11 +46,10 @@ app.get('/findAllRecipes', async (req, res) => {
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = recipeData.recipes[index1].ingredients[index2];
-            
+
+            //console.log(tempIngredient);
             try{
-                let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + tempIngredient, config).then((res) => {
-                    return res.data;
-                });
+                let apiResponse = await callApi(tempIngredient)
                 apiResponse.suggestions.sort(comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0])
             } catch(e) {
@@ -97,6 +92,8 @@ app.get('/findAllRecipes', async (req, res) => {
         }
     }
 
+    //console.log(recipeObjects)
+
     res.json(recipeObjects);
 });
 
@@ -128,7 +125,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
             totalPrice += details.price;
         }
         recipeObject.recipe["price"] = totalPrice;
-        console.log(recipeObject);
+        //console.log(recipeObject);
     }
 
     res.json(recipeObject);
@@ -137,6 +134,20 @@ app.get('/findRecipe/:ID', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 })
+
+async function callApi(product) {
+    let apiRes;
+    try{
+        sleep(1000);
+        apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
+            return res.data;
+        });
+    } catch(e) {
+        console.error(e);
+        return false;
+    }
+    return apiRes
+}
 
 // Encodes the ingredients and turns them lower case.
 function eoncodeCharacters(ingredient){
@@ -168,9 +179,7 @@ function findIndex(ID, recipeData) {
 async function getCheapestIngredient(ingredient) {
 
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient.name, config).then((res) => {
-            return res.data;
-        });
+        let apiResponse = await callApi(ingredient.name);
         // Sorts the the prise of the suggestions in terms of the price
         apiResponse.suggestions.sort(comparePrice);
         
@@ -262,3 +271,11 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
     })
     return returnRecipe;
 }
+
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
