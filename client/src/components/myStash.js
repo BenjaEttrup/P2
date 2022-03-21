@@ -1,6 +1,7 @@
 import React from 'react';
 import '../stylesheets/myStash.css'
 
+
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
@@ -17,6 +18,11 @@ class MyStash extends React.Component {
   }
 
   //Functions go here
+  componentDidMount() {
+    fetch("/stash/get").then((response) => response.json()).then(response => {
+      var hejsa119 = response
+    }).catch((e)=>console.log(e))
+  }
 
   //This is the render function. This is where the
   //html is.
@@ -49,7 +55,7 @@ class MyStash extends React.Component {
               </thead>
               <tbody>
                 <tr>
-                  <td>Pasta</td>
+                  <td></td>
                   <td>49,95 kr.</td>
                   <td>
                     <i class="fa fa-trash"></i>
