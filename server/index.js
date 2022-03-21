@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
+// const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
 // const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
 const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
 const config = {
@@ -186,6 +187,7 @@ async function getCheapestIngredient(ingredient) {
     }
 }
 
+/**
  * Compare the price of two items and return the difference
  * @param a - The first item to compare.
  * @param b - The second value to compare.
