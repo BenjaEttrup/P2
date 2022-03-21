@@ -47,8 +47,9 @@ app.get('/findRecipe/:ID', async (req, res) => {
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            console.log(`Ingredient = ${recipeData.recipes[recipeIndex].ingredients[i]}`);
-            details = await getCheapestIngredient(recipeData.recipes[recipeIndex].ingredients[i]);
+            let ingredient = {"name" : recipeData.recipes[recipeIndex].ingredients[i]};
+            eoncodeCharacters(ingredient);
+            details = await getCheapestIngredient(ingredient);
 
             recipeObject.ingredients[i] = details;
             recipeObject.recipe = recipeData.recipes[recipeIndex];
@@ -60,6 +61,16 @@ app.get('/findRecipe/:ID', async (req, res) => {
 
     res.json(recipeObject);
 });
+
+// Encodes the ingredients and turns them lower case.
+function eoncodeCharacters(ingredient){
+    ingredient.name = ingredient.name.toLowerCase();
+
+    // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
+    ingredient.name = ingredient.name.replace(/%/g, "");
+    ingredient.name = ingredient.name.replace(/\//g, "%2F");
+    ingredient.name = encodeURIComponent(ingredient.name);
+}
 
 // Finds the index of a recipe
 function findIndex(ID, recipeData) {
@@ -78,10 +89,10 @@ function findIndex(ID, recipeData) {
 };
 
 // Retrieves the ingredient
-async function getCheapestIngredient(name) {
+async function getCheapestIngredient(ingredient) {
 
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + name, config).then((res) => {
+        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient.name, config).then((res) => {
             return res.data;
         });
         // Sorts the the prise of the suggestions in terms of the price
@@ -89,9 +100,9 @@ async function getCheapestIngredient(name) {
         
         // Errorhandling for when 0 suggestions regarding the ingredient are found
         if (!apiResponse.suggestions.length){
-            return { "price": 0, "name": name };
+            return { "price": 0, "name": ingredient.name };
         }
-        console.log(`Request for ${name}, price is ${apiResponse.suggestions[0].price}`);
+        console.log(`Request for ${ingredient.name}, price is ${apiResponse.suggestions[0].price}`);
 
         return { "price": apiResponse.suggestions[0].price, "name": apiResponse.suggestions[0].title };
     } catch (e) {
