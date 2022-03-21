@@ -34,20 +34,20 @@ app.get('/findAllRecipes', async (req, res) => {
     //Builds recipeObjects object from a recipe file and then searches 
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
-        const element1 = recipeData.recipes[index1];
+        const tempRecipe = recipeData.recipes[index1];
         
         var recipeObject = {
             recipe: {},
             ingredients: []
         };
 
-        recipeObject.recipe = element1;
+        recipeObject.recipe = tempRecipe;
 
-        for (let index2 = 0; index2 < element1.ingredients.length; index2++) {
-            const element2 = recipeData.recipes[index1].ingredients[index2];
+        for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
+            const tempIngredient = recipeData.recipes[index1].ingredients[index2];
             
             try{
-                let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + element2, config).then((res) => {
+                let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + tempIngredient, config).then((res) => {
                     return res.data;
                 });
                 apiResponse.suggestions.sort(comparePrice);
