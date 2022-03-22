@@ -2,19 +2,24 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
+const fs = require('fs');
 // const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
 // const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
 const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
+const userPath = require('../user/user.json');
+const { stringify } = require('querystring');
+
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
 
 app.get('/findProduct/:productName', async (req, res) => {
-    try{
+    try {
         let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
             return res.data;
         })
@@ -25,11 +30,53 @@ app.get('/findProduct/:productName', async (req, res) => {
     }
 });
 
+// Allows the user to add a recipe to their shopping list.
+app.post('/addRecipeToShoppingList', (req, res) => {
+    fs.readFile('../user/user.json', function readFileCallback(err, data) {
+        if (err) {
+            console.log("This is an error");
+        } else {
+            // Lets us manipalute the json object in js
+            let userData = JSON.parse(data);
+
+            // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
+            // However, we're limited to only a single api call per second.
+            userData.myStash.push(req.body);
+            let json = JSON.stringify(userData, null, 4);
+            fs.writeFile('../user/user.json', json, function(err, result){
+                if(err) console.log("Error", err);
+            });
+        }
+    });
+
+    res.status(202).send(req.body);
+});
+
+app.delete('/removeRecipeFromShoppingList', (req, res) => {
+    fs.readFile('../user/user.json', function readFileCallback(err, data) {
+        if (err) {
+            console.log("This is an error");
+        } else {
+            // Lets us manipalute the json object in js
+            let userData = JSON.parse(data);
+
+            // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
+            // However, we're limited to only a single api call per second.
+            // userData.myStash.(req.body);
+            // use findRecipeIndex function
+            let json = JSON.stringify(userData, null, 4);
+            fs.writeFile('../user/user.json', json, function(err, result){
+                if(err) console.log("Error", err);
+            });
+        }
+    });
+});
+
 app.get('/findAllRecipes', async (req, res) => {
     const recipeData = require('../opskrifter/recipes.json');
 
     const config = {
-        headers: { 'Authorization': `Bearer ${token}`}
+        headers: { 'Authorization': `Bearer ${token}` }
     }
 
     var recipeObjects = {
@@ -40,7 +87,7 @@ app.get('/findAllRecipes', async (req, res) => {
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
         const tempRecipe = recipeData.recipes[index1];
-        
+
         var recipeObject = {
             recipe: {},
             ingredients: []
@@ -50,14 +97,14 @@ app.get('/findAllRecipes', async (req, res) => {
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = recipeData.recipes[index1].ingredients[index2];
-            
-            try{
+
+            try {
                 let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + tempIngredient, config).then((res) => {
                     return res.data;
                 });
                 apiResponse.suggestions.sort(comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0])
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 res.status(500).send();
             }
@@ -68,10 +115,10 @@ app.get('/findAllRecipes', async (req, res) => {
 
     //Filters the recipes given some search params. This can be a string for 
     //title or two number for max and min price
-    if(Object.keys(req.query).length !== 0) {
-        if(req.query.search !== undefined){
+    if (Object.keys(req.query).length !== 0) {
+        if (req.query.search !== undefined) {
             let searchedRecipes = [];
-            
+
             stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach((recipe) => {
                 searchedRecipes.push(recipe);
             })
@@ -87,7 +134,7 @@ app.get('/findAllRecipes', async (req, res) => {
             recipeObjects.recipes = searchedRecipes;
         }
 
-        if(req.query.maxPrice !== undefined && req.query.minPrice !== undefined){
+        if (req.query.maxPrice !== undefined && req.query.minPrice !== undefined) {
             let minPrice = req.query.minPrice;
             let maxPrice = req.query.maxPrice;
 
@@ -112,14 +159,14 @@ app.get('/findRecipe/:ID', async (req, res) => {
 
     console.log(`The ingredients in recipe ${req.params.ID} are: = ${recipeData.recipes[0].ingredients}`);
 
-    recipeIndex = findIndex(req.params.ID, recipeData);
+    recipeIndex = findRecipeIndex(req.params.ID, recipeData);
     if (recipeIndex) {
         let details;
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = {"name" : recipeData.recipes[recipeIndex].ingredients[i]};
+            let ingredient = { "name": recipeData.recipes[recipeIndex].ingredients[i] };
             eoncodeCharacters(ingredient);
             details = await getCheapestIngredient(ingredient);
 
@@ -139,7 +186,7 @@ app.listen(port, () => {
 })
 
 // Encodes the ingredients and turns them lower case.
-function eoncodeCharacters(ingredient){
+function eoncodeCharacters(ingredient) {
     ingredient.name = ingredient.name.toLowerCase();
 
     // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
@@ -149,7 +196,7 @@ function eoncodeCharacters(ingredient){
 }
 
 // Finds the index of a recipe
-function findIndex(ID, recipeData) {
+function findRecipeIndex(ID, recipeData) {
     let validated;
 
     for (element in recipeData.recipes) {
@@ -173,14 +220,14 @@ async function getCheapestIngredient(ingredient) {
         });
         // Sorts the the prise of the suggestions in terms of the price
         apiResponse.suggestions.sort(comparePrice);
-        
+
         // Errorhandling for when 0 suggestions regarding the ingredient are found
-        if (!apiResponse.suggestions.length){
-            return { "price": 0, "name": ingredient.name };
+        if (!apiResponse.suggestions.length) {
+            return { "price": 0, "name": ingredient.name, "productID": "" };
         }
         console.log(`Request for ${ingredient.name}, price is ${apiResponse.suggestions[0].price}`);
 
-        return { "price": apiResponse.suggestions[0].price, "name": apiResponse.suggestions[0].title };
+        return { "price": apiResponse.suggestions[0].price, "name": apiResponse.suggestions[0].title, "productID" : apiResponse.suggestions[0].prod_id };
     } catch (e) {
         console.error(e);
         //res.status(500).send();
@@ -209,7 +256,7 @@ function stringRecipeSearch(searchValue, recipes) {
     let returnRecipes = [];
     recipes.forEach((recipe) => {
         let recipeTitleLowerCase = recipe.recipe.title.toLowerCase();
-        if(recipeTitleLowerCase.includes(searchValue.toLowerCase())){
+        if (recipeTitleLowerCase.includes(searchValue.toLowerCase())) {
             returnRecipes.push(recipe);
         }
     })
@@ -229,11 +276,11 @@ function stringIngredientSearch(searchValue, recipes) {
         let doesIncludeIngredient = false;
         recipe.ingredients.forEach((ingredient) => {
             let ingredientTitleLowerCase = ingredient.title.toLowerCase();
-            if(ingredientTitleLowerCase.includes(searchValue.toLowerCase())){
+            if (ingredientTitleLowerCase.includes(searchValue.toLowerCase())) {
                 doesIncludeIngredient = true;
             }
         })
-        if(doesIncludeIngredient) {
+        if (doesIncludeIngredient) {
             returnRecipes.push(recipe);
         }
     })
@@ -256,7 +303,7 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
             price += ingredient.price;
         })
 
-        if(price >= minPrice && price <= maxPrice){
+        if (price >= minPrice && price <= maxPrice) {
             returnRecipe.push(recipe);
         }
     })
