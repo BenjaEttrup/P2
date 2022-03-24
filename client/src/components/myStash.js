@@ -20,7 +20,7 @@ class MyStash extends React.Component {
   //Functions go here
   componentDidMount() {
     fetch("/stash/get").then((response) => response.json()).then(response => {
-      var hejsa119 = response
+      
     }).catch((e)=>console.log(e))
   }
 
