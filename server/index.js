@@ -40,6 +40,8 @@ app.post('/addRecipeToShoppingList', (req, res) => {
             // Lets us manipalute the json object in js
             let userData = JSON.parse(data);
 
+            // TODO: needs to validate the req.body object.
+
             // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
             // However, we're limited to only a single api call per second.
             userData.shoppingList.push(req.body);
