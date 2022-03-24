@@ -7,7 +7,7 @@ const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
 
-const stashjsonPath = "../stash/stash.json"
+const stashJsonPath = "../stash/stash.json"
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,8 +33,8 @@ app.get('/findProduct/:productName', async (req, res) => {
 
 
 // Returns json containing stash info
-app.get("/stash/get", async (req, res) => {
-  fs.readFile(stashjsonPath, (err, fileData) => {
+app.get("/stash/get", (req, res) => {
+  fs.readFile(stashJsonPath, (err, fileData) => {
     if (err) {
       console.log("Can't, read file" )
     }
@@ -47,16 +47,16 @@ app.get("/stash/get", async (req, res) => {
 
 
 // Add given product to stash json file. 
-app.post("/stash/add", async (req, res) => {
+app.post("/stash/add", (req, res) => {
   // Product json given via body
   let newProductJson = req.body
 
   // If file can't be read, create new one with {products:[]} structure
-  fs.access(stashjsonPath, fs.F_OK, (err) => {
+  fs.access(stashJsonPath, fs.F_OK, (err) => {
     if (err) {
       console.error(err)
       console.log("File doesn't exist. Trying to create empty file")
-      fs.writeFile(stashjsonPath, JSON.stringify({products:[]}), err => {
+      fs.writeFile(stashJsonPath, JSON.stringify({products:[]}), err => {
         if (err) 
         console.log("Error writing file:", err);
         return
@@ -64,7 +64,7 @@ app.post("/stash/add", async (req, res) => {
     }
 
     // When file exists, take file data and add newly added product to the data. Write all data in new file after
-    fs.readFile(stashjsonPath, (err, fileData) => {
+    fs.readFile(stashJsonPath, (err, fileData) => {
       if (err) {
         console.log("Can't read file" )
       }
@@ -73,7 +73,7 @@ app.post("/stash/add", async (req, res) => {
         let parsedJson = JSON.parse(fileData)
         parsedJson.products.push(newProductJson)
 
-        fs.writeFile(stashjsonPath, JSON.stringify(parsedJson), err => {
+        fs.writeFile(stashJsonPath, JSON.stringify(parsedJson), err => {
           if (err) console.log("Error writing file:", err);
         })
       }
@@ -83,9 +83,9 @@ app.post("/stash/add", async (req, res) => {
 })
 
 //Remove product by id in stash json file
-app.post("/stash/remove", async (req, res) => {
+app.post("/stash/remove", (req, res) => {
   // When file exists, take file data and remove product from the data. opdate data in new file after
-  fs.readFile(stashjsonPath, (err, fileData) => {
+  fs.readFile(stashJsonPath, (err, fileData) => {
     if (err) {
       console.log("Can't read file" )
       res.status(404).send("File couldn't be read")
@@ -103,7 +103,7 @@ app.post("/stash/remove", async (req, res) => {
 
       res.status(200).send(parsedJson)
 
-      fs.writeFile(stashjsonPath, JSON.stringify(parsedJson), err => {
+      fs.writeFile(stashJsonPath, JSON.stringify(parsedJson), err => {
         if (err) console.log("Error writing file:", err);
       })
     }
