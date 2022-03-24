@@ -5,7 +5,7 @@
             "title": "Pasta",
             "description": "description",
             "size": "",
-            "ingredients": ["pasta"],
+            "ingredients": ["pasta", "mel"],
             "time": 2,
             "method": "method",
             "difficulty": "difficulty"
@@ -55,7 +55,7 @@
             "title": "Frikedeller",
             "description": "description",
             "size": "",
-            "ingredients": ["svinekød"],
+            "ingredients": ["mel"],
             "time": 2,
             "method": "method",
             "difficulty": "difficulty"
@@ -65,7 +65,7 @@
             "title": "Boller",
             "description": "description",
             "size": "",
-            "ingredients": ["mælk"],
+            "ingredients": ["mel"],
             "time": 2,
             "method": "method",
             "difficulty": "difficulty"

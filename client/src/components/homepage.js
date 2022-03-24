@@ -20,7 +20,8 @@ class HomePage extends React.Component {
 		recipes: [],
     minPrice: 0,
     maxPrice: 0,
-    searchValue: ''
+    searchValue: '',
+    categoryID: '1'
 	}
   }
 
@@ -38,7 +39,9 @@ class HomePage extends React.Component {
       allRecipes: json.recipes,
 			recipes: json.recipes
 		}
-		this.setState(data);
+		this.setState(data, () => {
+      this.refreshSearch();
+    });
 	}).catch(err => {
 		console.error(err);
 	});
@@ -69,7 +72,7 @@ class HomePage extends React.Component {
   }
 
   refreshSearch() {
-	  let searchedRecipes = [];
+	let searchedRecipes = [];
 
     stringRecipeSearch(this.state.searchValue, this.state.allRecipes).forEach((recipe) => {
       searchedRecipes.push(recipe);
@@ -91,11 +94,25 @@ class HomePage extends React.Component {
       searchedRecipes = betweenPricesSearch(this.state.minPrice, this.state.maxPrice, searchedRecipes);
     }
 
+    if(this.state.categoryID === '1') {
+      searchedRecipes.sort(comparePrice)
+    } else if(this.state.categoryID === '2'){
+
+    }
+
     let data = {
-		recipes: searchedRecipes
-	}
+      recipes: searchedRecipes
+    }
 
     this.setState(data);
+  }
+
+  changeCategory(evt) {
+    this.setState({
+      categoryID: evt.target.value
+    }, () => {
+      this.refreshSearch()
+    })
   }
 
   //This is the render function. This is where the
@@ -164,9 +181,9 @@ class HomePage extends React.Component {
 
 		<div class="page-spacing center">
 			<div id="searchAndFilterOptions">
-				<div class="bd-example">
+				<div class="row bd-example">
 
-					<div class="btn-group">
+					<div class="col-5 btn-group">
 						<div class="form-check-group">
 							<label class="form-check-label"  for="flexCheckDefault" >
 								My Stash
@@ -195,15 +212,15 @@ class HomePage extends React.Component {
 								</div>
 							</li>
 						</ul>
-						<button type="button" id="sortingButton" class="btn dropdown-toggle shadow-sm"
-							data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Price</a></li>
-							<li><a class="dropdown-item" href="#">Rating</a></li>
-							<li><a class="dropdown-item" href="#">Best match</a></li>
-						</ul>
+						
 					</div>
+					<div class="col-3 btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value='1' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '1' ? true : false} />
+            <label class="btn btn-outline-primary" for="btnradio1">Price</label>
 
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value='2' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '2' ? true : false} />
+            <label class="btn btn-outline-primary" for="btnradio2">Difficulity</label>
+          </div>
 				</div>
 			</div>
 			<div class="content center">
@@ -275,17 +292,28 @@ class HomePage extends React.Component {
  function betweenPricesSearch(minPrice, maxPrice, recipes) {
   let returnRecipe = [];
   recipes.forEach((recipe) => {
-      let price = 0;
+    let price = 0;
 
-      recipe.ingredients.forEach((ingredient) => {
-          price += ingredient.price;
-      })
+    recipe.ingredients.forEach((ingredient) => {
+        price += ingredient.price;
+    })
 
-      if(price >= minPrice && price <= maxPrice){
-          returnRecipe.push(recipe);
-      }
+    if(price >= minPrice && price <= maxPrice){
+        returnRecipe.push(recipe);
+    }
   })
   return returnRecipe;
+}
+
+/**
+ * Given two objects, return the difference between the price of the first and the price of the second
+ * @param a - The first item to compare.
+ * @param b - The recipe to compare against.
+ * @returns The function is being called with the arguments a and b. The function returns
+ * a.recipe.price - b.recipe.price.
+ */
+function comparePrice(a, b) {
+  return a.recipe.price - b.recipe.price;
 }
 
 export default HomePage;
