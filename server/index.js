@@ -9,7 +9,8 @@ const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
-const userPath = require('../user/user.json');
+const userPath = '../user/user.json';
+const recipeDataPath = '../opskrifter/recipes.json';
 const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
@@ -32,19 +33,19 @@ app.get('/findProduct/:productName', async (req, res) => {
 
 // Allows the user to add a recipe to their shopping list.
 app.post('/addRecipeToShoppingList', (req, res) => {
-    fs.readFile('../user/user.json', function readFileCallback(err, data) {
+    fs.readFile(userPath, function readFileCallback(err, data) {
         if (err) {
-            console.log("This is an error");
+            console.log("Could not read file");
         } else {
             // Lets us manipalute the json object in js
             let userData = JSON.parse(data);
 
             // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
             // However, we're limited to only a single api call per second.
-            userData.myStash.push(req.body);
+            userData.shoppingList.push(req.body);
             let json = JSON.stringify(userData, null, 4);
-            fs.writeFile('../user/user.json', json, function(err, result){
-                if(err) console.log("Error", err);
+            fs.writeFile(userPath, json, function (err, result) {
+                if (err) console.log("Error", err);
             });
         }
     });
@@ -52,28 +53,43 @@ app.post('/addRecipeToShoppingList', (req, res) => {
     res.status(202).send(req.body);
 });
 
-app.delete('/removeRecipeFromShoppingList', (req, res) => {
-    fs.readFile('../user/user.json', function readFileCallback(err, data) {
-        if (err) {
-            console.log("This is an error");
-        } else {
-            // Lets us manipalute the json object in js
-            let userData = JSON.parse(data);
+app.get('/shoppingList', (req, res) => {
 
-            // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
-            // However, we're limited to only a single api call per second.
-            // userData.myStash.(req.body);
-            // use findRecipeIndex function
+
+});
+
+app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
+    try {
+        fs.readFile(userPath, function readFileCallback(err, data) {
+            let userData = JSON.parse(data);
+            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+
+            if (recipeIndex) {
+                userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
+            }
+            else {
+                console.log("Failed to get recipe ID index");
+                res.status(500).send();
+            }
+
             let json = JSON.stringify(userData, null, 4);
-            fs.writeFile('../user/user.json', json, function(err, result){
-                if(err) console.log("Error", err);
+
+            fs.writeFile(userPath, json, function readFileCallback(err, data){
+                if (err){
+                    res.status(500).send();
+                }
+                res.status(202).send();
             });
-        }
-    });
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
 });
 
 app.get('/findAllRecipes', async (req, res) => {
-    const recipeData = require('../opskrifter/recipes.json');
+    const recipeData = require();
 
     const config = {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -150,7 +166,7 @@ app.get('/findAllRecipes', async (req, res) => {
 
 // Retrieves a single recipe from an ID
 app.get('/findRecipe/:ID', async (req, res) => {
-    const recipeData = require('../opskrifter/recipes.json');
+    const recipeData = require(recipeDataPath);
 
     let recipeObject = {
         recipe: {},
@@ -159,22 +175,22 @@ app.get('/findRecipe/:ID', async (req, res) => {
 
     console.log(`The ingredients in recipe ${req.params.ID} are: = ${recipeData.recipes[0].ingredients}`);
 
-    recipeIndex = findRecipeIndex(req.params.ID, recipeData);
+    recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
         let details;
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = { "name": recipeData.recipes[recipeIndex].ingredients[i] };
-            eoncodeCharacters(ingredient);
-            details = await getCheapestIngredient(ingredient);
+            let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
+            details = await getCheapestIngredient(encodeCharacters(ingredient));
 
             recipeObject.ingredients[i] = details;
             recipeObject.recipe = recipeData.recipes[recipeIndex];
             totalPrice += details.price;
         }
-        recipeObject.recipe["price"] = totalPrice;
+        // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
+        recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
         console.log(recipeObject);
     }
 
@@ -186,36 +202,69 @@ app.listen(port, () => {
 })
 
 // Encodes the ingredients and turns them lower case.
-function eoncodeCharacters(ingredient) {
-    ingredient.name = ingredient.name.toLowerCase();
+function encodeCharacters(ingredient) {
+    ingredient = ingredient.toLowerCase();
 
     // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
-    ingredient.name = ingredient.name.replace(/%/g, "");
-    ingredient.name = ingredient.name.replace(/\//g, "%2F");
-    ingredient.name = encodeURIComponent(ingredient.name);
+    ingredient = ingredient.replace(/%/g, "");
+    ingredient = ingredient.replace(/\//g, "%2F");
+    ingredient = encodeURIComponent(ingredient);
+
+    return ingredient;
 }
 
 // Finds the index of a recipe
-function findRecipeIndex(ID, recipeData) {
+function findRecipeIndex(ID, filePath, option) {
     let validated;
+    let file = require(filePath);
 
-    for (element in recipeData.recipes) {
+    for (element in file[option]) {
         // Accesses a single recipe, as element will be the index of a recipe
-        let recipe = recipeData.recipes[element];
-        validated = (ID == recipe.recipeID);
-
-        if (validated) {
+        console.log("id = " + ID);
+        console.log("file[][] = " + file[option][element].recipeID);
+        console.log("element = " + element);
+        console.log("file.shoppingList[element].recipeID = " + file.shoppingList[element].recipeID);
+        if (ID == file[option][element].recipeID) {
+            console.log("exited findrecipe with index = " + element);
             return element;
         }
     }
     return false;
-};
+}
+
+
+//     switch (filePath) {
+//         case (userPath):
+
+//             for (element in file.myStash) {
+//                 // Accesses a single recipe, as element will be the index of a recipe
+//                 // let recipe = file.mystash[element];
+//                 console.log(file[option][element].recipeID);
+//                 if (ID == file.myStash[element].recipeID) {
+//                     return element;
+//                 }
+//             }
+//             return false;
+
+//         case (recipeDataPath):
+//             for (element in file.recipes) {
+//                 // Accesses a single recipe, as element will be the index of a recipe    
+//                 console.log(file[option][element].recipeID)            
+//                 if (ID == file.recipes[element].recipeID) {
+//                     return element;
+//                 }
+//             }
+//             return false;
+
+//         default:
+//             console.log("Default case");
+//     }
 
 // Retrieves the ingredient
 async function getCheapestIngredient(ingredient) {
 
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient.name, config).then((res) => {
+        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient, config).then((res) => {
             return res.data;
         });
         // Sorts the the prise of the suggestions in terms of the price
@@ -223,14 +272,13 @@ async function getCheapestIngredient(ingredient) {
 
         // Errorhandling for when 0 suggestions regarding the ingredient are found
         if (!apiResponse.suggestions.length) {
-            return { "price": 0, "name": ingredient.name, "productID": "" };
+            return { "price": 0, "title": ingredient, "productID": "null" };
         }
         console.log(`Request for ${ingredient.name}, price is ${apiResponse.suggestions[0].price}`);
 
-        return { "price": apiResponse.suggestions[0].price, "name": apiResponse.suggestions[0].title, "productID" : apiResponse.suggestions[0].prod_id };
+        return apiResponse.suggestions[0];
     } catch (e) {
         console.error(e);
-        //res.status(500).send();
     }
 }
 
