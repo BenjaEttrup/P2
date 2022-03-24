@@ -62,8 +62,8 @@
         },
         {
           "anderester gerne 2-400 g": {
-            "amount": "",
-            "unit": ""
+            "amount": 200-400,
+            "unit": g
           }
         },
         {
@@ -147,7 +147,7 @@
         },
         {
           "oma madlavningsfløde 4% el almindelig fløde": {
-            "amount": "2,5",
+            "amount": 0.62,
             "unit": "dl"
           }
         },
@@ -177,7 +177,7 @@
         },
         {
           "gulerødder": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "kg"
           }
         },
@@ -276,13 +276,13 @@
         },
         {
           "rødløg el. løg": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": ""
           }
         },
         {
           "rød peberfrugt": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": ""
           }
         },
@@ -348,7 +348,7 @@
         },
         {
           "salt": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
@@ -621,13 +621,13 @@
       "ingredients": [
         {
           "jordskokker": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "kg"
           }
         },
         {
           "kartofler": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "kg"
           }
         },
@@ -663,7 +663,7 @@
         },
         {
           "madlavningsfløde": {
-            "amount": "2,5",
+            "amount": 0.625,
             "unit": "dl"
           }
         },
@@ -699,8 +699,8 @@
         },
         {
           "fuldkornsbaguettes": {
-            "amount": "",
-            "unit": ""
+            "amount": 1,
+            "unit": "stk"
           }
         }
       ],
@@ -894,13 +894,13 @@
         },
         {
           "madlavningsfløde 5%": {
-            "amount": "2,5",
+            "amount": 0.625,
             "unit": "dl"
           }
         },
         {
           "vand": {
-            "amount": "2,5",
+            "amount": 0.625,
             "unit": "dl"
           }
         },
@@ -930,7 +930,7 @@
         },
         {
           "fuldkornsbrød": {
-            "amount": "",
+            "amount": 1,
             "unit": "evt."
           }
         }
@@ -1135,13 +1135,13 @@
         },
         {
           "spidskommen": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
         {
           "paprika (evt. røget)": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
@@ -1202,7 +1202,7 @@
         },
         {
           "spidskommen": {
-            "amount": "0,25",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
@@ -1296,7 +1296,7 @@
         },
         {
           "rasp": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "dl"
           }
         },
@@ -1496,7 +1496,7 @@
         },
         {
           "paprika": {
-            "amount": "1,5",
+            "amount": 0.375,
             "unit": "tsk"
           }
         },
@@ -1508,19 +1508,19 @@
         },
         {
           "koriander": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
         {
           "kanel": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
         {
           "chili el. cayennepeber (eller efter smag)": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
@@ -1701,7 +1701,7 @@
         },
         {
           "hakkede tomater": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "ds"
           }
         },
@@ -1725,19 +1725,19 @@
         },
         {
           "chili eller cayennepeber": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
         {
           "peber": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
         {
           "salt": {
-            "amount": "1,5",
+            "amount": 0.375,
             "unit": "tsk"
           }
         },
@@ -1755,7 +1755,7 @@
         },
         {
           "iceberg": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": ""
           }
         },
@@ -1767,7 +1767,7 @@
         },
         {
           "agurk": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": ""
           }
         },
@@ -1879,7 +1879,7 @@
         },
         {
           "rødløg el. alm løg": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": ""
           }
         },
@@ -2038,8 +2038,8 @@
         },
         {
           "en pakke hakket kød eller 150 g røde linser": {
-            "amount": "",
-            "unit": "evt."
+            "amount": 150-450,
+            "unit": "g"
           }
         },
         {
@@ -2103,7 +2103,7 @@
         },
         {
           "salt": {
-            "amount": "0,5",
+            "amount": 0.125,
             "unit": "tsk"
           }
         },
@@ -2211,14 +2211,14 @@
         },
         {
           "iceberg": {
-            "amount": "0,5",
-            "unit": ""
+            "amount": 0.125,
+            "unit": "stk"
           }
         },
         {
           "agurk": {
-            "amount": "0,5",
-            "unit": ""
+            "amount": 0.125,
+            "unit": "stk"
           }
         },
         {
