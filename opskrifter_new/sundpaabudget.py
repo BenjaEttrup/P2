@@ -19,22 +19,22 @@ urls = [
     "https://sundpaabudget.dk/mortens-and-med-tilbehoer/",
     "https://sundpaabudget.dk/spinatvafler-med-tunsalat/",
     "https://sundpaabudget.dk/pankorejer-med-peanutdressing/",
-    # "https://sundpaabudget.dk/stegte-nudler-med-rejer-og-groentsager/",
-    # "https://sundpaabudget.dk/ovnbagt-laks-og-groent-med-citronsauce-og-spaghetti/",
-    # "https://sundpaabudget.dk/jordskokkesuppe-med-bagt-torsk/",
-    # "https://sundpaabudget.dk/ristet-broed-med-aeg-tomat-og-rejer/",
-    # "https://sundpaabudget.dk/panini-med-kylling-pesto-mozzarella-og-groent/",
-    # "https://sundpaabudget.dk/spaghetti-squash-ala-chicken-alfredo/",
-    # "https://sundpaabudget.dk/syrlig-rispilaf-med-kylling-og-blomkaal/",
-    # "https://sundpaabudget.dk/one-pot-pasta-med-kyllingekebab/",
-    # "https://sundpaabudget.dk/bbq-chicken-burger-m-hasselback-guleroedder/",
-    # "https://sundpaabudget.dk/spaghetti-med-kyllingekoedboller-i-cremet-spinatsauce/",
-    # "https://sundpaabudget.dk/osmanisk-gryde/",
-    # "https://sundpaabudget.dk/panini-ala-cheeseburger/",
-    # "https://sundpaabudget.dk/tortilla-ala-lamachun-tyrkisk-pizza/",
-    # "https://sundpaabudget.dk/tyrkisk-pide/",
-    # "https://sundpaabudget.dk/gnocchi-med-groentsagssauce-og-mozzarella/",
-    # "https://sundpaabudget.dk/mexicansk-tacotaerte-med-salat/",
+    "https://sundpaabudget.dk/stegte-nudler-med-rejer-og-groentsager/",
+    "https://sundpaabudget.dk/ovnbagt-laks-og-groent-med-citronsauce-og-spaghetti/",
+    "https://sundpaabudget.dk/jordskokkesuppe-med-bagt-torsk/",
+    "https://sundpaabudget.dk/ristet-broed-med-aeg-tomat-og-rejer/",
+    "https://sundpaabudget.dk/panini-med-kylling-pesto-mozzarella-og-groent/",
+    "https://sundpaabudget.dk/spaghetti-squash-ala-chicken-alfredo/",
+    "https://sundpaabudget.dk/syrlig-rispilaf-med-kylling-og-blomkaal/",
+    "https://sundpaabudget.dk/one-pot-pasta-med-kyllingekebab/",
+    "https://sundpaabudget.dk/bbq-chicken-burger-m-hasselback-guleroedder/",
+    "https://sundpaabudget.dk/spaghetti-med-kyllingekoedboller-i-cremet-spinatsauce/",
+    "https://sundpaabudget.dk/osmanisk-gryde/",
+    "https://sundpaabudget.dk/panini-ala-cheeseburger/",
+    "https://sundpaabudget.dk/tortilla-ala-lamachun-tyrkisk-pizza/",
+    "https://sundpaabudget.dk/tyrkisk-pide/",
+    "https://sundpaabudget.dk/gnocchi-med-groentsagssauce-og-mozzarella/",
+    "https://sundpaabudget.dk/mexicansk-tacotaerte-med-salat/",
 ]
 
 
@@ -53,21 +53,31 @@ def parse_size(soup):
 
 
 def parse_ingredients(soup, x):
+
     amount = get_ingredient(soup, "wpzoom-rcb-ingredient-amount")
+    print(f"Amount is: {amount[x]}")
     unit = get_ingredient(soup, "wpzoom-rcb-ingredient-unit")
-    if unit[x] == "":
-        unit[x] = "stk"
     name = get_ingredient(soup, "wpzoom-rcb-ingredient-name")
 
     ingredient = {}
 
     json_ingredient = {name[x]: ingredient}
-    json_ingredient[name[x]]["amount"] = amount[x]
+
+    # Convert amount to int
+    for element in amount[x]:
+        element = element.replace(",", ".")
+
+    try:
+        json_ingredient[name[x]]["amount"] = float(amount[x]) / 4
+    except:
+        json_ingredient[name[x]]["amount"] = amount[x]
+        print("Test")
+    else:
+        print("Test2")
+
     json_ingredient[name[x]]["unit"] = unit[x]
 
-    # print(f"Name: {name} | Amount: {amount} | Unit: {unit}")
-
-    return name, amount, unit
+    return json_ingredient
 
 
 def get_ingredient(soup, klasse):
@@ -98,15 +108,7 @@ def parse_time(soup):
 
 
 def parse_method(soup):
-    # [f"{count + 1} {li.text}" for count, li in enumerate(soup.find("ul", {"class": "directions-list"}).findChildren())]
-    method = []
-
-    for stepIndex, li in enumerate(soup.find("ul", {"class": "directions-list"}).findChildren()):
-        method.append(li.text)
-
-    # print(method)
-
-    return method
+    return [li.text for li in soup.find("ul", {"class": "directions-list"}).findChildren()]
 
 
 def parse_rating(soup):
@@ -136,38 +138,18 @@ def get_json(url, x):
     description = parse_description(soup)
 
     # Size
-    size = parse_size(soup)
+    # size = parse_size(soup)
+    size = 1
 
     # Ingredients
-
-    # print(f"Ing 0: {parse_ingredients(soup, 0)}")
-    name, amount, unit = parse_ingredients(soup, x)
-    print(f"Name type: {type(name)}")
-    ingredients = []
-    # ingredient = {name}
-    for x in range(len(get_ingredient(soup, "wpzoom-rcb-ingredient-amount"))):
-        amountUnit = {"amount": amount[x], "unit": unit[x]}
-        # print(amountUnit)
-        # ingredient[name[x]].append(amountUnit)
-        print(x)
-        ingredient = {name[x]: {"amount": amount[x], "unit": unit[x]}}
-        ingredients.append(ingredient)
-        print(ingredients[x])
-
-        # ingredients.append(name[x])
-        # ingredient = {name[x]: {"amount": amount[x], "unit": unit[x]}}
-        # print(ingredients)
-        # print(ingredients[x])
-        # ingredients[x]
-    #    [parse_ingredients(soup, x) for x in range(len(get_ingredient(soup, "wpzoom-rcb-ingredient-amount")))]
-    print(f"Ingredients: {ingredients}")
+    ingredients = [parse_ingredients(soup, x) for x in range(len(get_ingredient(soup, "wpzoom-rcb-ingredient-amount")))]
 
     # Time
     time = parse_time(soup)
 
     # Method
     method = parse_method(soup)
-    print(method)
+    # print(method)
 
     # Difficulty
     rating = parse_rating(soup)
@@ -189,6 +171,7 @@ def main():
         temp_dict = get_json(url, count)
         final_dict["recipes"].append(temp_dict)
         final_json = json.dumps(final_dict, indent=2, ensure_ascii=False)
+        print(final_json)
 
     with open("recipes.json", "w", encoding="utf8") as file:
         file.write(final_json)
