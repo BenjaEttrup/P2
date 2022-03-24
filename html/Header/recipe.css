@@ -1,30 +1,31 @@
 body{
-    background-color: #f3f3f3 !important;
+  background-color: #f3f3f3 !important;
 }
 
 #recipedropdown {
-    background-color: #FFFFFF;
-    width: 20rem;
-    height: 30rem;
+  background-color: #FFFFFF;
+  width: 20rem;
+  height: 30rem;
 }
 
 .shadow {
-    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-  }
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+}
 
-  .shadow-rounded {
-    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
-  }
+.shadow-rounded {
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
 
 .horizontal-list li {
-      display: inline;
-      list-style-position: inside;
-  }
+  display: inline;
+  list-style-position: inside;
+}
 
 .right-align {
-    text-align: right;
+  text-align: right;
 }
+
 .left-align {
-     align-content: left;
- }
+  align-content: left;
+}

@@ -2,57 +2,83 @@
     "recipes": [
         {
             "recipeID": 0,
-            "title": "hejsa",
+            "title": "Pasta",
             "description": "description",
             "size": "",
-            "ingredients": [
-                "ost",
-                "pepperoni",
-                "maelk"
-            ],
-            "time": 0,
-            "method": [
-                {
-                    "1": "step1",
-                    "2": "step2",
-                    "3": "step3"
-                }
-            ],
-            "rating": "rating",
-            "image": "image",
-            "url": "url"
+            "ingredients": ["pasta"],
+            "time": 2,
+            "method": "method",
+            "difficulty": "difficulty"
+        },
+        {
+            "recipeID": 1,
+            "title": "Leverpostej",
+            "description": "description",
+            "size": "",
+            "ingredients": ["leverpostej"],
+            "time": 2,
+            "method": "method",
+            "difficulty": "difficulty"
+        },
+        {
+            "recipeID": 2,
+            "title": "Pølseret",
+            "description": "description",
+            "size": "",
+            "ingredients": ["mel"],
+            "time": 2,
+            "method": "method",
+            "difficulty": "difficulty"
         },
         {
             "recipeID": 3,
-            "title": "title",
+            "title": "Risret",
             "description": "description",
             "size": "",
-            "ingredients": [
-                "ost",
-                "pepperoni",
-                "mel"
-            ],
-            "time": 0,
+            "ingredients": ["ris"],
+            "time": 2,
             "method": "method",
-            "rating": "rating",
-            "image": "image",
-            "url": "url"
+            "difficulty": "difficulty"
         },
         {
-            "recipeID": 8,
-            "title": "title",
+            "recipeID": 4,
+            "title": "Lasagne",
             "description": "description",
             "size": "",
-            "ingredients": [
-                "ost",
-                "pepperoni",
-                "mel"
-            ],
-            "time": 0,
+            "ingredients": ["ost"],
+            "time": 2,
             "method": "method",
-            "rating": "rating",
-            "image": "image",
-            "url": "url"
+            "difficulty": "difficulty"
+        },
+        {
+            "recipeID": 5,
+            "title": "Frikedeller",
+            "description": "description",
+            "size": "",
+            "ingredients": ["svinekød"],
+            "time": 2,
+            "method": "method",
+            "difficulty": "difficulty"
+        },
+        {
+            "recipeID": 6,
+            "title": "Boller",
+            "description": "description",
+            "size": "",
+            "ingredients": ["mælk"],
+            "time": 2,
+            "method": "method",
+            "difficulty": "difficulty"
+        },
+        {
+            "recipeID": 7,
+            "title": "Kødsauce",
+            "description": "description",
+            "size": "",
+            "ingredients": ["oksefars"],
+            "time": 2,
+            "method": "method",
+            "difficulty": "difficulty"
         }
     ]
 }
