@@ -140,6 +140,7 @@ app.get('/findAllRecipes', async (req, res) => {
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
         const tempRecipe = recipeData.recipes[index1];
+        let totalPrice = 0;
         
         var recipeObject = {
             recipe: {},
@@ -151,16 +152,17 @@ app.get('/findAllRecipes', async (req, res) => {
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = recipeData.recipes[index1].ingredients[index2];
 
-            //console.log(tempIngredient);
             try{
                 let apiResponse = await callApi(encodeCharacters(tempIngredient));
                 apiResponse.suggestions.sort(comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0])
+                totalPrice += apiResponse.suggestions[0].price;
             } catch(e) {
                 console.error(e);
                 res.status(500).send();
             }
         }
+        recipeObject.recipe['price'] = totalPrice;
 
         recipeObjects.recipes.push(recipeObject);
     }
