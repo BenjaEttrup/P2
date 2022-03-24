@@ -45,7 +45,7 @@ app.post('/addRecipeToShoppingList', (req, res) => {
             // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
             // However, we're limited to only a single api call per second.
             userData.shoppingList.push(req.body);
-            let json = JSON.stringify(userData, null, 4);
+            let json = JSON.stringify(userData, null, 2);
             fs.writeFile(userPath, json, function (err, result) {
                 if (err) console.log("Error", err);
             });
@@ -55,11 +55,47 @@ app.post('/addRecipeToShoppingList', (req, res) => {
     res.status(202).send(req.body);
 });
 
+// Retrieves the data from the user's shoppinglist
 app.get('/shoppingList', (req, res) => {
+    let userData = require(userPath);
 
-
+    res.send(userData.shoppingList);
 });
 
+app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
+    try {
+        fs.readFile(userPath, function readFileCallback(err, data) {
+            let userData = JSON.parse(data);
+            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            let ingredientIndex = findIngredientIndex(recipeIndex, req.params.prod_id, userPath, "shoppingList");
+
+            if (ingredientIndex) {
+                console.log("recipeIndex = " + recipeIndex);
+                console.log("ingredient Index = " + ingredientIndex);
+                userData.shoppingList[recipeIndex].ingredients.splice(ingredientIndex, 1); // 2nd parameter means remove one item only
+            }
+            else {
+                console.log("Failed to get product ID index");
+                res.status(500).send();
+            }
+
+            let json = JSON.stringify(userData, null, 4);
+
+            fs.writeFile(userPath, json, function readFileCallback(err, data) {
+                if (err) {
+                    res.status(500).send();
+                }
+                res.status(202).send();
+            });
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+});
+
+/** Removes a recipe from the shoppinglist* */
 app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
     try {
         fs.readFile(userPath, function readFileCallback(err, data) {
@@ -76,8 +112,8 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
 
             let json = JSON.stringify(userData, null, 4);
 
-            fs.writeFile(userPath, json, function readFileCallback(err, data){
-                if (err){
+            fs.writeFile(userPath, json, function readFileCallback(err, data) {
+                if (err) {
                     res.status(500).send();
                 }
                 res.status(202).send();
@@ -115,7 +151,6 @@ app.get('/findAllRecipes', async (req, res) => {
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = recipeData.recipes[index1].ingredients[index2];
-
             try {
                 let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + tempIngredient, config).then((res) => {
                     return res.data;
@@ -203,7 +238,12 @@ app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 })
 
-// Encodes the ingredients and turns them lower case.
+
+/**
+ * Replace all the special characters in the ingredient with their encoded values
+ * @param ingredient - the ingredient to be encoded
+ * @returns The ingredient name is being encoded to be used in the URL.
+ */
 function encodeCharacters(ingredient) {
     ingredient = ingredient.toLowerCase();
 
@@ -215,54 +255,51 @@ function encodeCharacters(ingredient) {
     return ingredient;
 }
 
-// Finds the index of a recipe
+/**
+ * This function finds the index of a recipe in the file.
+ * @param ID - The ID of the recipe you're looking for.
+ * @param filePath - The path to the file you want to search.
+ * @param option - member we want to acess in the file.
+ * @returns The index of the recipe.
+ */
 function findRecipeIndex(ID, filePath, option) {
-    let validated;
+    console.log(ID);
     let file = require(filePath);
-
-    for (element in file[option]) {
-        // Accesses a single recipe, as element will be the index of a recipe
-        console.log("id = " + ID);
-        console.log("file[][] = " + file[option][element].recipeID);
-        console.log("element = " + element);
-        console.log("file.shoppingList[element].recipeID = " + file.shoppingList[element].recipeID);
-        if (ID == file[option][element].recipeID) {
-            console.log("exited findrecipe with index = " + element);
-            return element;
+    for (object in file[option]) {
+        for (recipe in file[option][object]) {
+            if (file[option][object][recipe].recipeID == ID) {
+                return object;
+            }
         }
     }
     return false;
 }
 
+/**
+ * Find the index of an ingredient in a recipe
+ * @param recipeIndex - The index of the recipe in the user's recipe list.
+ * @param productID - The ID of the product you want to find.
+ * @param filePath - the path to the user data file
+ * @param option - the member we want to access in the user.json file
+ * @returns The index of the ingredient in the recipe.
+ */
+function findIngredientIndex(recipeIndex, productID, filePath, option) {
+    let userData = require(userPath);
 
-//     switch (filePath) {
-//         case (userPath):
+    // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
+    for (ingredient in userData[option][recipeIndex].ingredients) {
+        if (userData[option][recipeIndex].ingredients[ingredient].prod_id === productID) {
+            return ingredient;
+        }
+    }
+}
 
-//             for (element in file.myStash) {
-//                 // Accesses a single recipe, as element will be the index of a recipe
-//                 // let recipe = file.mystash[element];
-//                 console.log(file[option][element].recipeID);
-//                 if (ID == file.myStash[element].recipeID) {
-//                     return element;
-//                 }
-//             }
-//             return false;
 
-//         case (recipeDataPath):
-//             for (element in file.recipes) {
-//                 // Accesses a single recipe, as element will be the index of a recipe    
-//                 console.log(file[option][element].recipeID)            
-//                 if (ID == file.recipes[element].recipeID) {
-//                     return element;
-//                 }
-//             }
-//             return false;
-
-//         default:
-//             console.log("Default case");
-//     }
-
-// Retrieves the ingredient
+/**
+ * The function takes an ingredient as an argument and returns the cheapest product that contains the
+ * @param ingredient - The ingredient keyword that we want to find the cheapest product for
+ * @returns The cheapest ingredient.
+ */
 async function getCheapestIngredient(ingredient) {
 
     try {
