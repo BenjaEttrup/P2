@@ -1,585 +1,835 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
 
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-
-<body>
+  <body>
     <!-- Dette er en karusel med indicators og controls, så man kan trykke til højre og venstre -->
     <!-- https://getbootstrap.com/docs/4.0/components/carousel/ -->
 
     <style>
-        body {
-            background-color: #F3F3F3;
-        }
+      body {
+        background-color: #f3f3f3;
+      }
 
-        .searchbar {
-            margin-top: 2rem;
-        }
+      .searchbar {
+        margin-top: 2rem;
+      }
 
-        .heigth {
-            height: 50vh;
-        }
+      .heigth {
+        height: 50vh;
+      }
 
-        .form {
-            position: relative;
-        }
+      .form {
+        position: relative;
+      }
 
-        .form .fa-search {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            color: #9ca3af;
-        }
+      .form .fa-search {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        color: #9ca3af;
+      }
 
-        .form span {
-            position: absolute;
-            right: 17px;
-            top: 13px;
-            padding: 2px;
-            border-left: 1px solid #d1d5db;
-        }
+      .form span {
+        position: absolute;
+        right: 17px;
+        top: 13px;
+        padding: 2px;
+        border-left: 1px solid #d1d5db;
+      }
 
-        .left-pan {
-            padding-left: 7px
-        }
+      .left-pan {
+        padding-left: 7px;
+      }
 
-        .left-pan i {
-            padding-left: 10px
-        }
+      .left-pan i {
+        padding-left: 10px;
+      }
 
-        .form-input {
-            height: 45px;
-            text-indent: 33px;
-            border: none;
-            border-radius: 10px;
-        }
+      .form-input {
+        height: 45px;
+        text-indent: 33px;
+        border: none;
+        border-radius: 10px;
+      }
 
-        .form-input:focus {
-            box-shadow: none;
-            border: none;
-        }
+      .form-input:focus {
+        box-shadow: none;
+        border: none;
+      }
 
-        .shadow {
-            box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-        }
+      .shadow {
+        box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+      }
 
-        .shadow-rounded {
-            box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-        }
+      .shadow-rounded {
+        box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+      }
 
-        .center {
-            margin: auto;
-            border: 3px #F3F3F3;
-            padding: 10px;
-        }
+      .center {
+        margin: auto;
+        border: 3px #f3f3f3;
+        padding: 10px;
+      }
 
-        #homepage-carousel {
-            width: 70%;
-        }
+      #homepage-carousel {
+        width: 70%;
+      }
 
-        .carousel-img {
-            object-fit: cover;
-            height: 26rem;
-        }
+      .carousel-img {
+        object-fit: cover;
+        height: 26rem;
+      }
 
-        .img-gradient-red:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            display: inline-block;
-            background: -moz-linear-gradient(top, rgba(0, 47, 75, 0.5) 0%, rgba(220, 66, 37, 0.5) 100%);
-            /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(220, 66, 37, 0.5)), color-stop(100%, rgba(0, 47, 75, 0.5)));
-            /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, rgba(0, 47, 75, 0.5) 0%, rgba(220, 66, 37, 0.5) 100%);
-            /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, rgba(0, 47, 75, 0.5) 0%, rgba(220, 66, 37, 0.5) 100%);
-            /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, rgba(0, 47, 75, 0.5) 0%, rgba(220, 66, 37, 0.5) 100%);
-            /* IE10+ */
-            background: linear-gradient(to bottom, rgba(0, 47, 75, 0.5) 0%, rgba(220, 66, 37, 0.5) 100%);
-            /* W3C */
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#002f4b', endColorstr='#00000000', GradientType=0);
-            /* IE6-9 */
-        }
+      .img-gradient-red:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        background: -moz-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0.5) 0%,
+          rgba(220, 66, 37, 0.5) 100%
+        );
+        /* FF3.6+ */
+        background: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          color-stop(0%, rgba(220, 66, 37, 0.5)),
+          color-stop(100%, rgba(0, 47, 75, 0.5))
+        );
+        /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0.5) 0%,
+          rgba(220, 66, 37, 0.5) 100%
+        );
+        /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0.5) 0%,
+          rgba(220, 66, 37, 0.5) 100%
+        );
+        /* Opera 11.10+ */
+        background: -ms-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0.5) 0%,
+          rgba(220, 66, 37, 0.5) 100%
+        );
+        /* IE10+ */
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 47, 75, 0.5) 0%,
+          rgba(220, 66, 37, 0.5) 100%
+        );
+        /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#002f4b', endColorstr='#00000000', GradientType=0);
+        /* IE6-9 */
+      }
 
-        .img-gradient-black:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            display: inline-block;
-            background: -moz-linear-gradient(top, rgba(0, 47, 75, 0) 30%, rgba(0, 0, 0, 0.9) 100%);
-            /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(30%, rgba(0, 0, 0, 0.9)), color-stop(100%, rgba(0, 47, 75, 0)));
-            /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, rgba(0, 47, 75, 0) 30%, rgba(0, 0, 0, 0.9) 100%);
-            /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, rgba(0, 47, 75, 0) 30%, rgba(0, 0, 0, 0.9) 100%);
-            /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, rgba(0, 47, 75, 0) 30%, rgba(0, 0, 0, 0.9) 100%);
-            /* IE10+ */
-            background: linear-gradient(to bottom, rgba(0, 47, 75, 0) 30%, rgba(0, 0, 0, 0.9) 100%);
-            /* W3C */
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#002f4b', endColorstr='#00000000', GradientType=0);
-            /* IE6-9 */
-        }
+      .img-gradient-black:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        background: -moz-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0) 30%,
+          rgba(0, 0, 0, 0.9) 100%
+        );
+        /* FF3.6+ */
+        background: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          color-stop(30%, rgba(0, 0, 0, 0.9)),
+          color-stop(100%, rgba(0, 47, 75, 0))
+        );
+        /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0) 30%,
+          rgba(0, 0, 0, 0.9) 100%
+        );
+        /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0) 30%,
+          rgba(0, 0, 0, 0.9) 100%
+        );
+        /* Opera 11.10+ */
+        background: -ms-linear-gradient(
+          top,
+          rgba(0, 47, 75, 0) 30%,
+          rgba(0, 0, 0, 0.9) 100%
+        );
+        /* IE10+ */
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 47, 75, 0) 30%,
+          rgba(0, 0, 0, 0.9) 100%
+        );
+        /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#002f4b', endColorstr='#00000000', GradientType=0);
+        /* IE6-9 */
+      }
 
-        .img-gradient img {
-            display: block;
-        }
+      .img-gradient img {
+        display: block;
+      }
 
-        a,
-        a:hover {
-            color: white;
-            text-decoration: none;
-        }
+      a,
+      a:hover {
+        color: white;
+        text-decoration: none;
+      }
 
-        .content {
-            margin-top: 0px;
-            /*margin-left: 6em;
+      .content {
+        margin-top: 0px;
+        /*margin-left: 6em;
             margin-right: 0;*/
-            padding: 1.5rem;
-            max-width: 1200px;
-            padding-top: 0;
-        }
+        padding: 1.5rem;
+        max-width: 1200px;
+        padding-top: 0;
+      }
 
-        .card-item {
-            width: 250px;
-            height: 175px !important;
-            border: 0;
-            margin-right: 0;
+      .card-item {
+        width: 250px;
+        height: 175px !important;
+        border: 0;
+        margin-right: 0;
+      }
 
-        }
+      .card-item,
+      .card-img,
+      .card-img-border,
+      .card-img-border:after {
+        border-radius: 10px;
+      }
 
-        .card-item,
-        .card-img,
-        .card-img-border,
-        .card-img-border:after {
-            border-radius: 10px;
-        }
+      .outer-item-card {
+        max-width: 420px;
+      }
 
-        .outer-item-card {
-            max-width: 420px;
-        }
+      .card-price {
+        text-align: right;
+      }
 
-        .card-price {
-            text-align: right;
-        }
+      .card-info {
+        margin-top: 86px;
+      }
 
-        .card-info {
-            margin-top: 86px;
-        }
+      .button-add {
+        background-color: #31af3e;
+        border: 0;
+        border-radius: 20px;
+        margin-left: 185px;
+        color: white;
+        padding-left: 7px;
+        padding-right: 7px;
+      }
 
-        .button-add {
-            background-color: #31AF3E;
-            border: 0;
-            border-radius: 20px;
-            margin-left: 185px;
-            color: white;
-            padding-left: 7px;
-            padding-right: 7px;
-        }
+      .button-plus {
+        margin-bottom: 0;
+        height: 30px;
+        line-height: 1;
+        font-size: 24px;
+      }
 
-        .button-plus {
-            margin-bottom: 0;
-            height: 30px;
-            line-height: 1;
-            font-size: 24px;
-        }
+      #searchAndFilterOptions {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
 
-        #searchAndFilterOptions {
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
+      #flexCheckDefault {
+        margin-top: 6%;
+      }
 
-        #flexCheckDefault {
-            margin-top: 6%;
-        }
+      .bd-example {
+        margin-left: auto;
+        margin-right: 6rem;
+        width: 200px;
+      }
 
-        .bd-example {
-            margin-left: auto;
-            margin-right: 6rem;
-            width: 200px;
-        }
+      #filterButton {
+        border-radius: 5px;
+        height: 2em;
+        position: center;
+        background: none;
+        border: hidden;
+        color: #6c757dff;
+        padding: 0;
+        width: 60px;
+        margin-right: 10px;
+      }
 
-        #filterButton {
-            border-radius: 5px;
-            height: 2em;
-            position: center;
-            background: none;
-            border: hidden;
-            color: #6c757dff;
-            padding: 0;
-            width: 60px;
-            margin-right: 10px;
-        }
+      #sortingButton {
+        border-radius: 5px;
+        height: 2em;
+        position: center;
+        background: white;
+        border: hidden;
+        color: #6c757dff;
+        padding: 0;
+        width: 60px;
+      }
 
-        #sortingButton {
-            border-radius: 5px;
-            height: 2em;
-            position: center;
-            background: white;
-            border: hidden;
-            color: #6c757dff;
-            padding: 0;
-            width: 60px;
-        }
+      .form-check-group {
+        margin-right: 10px;
+        margin-top: 4px;
+        background: none;
+        border: hidden;
+        color: #6c757dff;
+        padding: 0;
+        height: 2em;
+      }
 
-        .form-check-group {
-            margin-right: 10px;
-            margin-top: 4px;
-            background: none;
-            border: hidden;
-            color: #6c757dff;
-            padding: 0;
-            height: 2em;
-        }
+      .bd-example {
+        min-width: 230px;
+      }
 
-        .bd-example {
-            min-width: 230px;
-        }
+      .page-spacing {
+        margin-left: 5rem;
+        margin-right: 5rem;
+        /*max-width: 1200px;*/
+      }
 
-        .page-spacing {
-            margin-left: 5rem;
-            margin-right: 5rem;
-            /*max-width: 1200px;*/
-        }
+      .btn:focus {
+        outline: none;
+        box-shadow: none;
+        border: none;
+      }
 
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-            border: none;
-        }
+      .max-min-price {
+        width: 10rem;
+      }
 
-        .max-min-price {
-            width: 10rem;
-        }
+      .input-price {
+        color: #888888;
+        background-color: #fff;
+        width: 60px;
+      }
 
-        .input-price {
-            color: #888888;
-            background-color: #fff;
-            width: 60px;
-        }
+      #min-input-left {
+        width: 60px;
+        margin-bottom: 0px;
+        border-bottom: hidden;
+        border-radius: 0.25rem 0rem 0rem 0rem;
+      }
 
-        #min-input-left {
-            width: 60px;
-            margin-bottom: 0px;
-            border-bottom: hidden;
-            border-radius: 0.25rem 0rem 0rem 0rem;
-        }
+      #min-input-right {
+        margin-bottom: 0px;
+        border-bottom: hidden;
+        border-radius: 0rem 0.25rem 0rem 0rem;
+      }
 
-        #min-input-right {
-            margin-bottom: 0px;
-            border-bottom: hidden;
-            border-radius: 0rem 0.25rem 0rem 0rem;
-        }
+      #max-input-left {
+        width: 60px;
+        margin-bottom: 0px;
+        border-radius: 0rem 0rem 0rem 0.25rem;
+      }
 
-        #max-input-left {
-            width: 60px;
-            margin-bottom: 0px;
-            border-radius: 0rem 0rem 0rem 0.25rem;
-        }
+      #max-input-right {
+        margin-bottom: 0px;
+        border-radius: 0rem 0rem 0.25rem 0rem;
+      }
 
-        #max-input-right {
-            margin-bottom: 0px;
-            border-radius: 0rem 0rem 0.25rem 0rem;
-        }
+      #homepage-carousel,
+      .carousel-img,
+      .img-gradient-rounded,
+      .img-gradient-rounded:after {
+        border-radius: 10px;
+      }
 
-        #homepage-carousel,
-        .carousel-img,
-        .img-gradient-rounded,
-        .img-gradient-rounded:after {
-            border-radius: 10px;
-        }
+      #price-dropdown {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        background-color: #ffffff;
+      }
 
-        #price-dropdown {
-            padding: 0.75rem;
-            border-radius: .5rem;
-            background-color: #ffffff;
-        }
+      .form-check-input:focus {
+        outline: none;
+        box-shadow: none !important;
+      }
 
-        .form-check-input:focus {
-            outline: none;
-            box-shadow: none !important;
-        }
+      .prev-icon {
+        background-image: url(button_left.svg) !important;
+      }
+      .next-icon {
+        background-image: url(button_right.svg) !important;
+      }
 
+      .carousel-name {
+        text-align: left;
+      }
+
+      .carousel-description {
+        text-align: left;
+      }
+
+      .carousel-price {
+        text-align: right;
+      }
+      .carousel-add-recipe {
+        text-align: right;
+      }
+
+      .carousel-add-button {
+        height: 1.75rem;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+        border-radius: 5px;
+        color: #fff;
+        border-color: #fff;
+        float: right;
+        font-size: 0.8em;
+      }
+      .carousel-add-button:hover {
+        color: #222222;
+        background-color: #fff;
+      }
+      .carousel-add-button:active {
+        color: #222222;
+        background-color: rgb(231, 231, 231);
+      }
     </style>
 
-    <div id="homepage-carousel" class="carousel slide center" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#homepage-carousel" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#homepage-carousel" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#homepage-carousel" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
+    <div
+      id="homepage-carousel"
+      class="carousel slide center"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#homepage-carousel"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#homepage-carousel"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#homepage-carousel"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item carousel-img active">
+          <div class="img-gradient img-gradient-black img-gradient-rounded">
+            <img
+              src="./pizza.jpg"
+              class="d-block w-100 carousel-img"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <h5 class="carousel-name">Meal name</h5>
+                  <p class="carousel-description">
+                    Short meal description here.
+                  </p>
+                </div>
+                <div class="col">
+                  <h5 class="carousel-price">80,99 DKK</h5>
+                  <button
+                    type="button"
+                    class="btn carousel-add-button shadow-rounded"
+                  >
+                    <p class="carousel-add-recipe">
+                      <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
+                      recipe
+                    </p>
+                  </button>
+                </div>
+                <div class="w-100"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item carousel-img active">
-                <div class="img-gradient img-gradient-black img-gradient-rounded">
-                    <img src="./pizza.jpg" class="d-block w-100 carousel-img" alt="...">
-                </div>
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item carousel-img">
-                <div class="img-gradient img-gradient-black img-gradient-rounded">
-                    <img src="./pasta-med-hvidloeg-og-olie-spaghetti-aglio-e-olio-500x500.jpg"
-                        class="d-block w-100 carousel-img" alt="...">
-                </div>
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item carousel-img">
-                <div class="img-gradient img-gradient-black img-gradient-rounded">
-                    <img src="./lasagne-1200x900.jpg" class="d-block w-100 carousel-img" alt="...">
-                </div>
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                </div>
-            </div>
+        <div class="carousel-item carousel-img">
+          <div class="img-gradient img-gradient-black img-gradient-rounded">
+            <img
+              src="./pasta-med-hvidloeg-og-olie-spaghetti-aglio-e-olio-500x500.jpg"
+              class="d-block w-100 carousel-img"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Second slide label</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#homepage-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#homepage-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <div class="carousel-item carousel-img">
+          <div class="img-gradient img-gradient-black img-gradient-rounded">
+            <img
+              src="./lasagne-1200x900.jpg"
+              class="d-block w-100 carousel-img"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Third slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#homepage-carousel"
+        data-bs-slide="prev"
+      >
+        <span
+          class="carousel-control-prev-icon prev-icon"
+          aria-hidden="true"
+        ></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#homepage-carousel"
+        data-bs-slide="next"
+      >
+        <span
+          class="carousel-control-next-icon next-icon"
+          aria-hidden="true"
+        ></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
 
     <!-- Search bar -->
     <div class="container searchbar">
-        <div class="row height d-flex justify-content-center align-items-center">
-            <div class="col-md-6">
-                <div class="form shadow-rounded"><i class="fa fa-search"></i>
-                    <input type="text" class="form-control form-input" placeholder="Search recipe...">
-                </div>
-            </div>
+      <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-6">
+          <div class="form shadow-rounded">
+            <i class="fa fa-search"></i>
+            <input
+              type="text"
+              class="form-control form-input"
+              placeholder="Search recipe..."
+            />
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Cards -->
     <div class="page-spacing center">
-        <!-- Search and filter options buttonGroup -->
-        <div id="searchAndFilterOptions">
-            <div class="bd-example">
-                <!-- Checkbox with right-aligned text -->
+      <!-- Search and filter options buttonGroup -->
+      <div id="searchAndFilterOptions">
+        <div class="bd-example">
+          <!-- Checkbox with right-aligned text -->
 
-                <!-- Dropdown button group-->
-                <div class="btn-group">
-                    <div class="form-check-group">
-                        <label class="form-check-label"  for="flexCheckDefault" >
-                            My Stash
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        </label>
-                    </div>
-                    <button type="button" id="filterButton" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">Price</button>
-                    <ul class="dropdown-menu" id="price-dropdown">
-                        <li>
-                            <h6>Price range</h6>
-                            <div class="max-min-price">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="min-input-left">Min</span>
-                                    <input type="number" class="form-control" id="min-input-right" value="00.00"
-                                        step="10.00" min="00.00" placeholder="DKK" aria-label="Minimum price"
-                                        aria-describedby="basic-addon1" />
-                                </div>
-
-                                <div class="input-group max-min-margin">
-                                    <span class="input-group-text" id="max-input-left">Max</span>
-                                    <input type="number" class="form-control" id="max-input-right" step="10.00"
-                                        min="00.00" placeholder="DKK" aria-label="Maximum price"
-                                        aria-describedby="basic-addon2" />
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <button type="button" id="sortingButton" class="btn dropdown-toggle shadow-sm"
-                        data-bs-toggle="dropdown" aria-expanded="false">Sort</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Price</a></li>
-                        <li><a class="dropdown-item" href="#">Rating</a></li>
-                        <li><a class="dropdown-item" href="#">Best match</a></li>
-                    </ul>
-                </div>
-
+          <!-- Dropdown button group-->
+          <div class="btn-group">
+            <div class="form-check-group">
+              <label class="form-check-label" for="flexCheckDefault">
+                My Stash
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+              </label>
             </div>
-        </div>
-        <div class="content center">
-            <div class="row row-cols-1 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col mb-4 outer-item-card">
-                    <a href="#">
-                        <div class="card card-item h-100">
-                            <div class="img-gradient img-gradient-black card-img-border">
-                                <img src="./pizza.jpg" class="card-img" alt="..." height="175">
-                            </div>
-                            <div class="card-img-overlay">
-                                <button type="button" class="button-add">
-                                    <h4 class="button-plus">+</h4>
-                                </button>
-                                <div class="card-info row">
-                                    <h5 class="card-title col">Name</h5>
-                                    <p class="card-text card-price col">0 DKK</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+            <button
+              type="button"
+              id="filterButton"
+              class="btn dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Price
+            </button>
+            <ul class="dropdown-menu" id="price-dropdown">
+              <li>
+                <h6>Price range</h6>
+                <div class="max-min-price">
+                  <div class="input-group">
+                    <span class="input-group-text" id="min-input-left"
+                      >Min</span
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="min-input-right"
+                      value="00.00"
+                      step="10.00"
+                      min="00.00"
+                      placeholder="DKK"
+                      aria-label="Minimum price"
+                      aria-describedby="basic-addon1"
+                    />
+                  </div>
 
-
-            </div>
+                  <div class="input-group max-min-margin">
+                    <span class="input-group-text" id="max-input-left"
+                      >Max</span
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="max-input-right"
+                      step="10.00"
+                      min="00.00"
+                      placeholder="DKK"
+                      aria-label="Maximum price"
+                      aria-describedby="basic-addon2"
+                    />
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <button
+              type="button"
+              id="sortingButton"
+              class="btn dropdown-toggle shadow-sm"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Sort
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Price</a></li>
+              <li><a class="dropdown-item" href="#">Rating</a></li>
+              <li><a class="dropdown-item" href="#">Best match</a></li>
+            </ul>
+          </div>
         </div>
+      </div>
+      <div class="content center">
+        <div
+          class="row row-cols-1 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1"
+        >
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col mb-4 outer-item-card">
+            <a href="#">
+              <div class="card card-item h-100">
+                <div class="img-gradient img-gradient-black card-img-border">
+                  <img
+                    src="./pizza.jpg"
+                    class="card-img"
+                    alt="..."
+                    height="175"
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <button type="button" class="button-add">
+                    <h4 class="button-plus">+</h4>
+                  </button>
+                  <div class="card-info row">
+                    <h5 class="card-title col">Name</h5>
+                    <p class="card-text card-price col">0 DKK</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Disse scripts er nødvendige for at det virker -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-</body>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
