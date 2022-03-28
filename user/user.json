@@ -21,15 +21,6 @@
             },
             "ingredients": [
                 {
-                    "id": "92343951",
-                    "prod_id": "84537",
-                    "title": "Kogt skinke i skiver",
-                    "description": "Kogt skinke i skiver",
-                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-                    "link": "https://www.bilkatogo.dk/p/84537",
-                    "price": 8.95
-                },
-                {
                     "id": "37918301",
                     "prod_id": "41685",
                     "title": "Mozzarella",
@@ -67,15 +58,6 @@
                     "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
                     "link": "https://www.bilkatogo.dk/p/84537",
                     "price": 8.95
-                },
-                {
-                    "id": "16634501",
-                    "prod_id": "19668",
-                    "title": "Kakaomælk 0,5% fedt",
-                    "description": "Kakaomælk 0,5% fedt",
-                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=19668&imgType=jpeg",
-                    "link": "https://www.bilkatogo.dk/p/19668",
-                    "price": 6
                 }
             ]
         }

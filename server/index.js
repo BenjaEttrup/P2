@@ -31,6 +31,8 @@ app.get('/findProduct/:productName', async (req, res) => {
     }
 });
 
+
+
 // Allows the user to add a recipe to their shopping list.
 app.post('/addRecipeToShoppingList', (req, res) => {
     fs.readFile(userPath, function readFileCallback(err, data) {
@@ -219,7 +221,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
             let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
             details = await getCheapestIngredient(encodeCharacters(ingredient));
-
+            console.log(details);
             recipeObject.ingredients[i] = details;
             recipeObject.recipe = recipeData.recipes[recipeIndex];
             totalPrice += details.price;
@@ -260,15 +262,26 @@ function encodeCharacters(ingredient) {
  * @returns The index of the recipe.
  */
 function findRecipeIndex(ID, filePath, option) {
-    console.log(ID);
     let file = require(filePath);
-    for (object in file[option]) {
-        for (recipe in file[option][object]) {
-            if (file[option][object][recipe].recipeID == ID) {
-                return object;
+    // TODO reevaluate this function design
+
+    if (option === "shoppingList"){
+        for (object in file[option]) {
+            for (recipe in file[option][object]) {
+                if (file[option][object][recipe].recipeID == ID) {
+                    return object;
+                }
             }
         }
     }
+    else if (option === "recipes"){
+        for (object in file[option]) {
+                if (file[option][object].recipeID == ID) {
+                    return object;
+                }
+            }
+        }
+
     return false;
 }
 
@@ -301,8 +314,8 @@ async function getCheapestIngredient(ingredient) {
 
     try {
         let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient, config).then((res) => {
-            return res.data;
-        });
+        return res.data;    
+    });
         // Sorts the the prise of the suggestions in terms of the price
         apiResponse.suggestions.sort(comparePrice);
 
