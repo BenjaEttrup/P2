@@ -343,7 +343,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
         fs.readFile(userPath, function readFileCallback(err, data) {
             let userData = JSON.parse(data);
             let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
-
+            console.log(recipeIndex);
             if (recipeIndex) {
                 userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
             }
