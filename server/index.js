@@ -6,12 +6,20 @@ const fs = require('fs');
 // const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
 // const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
 const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+const fs = require('fs');
+const { resolveNaptr } = require('dns');
+const { json } = require('express');
+
+const stashJsonPath = "../stash/stash.json"
+
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
 const userPath = '../user/user.json';
 const recipeDataPath = '../opskrifter/recipes.json';
 const { stringify } = require('querystring');
+
+app.use(express.urlencoded({ extended: false }));
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -31,108 +39,101 @@ app.get('/findProduct/:productName', async (req, res) => {
     }
 });
 
+// Stash
 
-
-// Allows the user to add a recipe to their shopping list.
-app.post('/addRecipeToShoppingList', (req, res) => {
-    fs.readFile(userPath, function readFileCallback(err, data) {
-        if (err) {
-            console.log("Could not read file");
-        } else {
-            // Lets us manipalute the json object in js
-            let userData = JSON.parse(data);
-
-            // TODO: needs to validate the req.body object.
-
-            // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
-            // However, we're limited to only a single api call per second.
-            userData.shoppingList.push(req.body);
-            let json = JSON.stringify(userData, null, 2);
-            fs.writeFile(userPath, json, function (err, result) {
-                if (err) console.log("Error", err);
-            });
-        }
-    });
-
-    res.status(202).send(req.body);
-});
-
-// Retrieves the data from the user's shoppinglist
-app.get('/shoppingList', (req, res) => {
-    let userData = require(userPath);
-
-    res.send(userData.shoppingList);
-});
-
-app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
-    // TODO: needs validation! if req.params.prod_id is %19965, this will mess up
-    try {
-        fs.readFile(userPath, function readFileCallback(err, data) {
-            let userData = JSON.parse(data);
-            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
-            let ingredientIndex = findIngredientIndex(recipeIndex, req.params.prod_id, userPath, "shoppingList");
-
-            if (ingredientIndex) {
-                userData.shoppingList[recipeIndex].ingredients.splice(ingredientIndex, 1); // 2nd parameter means remove one item only
-            }
-            else {
-                console.log("Failed to get product ID index");
-                res.status(500).send();
-            }
-
-            let json = JSON.stringify(userData, null, 4);
-
-            fs.writeFile(userPath, json, function readFileCallback(err, data) {
-                if (err) {
-                    res.status(500).send();
-                }
-                res.status(202).send();
-            });
-        });
+// Returns json containing stash info
+app.get("/stash/get", (req, res) => {
+  fs.readFile(stashJsonPath, (err, fileData) => {
+    if (err) {
+      console.log("Can't, read file" )
     }
-    catch (err) {
-        console.log(err);
+    else {
+      res.json(JSON.parse(fileData));
+    }
+  });
+});
+
+// Add given product to stash json file. 
+app.post("/stash/add", (req, res) => {
+  // Product json given via body
+  let newProductJson = req.body
+
+  // If file can't be read, create new one with {products:[]} structure
+  fs.access(stashJsonPath, fs.F_OK, (err) => {
+    if (err) {
+      console.error(err)
+      console.log("File doesn't exist. Trying to create empty file")
+      fs.writeFile(stashJsonPath, JSON.stringify({products:[]}), err => {
+        if (err) 
+        console.log("Error writing file:", err);
+        return
+      });
+    }
+
+    // When file exists, take file data and add newly added product to the data. Write all data in new file after
+    fs.readFile(stashJsonPath, (err, fileData) => {
+      if (err) {
+        console.log("Can't read file" )
+      }
+      else {
+        // Gets already stored data and adds new product to it
+        let parsedJson = JSON.parse(fileData)
+        parsedJson.products.push(newProductJson)
+
+        fs.writeFile(stashJsonPath, JSON.stringify(parsedJson), err => {
+          if (err) console.log("Error writing file:", err);
+        })
+      }
+    })
+  })
+  res.status(200).send(newProductJson)
+})
+
+//Remove product by id in stash json file
+app.post("/stash/remove", (req, res) => {
+  // When file exists, take file data and remove product from the data. opdate data in new file after
+  fs.readFile(stashJsonPath, (err, fileData) => {
+    if (err) {
+      console.log("Can't read file" )
+      res.status(404).send("File couldn't be read")
+    }
+    else {
+      // Gets already stored ingredients and removes ingredient by id.
+      let parsedJson = JSON.parse(fileData)
+      jsonArray = parsedJson.products
+      //Loops through file, and remove all products with the given id. 
+      for (let i = 0; i < jsonArray.length; i++)
+        if (jsonArray[i].prod_id === req.body.id) {
+          jsonArray.splice(i,1)
+        break;
+      }
+
+      res.status(200).send(parsedJson)
+
+      fs.writeFile(stashJsonPath, JSON.stringify(parsedJson), err => {
+        if (err) console.log("Error writing file:", err);
+      })
+    }
+  })
+})
+
+//Search after a specific product in Salling group API and returns json with data on products.
+app.get("/stash/search/:productName", async (req, res) => {
+    try{
+        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
+            return res.data;
+        })
+        console.log(apiResponse)
+        res.json(apiResponse);
+    } catch(e) {
+        console.error(e);
         res.status(500).send();
     }
-});
+})
 
-/** Removes a recipe from the shoppinglist* */
-app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
-    try {
-        fs.readFile(userPath, function readFileCallback(err, data) {
-            let userData = JSON.parse(data);
-            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
-
-            if (recipeIndex) {
-                userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
-            }
-            else {
-                console.log("Failed to get recipe ID index");
-                res.status(500).send();
-            }
-
-            let json = JSON.stringify(userData, null, 4);
-
-            fs.writeFile(userPath, json, function readFileCallback(err, data) {
-                if (err) {
-                    res.status(500).send();
-                }
-                res.status(202).send();
-            });
-        });
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).send();
-    }
-});
-
+// Recipes
 app.get('/findAllRecipes', async (req, res) => {
-    const recipeData = require();
-
-    const config = {
-        headers: { 'Authorization': `Bearer ${token}` }
-    }
+    const recipeData = require('../opskrifter/recipes.json');
 
     var recipeObjects = {
         recipes: []
@@ -142,7 +143,8 @@ app.get('/findAllRecipes', async (req, res) => {
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
         const tempRecipe = recipeData.recipes[index1];
-
+        let totalPrice = 0;
+      
         var recipeObject = {
             recipe: {},
             ingredients: []
@@ -163,6 +165,7 @@ app.get('/findAllRecipes', async (req, res) => {
                 res.status(500).send();
             }
         }
+        recipeObject.recipe['price'] = totalPrice;
 
         recipeObjects.recipes.push(recipeObject);
     }
@@ -198,6 +201,8 @@ app.get('/findAllRecipes', async (req, res) => {
         }
     }
 
+    //console.log(recipeObjects)
+
     res.json(recipeObjects);
 });
 
@@ -211,7 +216,6 @@ app.get('/findRecipe/:ID', async (req, res) => {
         ingredients: []
     };
 
-
     recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
         let details;
@@ -221,7 +225,6 @@ app.get('/findRecipe/:ID', async (req, res) => {
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
             let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
             details = await getCheapestIngredient(encodeCharacters(ingredient));
-            console.log(details);
             recipeObject.ingredients[i] = details;
             recipeObject.recipe = recipeData.recipes[recipeIndex];
             totalPrice += details.price;
@@ -238,12 +241,27 @@ app.listen(port, () => {
 })
 
 
+
+async function callApi(product) {
+    let apiRes;
+    try{
+        sleep(200);
+        apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
+            return res.data;
+        });
+    } catch(e) {
+        console.error(e);
+        return false;
+    }
+    return apiRes
+}
+
 /**
  * Replace all the special characters in the ingredient with their encoded values
  * @param ingredient - the ingredient to be encoded
  * @returns The ingredient name is being encoded to be used in the URL.
  */
-function encodeCharacters(ingredient) {
+function encodeCharacters(ingredient){
     ingredient = ingredient.toLowerCase();
 
     // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
@@ -314,14 +332,15 @@ async function getCheapestIngredient(ingredient) {
 
     try {
         let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient, config).then((res) => {
-        return res.data;    
-    });
+            return res.data;
+        });
+      
         // Sorts the the prise of the suggestions in terms of the price
         apiResponse.suggestions.sort(comparePrice);
 
         // Errorhandling for when 0 suggestions regarding the ingredient are found
         if (!apiResponse.suggestions.length) {
-            return { "price": 0, "title": ingredient, "productID": "null" };
+            return { "price": 0, "title": ingredient, "productID": "null"};
         }
 
         return apiResponse.suggestions[0];
@@ -405,3 +424,11 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
     })
     return returnRecipe;
 }
+
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }

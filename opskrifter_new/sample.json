@@ -1,0 +1,20 @@
+{
+    "recipes": [
+        {
+            "recipeID": 1,
+            "title": "",
+            "description": "",
+            "size": "2",
+            "ingredients": [
+                {
+                    "pasta": {"amount": 200, "unit": "g"}, 
+                    "oksekød": {"amount": 200, "unit": "g"}
+                }
+            ],
+            "time": "",
+            "method": "",
+            "difficulty": "3",
+            "img": ""
+        }
+    ]
+} 
