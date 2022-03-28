@@ -1,7 +1,6 @@
 import React from 'react';
 import '../stylesheets/myStash.css'
-import StashList from './myStashList';
-
+import StashRowElement from './stashRowElement';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -14,22 +13,36 @@ class MyStash extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super();
-    
+
     //Your code here
+    this.state = {
+      products: []
+    }
   }
+
 
   //Functions go here
   componentDidMount() {
     fetch("/stash/get").then((response) => response.json()).then(response => {
-      
-    }).catch((e)=>console.log(e))
+      //console.log(response)
+      let products = response.products
+      console.log(products)
+      let data = {
+        products: products
+      }
+      this.setState(data, () => {
+        console.log(this.state.products)
+      })
+    }).catch((e) => console.log(e))
   }
+
+
 
   //This is the render function. This is where the
   //html is.
   render() {
     return (
-      <div className="MyStash">
+      < div className="MyStash" >
         <div id="myStash" class="card shadow">
           <div class="card-body myStash-card-body">
             <h4 class="card-title">My Stash</h4>
@@ -55,19 +68,18 @@ class MyStash extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Pizza</td>
-                  <td>49,95 kr.</td>
-                  <td>
-                    <i class="fa fa-trash"></i>
-                  </td>
-                </tr>
-                <StashList/>
+                {
+                  this.state.products.map((product) => {
+                    return (
+                      <StashRowElement product={product} />
+                    )
+                  })
+                }
               </tbody>
             </table>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
