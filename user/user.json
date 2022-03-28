@@ -1,0 +1,66 @@
+{
+    "userID": "",
+    "shoppingList": [
+        {
+            "recipe": {
+                "recipeID": 0,
+                "title": "title",
+                "description": "description",
+                "size": "",
+                "ingredients": [
+                    "skinke",
+                    "ost",
+                    "mælk"
+                ],
+                "time": 0,
+                "method": "method",
+                "rating": "rating",
+                "image": "image",
+                "url": "url",
+                "price": 21.9
+            },
+            "ingredients": [
+                {
+                    "id": "37918301",
+                    "prod_id": "41685",
+                    "title": "Mozzarella",
+                    "description": "Mozzarella",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=41685&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/41685",
+                    "price": 6.95
+                }
+            ]
+        },
+        {
+            "recipe": {
+                "recipeID": 8,
+                "title": "title",
+                "description": "description",
+                "size": "",
+                "ingredients": [
+                    "skinke",
+                    "ost",
+                    "mælk"
+                ],
+                "time": 0,
+                "method": "method",
+                "rating": "rating",
+                "image": "image",
+                "url": "url",
+                "price": 21.9
+            },
+            "ingredients": [
+                {
+                    "id": "92343951",
+                    "prod_id": "84537",
+                    "title": "Kogt skinke i skiver",
+                    "description": "Kogt skinke i skiver",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/84537",
+                    "price": 8.95
+                }
+            ]
+        }
+    ],
+    "myStash": []
+}

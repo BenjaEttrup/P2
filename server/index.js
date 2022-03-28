@@ -14,6 +14,9 @@ const stashJsonPath = "../stash/stash.json"
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
+const userPath = '../user/user.json';
+const recipeDataPath = '../opskrifter_old/recipes.json';
+const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -22,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/findProduct/:productName', async (req, res) => {
-    try{
+    try {
         let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
             return res.data;
         })
@@ -32,7 +35,6 @@ app.get('/findProduct/:productName', async (req, res) => {
         res.status(500).send();
     }
 });
-
 
 // Stash
 
@@ -47,8 +49,6 @@ app.get("/stash/get", (req, res) => {
     }
   });
 });
-
-
 
 // Add given product to stash json file. 
 app.post("/stash/add", (req, res) => {
@@ -141,7 +141,7 @@ app.get('/findAllRecipes', async (req, res) => {
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
         const tempRecipe = recipeData.recipes[index1];
         let totalPrice = 0;
-        
+      
         var recipeObject = {
             recipe: {},
             ingredients: []
@@ -151,13 +151,12 @@ app.get('/findAllRecipes', async (req, res) => {
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = recipeData.recipes[index1].ingredients[index2];
-
-            try{
-                let apiResponse = await callApi(encodeCharacters(tempIngredient));
+            try {
+                let apiResponse = await callApi(tempIngredient);
                 apiResponse.suggestions.sort(comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0])
                 totalPrice += apiResponse.suggestions[0].price;
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 res.status(500).send();
             }
@@ -169,10 +168,10 @@ app.get('/findAllRecipes', async (req, res) => {
 
     //Filters the recipes given some search params. This can be a string for 
     //title or two number for max and min price
-    if(Object.keys(req.query).length !== 0) {
-        if(req.query.search !== undefined){
+    if (Object.keys(req.query).length !== 0) {
+        if (req.query.search !== undefined) {
             let searchedRecipes = [];
-            
+
             stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach((recipe) => {
                 searchedRecipes.push(recipe);
             })
@@ -188,7 +187,7 @@ app.get('/findAllRecipes', async (req, res) => {
             recipeObjects.recipes = searchedRecipes;
         }
 
-        if(req.query.maxPrice !== undefined && req.query.minPrice !== undefined){
+        if (req.query.maxPrice !== undefined && req.query.minPrice !== undefined) {
             let minPrice = req.query.minPrice;
             let maxPrice = req.query.maxPrice;
 
@@ -206,16 +205,14 @@ app.get('/findAllRecipes', async (req, res) => {
 
 // Retrieves a single recipe from an ID
 app.get('/findRecipe/:ID', async (req, res) => {
-    const recipeData = require('../opskrifter/recipes.json');
+    const recipeData = require(recipeDataPath);
 
     let recipeObject = {
         recipe: {},
         ingredients: []
     };
 
-    //console.log(`The ingredients in recipe ${req.params.ID} are: = ${recipeData.recipes[0].ingredients}`);
-
-    recipeIndex = findIndex(req.params.ID, recipeData);
+    recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
         let details;
         let totalPrice = 0;
@@ -223,13 +220,13 @@ app.get('/findRecipe/:ID', async (req, res) => {
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
             let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
-            details = await getCheapestIngredient(encodeCharacters(ingredient));
-
+            details = await callApi(encodeCharacters(ingredient));
             recipeObject.ingredients[i] = details;
             recipeObject.recipe = recipeData.recipes[recipeIndex];
             totalPrice += details.price;
         }
-        recipeObject.recipe["price"] = totalPrice;
+        // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
+        recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
     }
 
     res.json(recipeObject);
@@ -241,34 +238,6 @@ app.listen(port, () => {
 
 
 
-
-/* 
-//Search for specifik product via api call, return the ID
-//Add the product ID to the stash
-//Remove the product from stash
-//
-//My Stash overwiev¨
-let myStash = [hejsa1, hejsa2]
-let stashProduct = {
-      ingredientName: "", 
-      amount: "",
-};
-
-hejsa1 = stashProduct
-hejsa2 = stashProduct
-
-let data = ['Ram', 'Shyam', 'Sita', 'Gita' ];
-  
-let list = document.getElementById("myList");
-  
-data.forEach((item)=>{
-  let li = document.createElement("li");
-  li.innerText = item;
-  list.appendChild(li);
-})
- */
-
-
 async function callApi(product) {
     let apiRes;
     try{
@@ -276,6 +245,9 @@ async function callApi(product) {
         apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
             return res.data;
         });
+        if (!apiRes.suggestions.length) {
+            return { "price": 0, "title": ingredient, "productID": "null"};
+        }
     } catch(e) {
         console.error(e);
         return false;
@@ -283,7 +255,11 @@ async function callApi(product) {
     return apiRes
 }
 
-// Encodes the ingredients and turns them lower case.
+/**
+ * Replace all the special characters in the ingredient with their encoded values
+ * @param ingredient - the ingredient to be encoded
+ * @returns The ingredient name is being encoded to be used in the URL.
+ */
 function encodeCharacters(ingredient){
     ingredient = ingredient.toLowerCase();
 
@@ -291,45 +267,152 @@ function encodeCharacters(ingredient){
     ingredient = ingredient.replace(/%/g, "");
     ingredient = ingredient.replace(/\//g, "%2F");
     ingredient = encodeURIComponent(ingredient);
+
     return ingredient;
 }
 
-// Finds the index of a recipe
-function findIndex(ID, recipeData) {
-    let validated;
+// Allows the user to add a recipe to their shopping list.
+app.post('/addRecipeToShoppingList', (req, res) => {
+    fs.readFile(userPath, function readFileCallback(err, data) {
+        if (err) {
+            console.log("Could not read file");
+        } else {
+            // Lets us manipalute the json object in js
+            let userData = JSON.parse(data);
 
-    for (element in recipeData.recipes) {
-        // Accesses a single recipe, as element will be the index of a recipe
-        let recipe = recipeData.recipes[element];
-        validated = (ID == recipe.recipeID);
+            // TODO: needs to validate the req.body object.
 
-        if (validated) {
-            return element;
+            // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
+            // However, we're limited to only a single api call per second.
+            userData.shoppingList.push(req.body);
+            let json = JSON.stringify(userData, null, 2);
+            fs.writeFile(userPath, json, function (err, result) {
+                if (err) console.log("Error", err);
+            });
+        }
+    });
+
+    res.status(202).send(req.body);
+});
+
+// Retrieves the data from the user's shoppinglist
+app.get('/shoppingList', (req, res) => {
+    let userData = require(userPath);
+
+    res.send(userData.shoppingList);
+});
+
+app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
+    // TODO: needs validation! if req.params.prod_id is %19965, this will mess up
+    try {
+        fs.readFile(userPath, function readFileCallback(err, data) {
+            let userData = JSON.parse(data);
+            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            let ingredientIndex = findIngredientIndex(recipeIndex, req.params.prod_id, userPath, "shoppingList");
+
+            if (ingredientIndex) {
+                userData.shoppingList[recipeIndex].ingredients.splice(ingredientIndex, 1); // 2nd parameter means remove one item only
+            }
+            else {
+                console.log("Failed to get product ID index");
+                res.status(500).send();
+            }
+
+            let json = JSON.stringify(userData, null, 4);
+
+            fs.writeFile(userPath, json, function readFileCallback(err, data) {
+                if (err) {
+                    res.status(500).send();
+                }
+                res.status(202).send();
+            });
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+});
+
+/** Removes a recipe from the shoppinglist* */
+app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
+    try {
+        fs.readFile(userPath, function readFileCallback(err, data) {
+            let userData = JSON.parse(data);
+            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            console.log(recipeIndex);
+            if (recipeIndex) {
+                userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
+            }
+            else {
+                console.log("Failed to get recipe ID index");
+                res.status(500).send();
+            }
+
+            let json = JSON.stringify(userData, null, 4);
+
+            fs.writeFile(userPath, json, function readFileCallback(err, data) {
+                if (err) {
+                    res.status(500).send();
+                }
+                res.status(202).send();
+            });
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+});
+
+
+/**
+ * This function finds the index of a recipe in the file.
+ * @param ID - The ID of the recipe you're looking for.
+ * @param filePath - The path to the file you want to search.
+ * @param option - member we want to acess in the file.
+ * @returns The index of the recipe.
+ */
+function findRecipeIndex(ID, filePath, option) {
+    let file = require(filePath);
+    // TODO reevaluate this function design
+
+    if (option === "shoppingList"){
+        for (object in file[option]) {
+            for (recipe in file[option][object]) {
+                if (file[option][object][recipe].recipeID == ID) {
+                    return object;
+                }
+            }
         }
     }
-    return false;
-};
-
-// Retrieves the ingredient
-async function getCheapestIngredient(ingredient) {
-
-    try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + ingredient, config).then((res) => {
-            return res.data;
-        });
-        // Sorts the the prise of the suggestions in terms of the price
-        apiResponse.suggestions.sort(comparePrice);
-
-        // Errorhandling for when 0 suggestions regarding the ingredient are found
-        if (!apiResponse.suggestions.length) {
-            return { "price": 0, "title": ingredient, "productID": "null"};
+    else if (option === "recipes"){
+        for (object in file[option]) {
+                if (file[option][object].recipeID == ID) {
+                    return object;
+                }
+            }
         }
-        console.log(`Request for ${ingredient.name}, price is ${apiResponse.suggestions[0].price}`);
 
-        return apiResponse.suggestions[0];
-    } catch (e) {
-        console.error(e);
-        //res.status(500).send();
+    return false;
+}
+
+/**
+ * Find the index of an ingredient in a recipe
+ * @param recipeIndex - The index of the recipe in the user's recipe list.
+ * @param productID - The ID of the product you want to find.
+ * @param filePath - the path to the user data file
+ * @param option - the member we want to access in the user.json file
+ * @returns The index of the ingredient in the recipe.
+ */
+function findIngredientIndex(recipeIndex, productID, filePath, option) {
+    let userData = require(userPath);
+
+    // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
+    for (ingredient in userData[option][recipeIndex].ingredients) {
+        if (userData[option][recipeIndex].ingredients[ingredient].prod_id === productID) {
+            return ingredient;
+        }
     }
 }
 
@@ -355,7 +438,7 @@ function stringRecipeSearch(searchValue, recipes) {
     let returnRecipes = [];
     recipes.forEach((recipe) => {
         let recipeTitleLowerCase = recipe.recipe.title.toLowerCase();
-        if(recipeTitleLowerCase.includes(searchValue.toLowerCase())){
+        if (recipeTitleLowerCase.includes(searchValue.toLowerCase())) {
             returnRecipes.push(recipe);
         }
     })
@@ -375,11 +458,11 @@ function stringIngredientSearch(searchValue, recipes) {
         let doesIncludeIngredient = false;
         recipe.ingredients.forEach((ingredient) => {
             let ingredientTitleLowerCase = ingredient.title.toLowerCase();
-            if(ingredientTitleLowerCase.includes(searchValue.toLowerCase())){
+            if (ingredientTitleLowerCase.includes(searchValue.toLowerCase())) {
                 doesIncludeIngredient = true;
             }
         })
-        if(doesIncludeIngredient) {
+        if (doesIncludeIngredient) {
             returnRecipes.push(recipe);
         }
     })
@@ -402,7 +485,7 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
             price += ingredient.price;
         })
 
-        if(price >= minPrice && price <= maxPrice){
+        if (price >= minPrice && price <= maxPrice) {
             returnRecipe.push(recipe);
         }
     })
