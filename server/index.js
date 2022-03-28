@@ -63,6 +63,7 @@ app.get('/shoppingList', (req, res) => {
 });
 
 app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
+    // TODO: needs validation! if req.params.prod_id is %19965, this will mess up
     try {
         fs.readFile(userPath, function readFileCallback(err, data) {
             let userData = JSON.parse(data);
@@ -70,8 +71,6 @@ app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
             let ingredientIndex = findIngredientIndex(recipeIndex, req.params.prod_id, userPath, "shoppingList");
 
             if (ingredientIndex) {
-                console.log("recipeIndex = " + recipeIndex);
-                console.log("ingredient Index = " + ingredientIndex);
                 userData.shoppingList[recipeIndex].ingredients.splice(ingredientIndex, 1); // 2nd parameter means remove one item only
             }
             else {
@@ -210,7 +209,6 @@ app.get('/findRecipe/:ID', async (req, res) => {
         ingredients: []
     };
 
-    console.log(`The ingredients in recipe ${req.params.ID} are: = ${recipeData.recipes[0].ingredients}`);
 
     recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
@@ -228,7 +226,6 @@ app.get('/findRecipe/:ID', async (req, res) => {
         }
         // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
         recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
-        console.log(recipeObject);
     }
 
     res.json(recipeObject);
@@ -313,7 +310,6 @@ async function getCheapestIngredient(ingredient) {
         if (!apiResponse.suggestions.length) {
             return { "price": 0, "title": ingredient, "productID": "null" };
         }
-        console.log(`Request for ${ingredient.name}, price is ${apiResponse.suggestions[0].price}`);
 
         return apiResponse.suggestions[0];
     } catch (e) {
