@@ -20,8 +20,6 @@ const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use(express.urlencoded({ extended: false }));
-
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
@@ -154,11 +152,10 @@ app.get('/findAllRecipes', async (req, res) => {
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = recipeData.recipes[index1].ingredients[index2];
             try {
-                let apiResponse = await callApi(tempIngredient).then((res) => {
-                    return res.data;
-                });
+                let apiResponse = await callApi(tempIngredient);
                 apiResponse.suggestions.sort(comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0])
+                totalPrice += apiResponse.suggestions[0].price;
             } catch (e) {
                 console.error(e);
                 res.status(500).send();
