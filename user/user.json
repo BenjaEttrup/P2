@@ -74,30 +74,6 @@
             "title": "squash",
             "amount": "1",
             "unit": "stk"
-        },
-        {
-            "prod_id": 96,
-            "title": "squash",
-            "amount": "1",
-            "unit": "stk"
-        },
-        {
-            "prod_id": 77,
-            "title": "squash",
-            "amount": "1",
-            "unit": "stk"
-        },
-        {
-            "prod_id": 7,
-            "title": "squash",
-            "amount": "1",
-            "unit": "stk"
-        },
-        {
-            "prod_id": 6,
-            "title": "squash",
-            "amount": "1",
-            "unit": "stk"
         }
     ]
 }

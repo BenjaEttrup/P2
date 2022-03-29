@@ -108,7 +108,6 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                     break;
                 }
             }
-
             res.status(200).send(parsedJson)
 
             fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
