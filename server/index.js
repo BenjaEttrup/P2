@@ -9,8 +9,6 @@ const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
 
-const stashJsonPath = "../stash/stash.json"
-
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
@@ -40,89 +38,90 @@ app.get('/findProduct/:productName', async (req, res) => {
 
 // Returns json containing stash info
 app.get("/stash/get", (req, res) => {
-  fs.readFile(stashJsonPath, (err, fileData) => {
-    if (err) {
-      console.log("Can't, read file" )
-    }
-    else {
-      res.json(JSON.parse(fileData));
-    }
-  });
+    fs.readFile(userPath, (err, fileData) => {
+        if (err) {
+            console.log("Can't, read file")
+        }
+        else {
+            user = JSON.parse(fileData);
+            res.json(user.myStash);
+        }
+    });
 });
 
 // Add given product to stash json file. 
 app.post("/stash/add", (req, res) => {
-  // Product json given via body
-  let newProductJson = req.body
+    // Product json given via body
+    let newProductJson = req.body
 
-  // If file can't be read, create new one with {products:[]} structure
-  fs.access(stashJsonPath, fs.F_OK, (err) => {
-    if (err) {
-      console.error(err)
-      console.log("File doesn't exist. Trying to create empty file")
-      fs.writeFile(stashJsonPath, JSON.stringify({products:[]}), err => {
-        if (err) 
-        console.log("Error writing file:", err);
-        return
-      });
-    }
+    // If file can't be read, create new one with {myStash:[]} structure
+    fs.access(userPath, fs.F_OK, (err) => {
+        if (err) {
+            console.error(err)
+            console.log("File doesn't exist. Trying to create empty file")
+            fs.writeFile(userPath, JSON.stringify({ myStash: [] }), err => {
+                if (err)
+                    console.log("Error writing file:", err);
+                return
+            });
+        }
 
-    // When file exists, take file data and add newly added product to the data. Write all data in new file after
-    fs.readFile(stashJsonPath, (err, fileData) => {
-      if (err) {
-        console.log("Can't read file" )
-      }
-      else {
-        // Gets already stored data and adds new product to it
-        let parsedJson = JSON.parse(fileData)
-        parsedJson.products.push(newProductJson)
+        // When file exists, take file data and add newly added product to the data. Write all data in new file after
+        fs.readFile(userPath, (err, fileData) => {
+            if (err) {
+                console.log("Can't read file")
+            }
+            else {
+                // Gets already stored data and adds new product to it
+                let parsedJson = JSON.parse(fileData)
+                parsedJson.myStash.push(newProductJson);
 
-        fs.writeFile(stashJsonPath, JSON.stringify(parsedJson), err => {
-          if (err) console.log("Error writing file:", err);
+                fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
+                    if (err) console.log("Error writing file:", err);
+                })
+            }
         })
-      }
     })
-  })
-  res.status(200).send(newProductJson)
+    res.status(200).send(newProductJson)
 })
 
-//Remove product by id in stash json file
-app.post("/stash/remove", (req, res) => {
-  // When file exists, take file data and remove product from the data. opdate data in new file after
-  fs.readFile(stashJsonPath, (err, fileData) => {
-    if (err) {
-      console.log("Can't read file" )
-      res.status(404).send("File couldn't be read")
-    }
-    else {
-      // Gets already stored ingredients and removes ingredient by id.
-      let parsedJson = JSON.parse(fileData)
-      jsonArray = parsedJson.products
-      //Loops through file, and remove all products with the given id. 
-      for (let i = 0; i < jsonArray.length; i++)
-        if (jsonArray[i].prod_id === req.body.id) {
-          jsonArray.splice(i,1)
-        break;
-      }
+// Remove product by id in stash json file
+app.delete("/stash/remove", (req, res) => {
+    // When file exists, take file data and remove product from the data. opdate data in new file after
+    fs.readFile(userPath, (err, fileData) => {
+        if (err) {
+            console.log("Can't read file")
+            res.status(404).send("File couldn't be read")
+        }
+        else {
+            // Gets already stored ingredients and removes ingredient by id.
+            let parsedJson = JSON.parse(fileData)
+            jsonArray = parsedJson.myStash
+            //Loops through file, and remove all products with the given id. 
+            for (let i = 0; i < jsonArray.length; i++)
+                if (jsonArray[i].prod_id == req.body.prod_id) {
+                    jsonArray.splice(i, 1)
+                    break;
+                }
 
-      res.status(200).send(parsedJson)
+            res.status(200).send(parsedJson)
 
-      fs.writeFile(stashJsonPath, JSON.stringify(parsedJson), err => {
-        if (err) console.log("Error writing file:", err);
-      })
-    }
-  })
+            fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
+                if (err) console.log("Error writing file:", err);
+            })
+        }
+    })
 })
 
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
-    try{
+    try {
         let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
             return res.data;
         })
         console.log(apiResponse)
         res.json(apiResponse);
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         res.status(500).send();
     }
@@ -141,7 +140,7 @@ app.get('/findAllRecipes', async (req, res) => {
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
         const tempRecipe = recipeData.recipes[index1];
         let totalPrice = 0;
-      
+
         var recipeObject = {
             recipe: {},
             ingredients: []
@@ -240,15 +239,15 @@ app.listen(port, () => {
 
 async function callApi(product) {
     let apiRes;
-    try{
+    try {
         sleep(200);
         apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return { "price": 0, "title": ingredient, "productID": "null"};
+            return { "price": 0, "title": ingredient, "productID": "null" };
         }
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         return false;
     }
@@ -260,7 +259,7 @@ async function callApi(product) {
  * @param ingredient - the ingredient to be encoded
  * @returns The ingredient name is being encoded to be used in the URL.
  */
-function encodeCharacters(ingredient){
+function encodeCharacters(ingredient) {
     ingredient = ingredient.toLowerCase();
 
     // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
@@ -377,7 +376,7 @@ function findRecipeIndex(ID, filePath, option) {
     let file = require(filePath);
     // TODO reevaluate this function design
 
-    if (option === "shoppingList"){
+    if (option === "shoppingList") {
         for (object in file[option]) {
             for (recipe in file[option][object]) {
                 if (file[option][object][recipe].recipeID == ID) {
@@ -386,13 +385,13 @@ function findRecipeIndex(ID, filePath, option) {
             }
         }
     }
-    else if (option === "recipes"){
+    else if (option === "recipes") {
         for (object in file[option]) {
-                if (file[option][object].recipeID == ID) {
-                    return object;
-                }
+            if (file[option][object].recipeID == ID) {
+                return object;
             }
         }
+    }
 
     return false;
 }
@@ -496,6 +495,6 @@ function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
     do {
-      currentDate = Date.now();
+        currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-  }
+}

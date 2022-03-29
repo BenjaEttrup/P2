@@ -62,5 +62,24 @@
             ]
         }
     ],
-    "myStash": []
+    "myStash": [
+        {
+            "prod_id": 2,
+            "title": "squash",
+            "amount": "1",
+            "unit": "stk"
+        },
+        {
+            "prod_id": 23,
+            "title": "squash",
+            "amount": "1",
+            "unit": "stk"
+        },
+        {
+            "prod_id": 8,
+            "title": "squash",
+            "amount": 1,
+            "unit": "stk"
+        }
+    ]
 }
