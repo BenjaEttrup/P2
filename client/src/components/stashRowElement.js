@@ -37,9 +37,11 @@ class StashRowElement extends React.Component {
   render() {
     return (
       <tr>
-        <td>{this.props.product ? this.props.product.title + " ID: " + this.props.product.prod_ID : ""}</td>
-        <td>{this.props.product ? this.props.product.amount : ""} {this.props.product ? this.props.product.unit : ""}</td>
-        <td>
+        {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
+        <td>{this.props.ingredient1 ? this.props.ingredient1 + " ID: " + this.props.ingredient1 : ""}</td>
+        {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
+        <td>{this.props.ingredient1 ? this.props.ingredient1 : ""} {this.props.ingredient1 ? this.props.ingredient1 : ""}</td>
+        <td class ="right-align">
           <button type="button" onClick={() => { this.removeIngredient() }}>
             <i class="fa fa-trash"></i></button>
         </td>
