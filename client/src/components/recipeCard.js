@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 
 //This is a React class it extends a React component which 
@@ -22,34 +22,28 @@ class RecipeCard extends React.Component {
     return (
       <div className="RecipeCard">
         <div class="col mb-4 outer-item-card">
-						<a href="#">
-							<div class="card card-item h-100">
-								<div class="img-gradient img-gradient-black card-img-border">
-									<img src="./pictures/pizza.jpg" class="card-img" alt="..." height="175" />
-								</div>
-								<div class="card-img-overlay">
-									<button type="button" class="button-add">
-										<h4 class="button-plus">+</h4>
-									</button>
-									<div class="card-info row">
-										<h5 class="card-title col">{ this.props.recipe ? this.props.recipe.recipe.title: '' }</h5>
-										<p class="card-text card-price col">{ calculatePrice(this.props.recipe) } DKK</p>
-									</div>
-								</div>
-							</div>
-						</a>
-					</div>
+          <a href="#">
+            <div class="card card-item h-100">
+              <div class="img-gradient img-gradient-black card-img-border">
+                <img src="./pictures/pizza.jpg" class="card-img" alt="..." height="175" />
+              </div>
+              <div class="card-img-overlay">
+                <div class="row card-info-row">
+                  <h5 class="card-title col-7">{ this.props.recipe ? this.props.recipe.recipe.title : '' }</h5>
+                  <div class="card-info col-5">
+                    <button type="button col" class="button-add">
+                      <h4 class="button-plus">+</h4>
+                    </button>
+                    <p class="card-text card-price col">{ this.props.recipe ? this.props.recipe.recipe.price + ' DKK' : '' }</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
     );
   }
-}
-
-function calculatePrice(recipe){
-  let price = 0;
-  recipe.ingredients.forEach(ingredient => {
-    price += ingredient.price;
-  });
-  return price;
 }
 
 export default RecipeCard;
