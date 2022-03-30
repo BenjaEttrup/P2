@@ -1,5 +1,6 @@
-import React from 'react';
+import React from 'react'
 import '../stylesheets/spinTheMeal.css'
+import Spin from './spinTheMealv2';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -13,7 +14,10 @@ class SpinTheMeal extends React.Component {
     //runs before our code in the contructor
     super();
     
-    //Your code here
+    this.state ={
+      allRecipes: []
+    }
+    
   }
 
   //Functions go here
@@ -35,34 +39,61 @@ class SpinTheMeal extends React.Component {
     }, 5000);
   }
 
-  //This is the render function. This is where the
-  //html is.
+  componentDidMount() {
+    fetch("/findAllRecipes").then((response) => response.json()).then(response => {
+      let recipesSort = response.recipes
+      recipesSort.sort(comparePrice)
+
+      let data = {
+        allRecipes: response.recipes,
+      }
+      this.setState(data)
+    })
+
+  };
+  
+
   render() {
     return (
       <div className="SpinTheMeal">
         <div class="spinTheMeal">
           <h1><center>What's for dinner?</center></h1><br />
-          <div id="mainbox" class="mainbox">
-            <div id="box" class="box">
-              <div class="box1">
-                <span class="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Test</b></span>
-                <span class="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Pasta med ketchup</b></span>
-                <span class="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Fisk med ris</b></span>
-                <span class="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>burger</b></span>
-              </div>
-              <div class="box2">
-                <span class="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Shoplifters</b></span>
-                <span class="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Inception</b></span>
-                <span class="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Deadpool</b></span>
-                <span class="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Terminator</b></span>
-              </div>
-            </div>
-            <button class="spin" onClick={() => this.spin_the_wheel()}>SPIN</button>
-          </div>
+          <Spin />
         </div>
+    
+
+    <div>
+ 	    <label for="fname">MinPrice:</label><br/>
+  	  <input type="text" id="fname" name="fname" placeholder="Min"  /><br/>
+  	  <label for="lname">MaxPrice:</label><br/>
+ 	    <input type="text" id="lname" name="lname" placeholder="Max" /><br/><br/>
+  	  <input type="submit" value="Submit"/>
+
+    </div>
       </div>
     );
   }
 }
+function getChecked() {
+  const checkBox = document.getElementById('MinPrice').checked;
+  if (checkBox === true) {
+    console.log(true);
+    } else {
+      console.log(false);
+  }
+}
+function getChecked() {
+  const checkBox = document.getElementById('MaxPrice').checked;
+  if (checkBox === true) {
+    console.log(true);
+    } else {
+      console.log(false);
+  }
+}
+
+function comparePrice(a, b) {
+  return a.recipe.price - b.recipe.price;
+}
+
 
 export default SpinTheMeal;

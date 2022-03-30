@@ -130,7 +130,7 @@ app.get("/stash/search/:productName", async (req, res) => {
 
 // Recipes
 app.get('/findAllRecipes', async (req, res) => {
-    const recipeData = require('../opskrifter/recipes.json');
+    const recipeData = require('../opskrifter_old/recipes.json');
 
     var recipeObjects = {
         recipes: []
