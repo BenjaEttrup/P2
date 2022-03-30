@@ -86,7 +86,7 @@ app.post("/stash/add", (req, res) => {
 })
 
 // Remove product by id in stash json file
-app.delete("/stash/remove", (req, res) => {
+app.delete("/stash/remove/:prod_id", (req, res) => {
     // When file exists, take file data and remove product from the data. opdate data in new file after
     fs.readFile(userPath, (err, fileData) => {
         if (err) {
@@ -98,12 +98,16 @@ app.delete("/stash/remove", (req, res) => {
             let parsedJson = JSON.parse(fileData)
             jsonArray = parsedJson.myStash
             //Loops through file, and remove all products with the given id. 
-            for (let i = 0; i < jsonArray.length; i++)
-                if (jsonArray[i].prod_id == req.body.prod_id) {
+            for (let i = 0; i < jsonArray.length; i++) {
+                // console.log("Kører for-loop")
+                // console.log(`Index: ${i}  |  jsonArray[i].prod_id == req.body.prod_id:  ${jsonArray[i].prod_id == req.params.prod_id}`)
+                // console.log("Req.body.prod_id i if: " + req.params.prod_id)
+                // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
+                if (jsonArray[i].prod_id == req.params.prod_id) {
                     jsonArray.splice(i, 1)
                     break;
                 }
-
+            }
             res.status(200).send(parsedJson)
 
             fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {

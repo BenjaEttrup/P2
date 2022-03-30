@@ -64,21 +64,15 @@
     ],
     "myStash": [
         {
-            "prod_id": 2,
+            "prod_id": 5,
             "title": "squash",
             "amount": "1",
             "unit": "stk"
         },
         {
-            "prod_id": 23,
+            "prod_id": 92,
             "title": "squash",
             "amount": "1",
-            "unit": "stk"
-        },
-        {
-            "prod_id": 8,
-            "title": "squash",
-            "amount": 1,
             "unit": "stk"
         }
     ]
