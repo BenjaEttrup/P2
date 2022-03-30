@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
-// const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
+const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
 // const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
-const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+//const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
@@ -86,7 +86,7 @@ app.post("/stash/add", (req, res) => {
 })
 
 // Remove product by id in stash json file
-app.delete("/stash/remove", (req, res) => {
+app.delete("/stash/remove/:prod_id", (req, res) => {
     // When file exists, take file data and remove product from the data. opdate data in new file after
     fs.readFile(userPath, (err, fileData) => {
         if (err) {
@@ -98,12 +98,16 @@ app.delete("/stash/remove", (req, res) => {
             let parsedJson = JSON.parse(fileData)
             jsonArray = parsedJson.myStash
             //Loops through file, and remove all products with the given id. 
-            for (let i = 0; i < jsonArray.length; i++)
-                if (jsonArray[i].prod_id == req.body.prod_id) {
+            for (let i = 0; i < jsonArray.length; i++) {
+                // console.log("Kører for-loop")
+                // console.log(`Index: ${i}  |  jsonArray[i].prod_id == req.body.prod_id:  ${jsonArray[i].prod_id == req.params.prod_id}`)
+                // console.log("Req.body.prod_id i if: " + req.params.prod_id)
+                // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
+                if (jsonArray[i].prod_id == req.params.prod_id) {
                     jsonArray.splice(i, 1)
                     break;
                 }
-
+            }
             res.status(200).send(parsedJson)
 
             fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
@@ -148,22 +152,34 @@ app.get('/findAllRecipes', async (req, res) => {
 
         recipeObject.recipe = tempRecipe;
 
+        console.log(`Getting ingredients for ${tempRecipe.title}`);
+
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
-            const tempIngredient = recipeData.recipes[index1].ingredients[index2];
+            const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
+
             try {
-                let apiResponse = await callApi(tempIngredient);
-                apiResponse.suggestions.sort(comparePrice);
-                recipeObject.ingredients.push(apiResponse.suggestions[0])
-                totalPrice += apiResponse.suggestions[0].price;
-            } catch (e) {
+                let apiResponse = await callApi(encodeCharacters(tempIngredient));
+                //console.log(apiResponse);
+                if(apiResponse.suggestions[0] === undefined) {
+                    console.log(`Failed to get ${tempIngredient}`);
+                } else {
+                    apiResponse.suggestions.sort(comparePrice);
+                    recipeObject.ingredients.push(apiResponse.suggestions[0])
+                    totalPrice += apiResponse.suggestions[0].price;
+                }
+            } catch(e) {
                 console.error(e);
                 res.status(500).send();
             }
         }
-        recipeObject.recipe['price'] = totalPrice;
+        
+        recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
+
+        console.log(Number(totalPrice.toFixed(2)))
 
         recipeObjects.recipes.push(recipeObject);
     }
+    console.log('Done getting recipes');
 
     //Filters the recipes given some search params. This can be a string for 
     //title or two number for max and min price
@@ -195,8 +211,6 @@ app.get('/findAllRecipes', async (req, res) => {
             recipeObjects.recipes = searchedRecipes;
         }
     }
-
-    //console.log(recipeObjects)
 
     res.json(recipeObjects);
 });

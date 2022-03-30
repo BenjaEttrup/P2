@@ -64,21 +64,39 @@
     ],
     "myStash": [
         {
-            "prod_id": 2,
+            "prod_id": 5,
+            "title": "gulerod",
+            "amount": "1",
+            "unit": "stk"
+        },
+        {
+            "prod_id": 52,
             "title": "squash",
             "amount": "1",
             "unit": "stk"
         },
         {
-            "prod_id": 23,
-            "title": "squash",
+            "prod_id": 51,
+            "title": "tomat",
             "amount": "1",
             "unit": "stk"
         },
         {
-            "prod_id": 8,
-            "title": "squash",
-            "amount": 1,
+            "prod_id": 54,
+            "title": "agurk",
+            "amount": "1",
+            "unit": "stk"
+        },
+        {
+            "prod_id": 55,
+            "title": "skoleagurk",
+            "amount": "1",
+            "unit": "stk"
+        },
+        {
+            "prod_id": 56,
+            "title": "ananas",
+            "amount": "1",
             "unit": "stk"
         }
     ]
