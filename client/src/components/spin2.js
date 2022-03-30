@@ -14,8 +14,9 @@ export default class Wheel extends React.Component {
   selectItem() {
     if (this.state.selectedItem === null) {
       const selectedItem = Math.floor(Math.random() * this.props.items.length);
+      
       if (this.props.onSelectItem) {
-        this.props.onSelectItem(selectedItem);
+        this.props.onSelectItem(selectedItem, this.props.items);
       }
       this.setState({ selectedItem });
     } else {
@@ -33,7 +34,6 @@ export default class Wheel extends React.Component {
       '--selected-item': selectedItem,
     };
     const spinning = selectedItem !== null ? 'spinning' : '';
-
     return (
       <div className="wheel-container">
         <div className={`wheel ${spinning}`} style={wheelVars} onClick={this.selectItem}>

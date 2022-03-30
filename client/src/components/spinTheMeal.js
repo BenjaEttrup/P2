@@ -20,7 +20,7 @@ class SpinTheMeal extends React.Component {
     
   }
 
-  //Functions go here
+  /*//Functions go here
   spin_the_wheel() {
     var x = 1024;
     var y = 9999;
@@ -50,38 +50,48 @@ class SpinTheMeal extends React.Component {
       this.setState(data)
     })
 
-  };
+  };*/
   
 
   render() {
     return (
-      <div className="SpinTheMeal">
-        <div class="spinTheMeal">
-          <h1><center>What's for dinner?</center></h1><br />
-          <Spin />
+      <div class="container">
+        <div className="SpinTheMeal">
+          <div class="spinTheMeal">
+            <h1><center>What's for dinner?</center></h1><br />
+          </div>
+          <div class="row">
+            <div class="col-lg-4 mb-2">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Price</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Min" id="min_price" />
+                <input type="number" class="form-control" placeholder="Max" id="max_price" />
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                <label class="form-check-label" for="defaultCheck1">My stash</label>
+              </div>
+              <button type="button" class="btn btn-primary col-sm-12">Submit</button>
+            </div>
+            <div class="col-lg-8 bg-light border pt-5 pb-5">
+              <Spin />
+            </div>
+          </div>
         </div>
-    
-
-    <div>
- 	    <label for="fname">MinPrice:</label><br/>
-  	  <input type="text" id="fname" name="fname" placeholder="Min"  /><br/>
-  	  <label for="lname">MaxPrice:</label><br/>
- 	    <input type="text" id="lname" name="lname" placeholder="Max" /><br/><br/>
-  	  <input type="submit" value="Submit"/>
-
-    </div>
       </div>
     );
   }
 }
-function getChecked() {
+/* function getChecked() {
   const checkBox = document.getElementById('MinPrice').checked;
   if (checkBox === true) {
     console.log(true);
     } else {
       console.log(false);
   }
-}
+} 
 function getChecked() {
   const checkBox = document.getElementById('MaxPrice').checked;
   if (checkBox === true) {
@@ -93,7 +103,7 @@ function getChecked() {
 
 function comparePrice(a, b) {
   return a.recipe.price - b.recipe.price;
-}
+}*/
 
 
 export default SpinTheMeal;

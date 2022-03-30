@@ -1,9 +1,9 @@
 :root {
     --wheel-font: 'Lato', 'Quicksand', sans-serif;
-    --wheel-size: 400px;
+    --wheel-size: 450px;
     --wheel-slice-spacing: 50px;
     --wheel-border-size: 5px;
-    --wheel-color: #da3768;
+    --wheel-color: #31AF3E;
     --neutral-color: white;
     --PI: 3.14159265358979;
     --nb-item: 0;
@@ -14,7 +14,7 @@
     --reset-duration: 0.25s;
   }
   
-  /* Conteneur de la roue = cercle rose extérieur */
+/* Wheel container = outer circle */
   .wheel-container {
     display: block;
     position: relative;
@@ -29,7 +29,7 @@
     user-select: none;
   }
   
-  /* Triangle de sélection = 1 rose +  1 blanc */
+  /* Selection triangle = 1 green and 1 white */
   .wheel-container::before,
   .wheel-container::after {
     content: '';
@@ -54,7 +54,7 @@
     border-right-color: var(--neutral-color);
   }
   
-  /* Roue */
+  /* Wheel */
   .wheel {
     display: block;
     position: relative;
@@ -76,7 +76,7 @@
     transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
   }
   
-  /* Centre de la roue = rond blanc au centre */
+  /* Center of the wheel = white circle in the middle */
   .wheel::after {
     display: block;
     position: absolute;
@@ -91,27 +91,27 @@
     border-radius: 50%;
   }
   
-  /* Element sur la roue */
+  /* Element on the wheel */
   .wheel-item {
     display: block;
     position: absolute;
     box-sizing: border-box;
   
-    /* position de l'item */
+    /* Item location */
     top: 50%;
     left: 50%;
     width: 50%;
     transform-origin: center left;
     transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
   
-    /* texte */
+    /* Text */
     color: var(--neutral-color);
     text-align: right;
     padding: 0 25px 0 50px;
     font-family: var(--wheel-font);
   }
   
-  /* Background de l'élément = triangle rose plus clair */
+  /* Element background = lighter green triangle */
   .wheel-item:before {
     content: ' ';
     display: block;
@@ -127,11 +127,11 @@
     opacity: 0.25;
   
     /* 
-      Largeur du triangle
-      Je ne sais pas pourquoi j'ai besoin d'ajouter 
-        " + var(--wheel-size) / 2 " dans slice-max-width  ==> donne 2.PI.R + R
-      mais globalement ca marche a peu près bien 
-      TODO: A étudier 
+      Triangle width
+    I don't know why I need to add
+         " + var(--wheel-size) / 2 " in slice-max-width ==> gives 2.PI.R + R
+       but overall it works pretty well
+       TODO: To study
     */
     --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size) / 2);
     --slice-width: calc((var(--slice-max-width) / var(--nb-item)) - var(--wheel-slice-spacing));

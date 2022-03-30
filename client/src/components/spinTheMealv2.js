@@ -5,24 +5,33 @@ import Wheel from "./spin2.js";
 
 import "../stylesheets/spinTheMealp2.css";
 
+/**
+ * Here are the elements in the spinner
+ */
 export class Spin extends React.Component {
   constructor() {
     super();
-    this.places = [
-      "Pizzas",
-      "Pizzas",
-      "Pizzas",
-      "Pizzas",
-      "Soup",
-      "Japanese food",
-      "Pastas"
-    ];
+    this.state = {
+      recipes: [
+        "Pizzas",
+        "Pizzas",
+        "Pizzas",
+        "Pizzas",
+        "Soup",
+        "Japanese food",
+        "Pastas"
+      ]
+    }
+  }
+
+  test(value, recipes){
+    console.log(recipes[value]);
   }
 
   render() {
     return (
       <div className="Spin">
-        <Wheel items={this.places} />
+        <Wheel items={this.state.recipes} onSelectItem={this.test} />
       </div>
     );
   }
@@ -37,7 +46,7 @@ export default Spin;
  * @param recipes - an array of recipes
  * @returns An array of recipes.
  */
- function betweenPricesSearch(minPrice, maxPrice, recipes) {
+ /*function betweenPricesSearch(minPrice, maxPrice, recipes) {
     let returnRecipe = [];
     recipes.forEach((recipe) => {
       let price = 0;
@@ -51,7 +60,7 @@ export default Spin;
       }
     })
     return returnRecipe;
-  }
+  }*/
 
   /**
    * Given two objects, return the difference between the price of the first and the price of the second
@@ -60,7 +69,7 @@ export default Spin;
    * @returns The function is being called with the arguments a and b. The function returns
    * a.recipe.price - b.recipe.price.
    */
-  function comparePrice(a, b) {
+  /*function comparePrice(a, b) {
     return a.recipe.price - b.recipe.price;
-  }
+  }*/
 
