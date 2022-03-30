@@ -212,15 +212,14 @@ class HomePage extends React.Component {
 								</div>
 							</li>
 						</ul>
-						
 					</div>
 					<div class="col-3 btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value='1' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '1' ? true : false} />
-            <label class="btn btn-outline-primary" for="btnradio1">Price</label>
+						<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value='1' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '1' ? true : false} />
+						<label class="btn btn-outline-primary" for="btnradio1">Price</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value='2' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '2' ? true : false} />
-            <label class="btn btn-outline-primary" for="btnradio2">Difficulity</label>
-          </div>
+						<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value='2' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '2' ? true : false} />
+						<label class="btn btn-outline-primary" for="btnradio2">Rating</label>
+					</div>
 				</div>
 			</div>
 			<div class="content center">

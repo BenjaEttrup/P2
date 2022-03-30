@@ -136,6 +136,10 @@ a:hover {
     padding-top: 0;
 }
 
+.card-info-row {
+    height: 150px;
+}
+
 .card-item {
     width: 250px;
     height: 175px !important;
@@ -157,20 +161,29 @@ a:hover {
 
 .card-price {
     text-align: right;
+    padding-left: 0;
+    padding-right: 4px;
+    margin-top: 90px;
+}
+
+.card-title {
+    display: flex;
+    align-items: flex-end;
 }
 
 .card-info {
-    margin-top: 90px;
+    text-align: right;
+    padding-left: 0%;
 }
 
 .button-add {
     background-color: #31AF3E;
     border: 0;
     border-radius: 20px;
-    margin-left: 185px;
     color: white;
     padding-left: 7px;
     padding-right: 7px;
+    width: 30px;
 }
 
 .button-plus {
