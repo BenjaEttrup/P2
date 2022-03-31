@@ -18,17 +18,16 @@ class StashRowElement extends React.Component {
   //Functions go here
 
   removeIngredient() {
-    console.log(this.props.product.prod_ID)
-    fetch(`/stash/remove`, {
-      method: 'POST',
+    fetch(`/stash/remove/${this.props.product.prod_id}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      },
-      body: JSON.stringify({ id: this.props.product.prod_ID })
+      }
     }).catch(err => {
       console.error(err);
     });
+    this.props.updateFunction(this.props.product.prod_id);
   }
   /* this.state.product.prod_ID */
 

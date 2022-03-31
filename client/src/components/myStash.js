@@ -24,18 +24,22 @@ class MyStash extends React.Component {
   //Functions go here
   componentDidMount() {
     fetch("/stash/get").then((response) => response.json()).then(response => {
-      //console.log(response)
-      let products = response.products
-      console.log(products)
-      let data = {
-        products: products
-      }
-      this.setState(data, () => {
+      this.setState({ products: response }, () => {
         console.log(this.state.products)
       })
     }).catch((e) => console.log(e))
   }
 
+  updateTable(id) {
+    let updatedProducts = []
+    this.state.products.forEach((product) => {
+      if (product.prod_id !== id)
+        updatedProducts.push(product)
+    })
+    this.setState({
+      products: updatedProducts
+    })
+  }
 
 
   //This is the render function. This is where the
@@ -71,7 +75,7 @@ class MyStash extends React.Component {
                 {
                   this.state.products.map((product) => {
                     return (
-                      <StashRowElement product={product} />
+                      <StashRowElement product={product} updateFunction={(id) => this.updateTable(id)} />
                     )
                   })
                 }
