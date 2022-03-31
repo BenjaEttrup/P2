@@ -89,8 +89,9 @@ class ShoppingList extends React.Component {
     }).catch(err => {
       console.error(err);
     });
-
-    this.updateTotalRecipePrice(stashRowElement);
+    if(Number.isInteger(params.recipeID)){
+      this.updateTotalRecipePrice(stashRowElement);
+    }
   }
 
   //This is the render function. This is where the
@@ -138,7 +139,6 @@ class ShoppingList extends React.Component {
                         ingredient={ingredient} myStash = {true} 
                         removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                         />
-                        // TODO: Fix bug where removing elements in my stash screws up the samlet pris 
                       )
                     })
                   }
