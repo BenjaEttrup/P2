@@ -30,7 +30,6 @@ class StashRowElement extends React.Component {
       endPoint: endPoint
     };
 
-    console.log(`this.props.hasOwnProperty = ${this.props.hasOwnProperty('recipeID')}`);
     if (this.props.hasOwnProperty('recipeID')){
       params['recipeID'] = this.props.recipeID;
       this.props.removeIngredient(stashRowElement, params);
@@ -39,7 +38,6 @@ class StashRowElement extends React.Component {
     else {
       params['recipeID'] = false;
       this.props.removeIngredient(stashRowElement, params);
-      this.props.updateRecipePrice(stashRowElement);
     }
   }
 
