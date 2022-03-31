@@ -138,6 +138,7 @@ class ShoppingList extends React.Component {
                         ingredient={ingredient} myStash = {true} 
                         removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                         />
+                        // TODO: Fix bug where removing elements in my stash screws up the samlet pris 
                       )
                     })
                   }
