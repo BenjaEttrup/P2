@@ -34,7 +34,11 @@ class MyStash extends React.Component {
   updateTable(id) {
     let updatedProducts = []
     this.state.products.forEach((product) => {
-      if (product.prod_id !== id)
+      if (product.prod_id === id && product.amount > 1) {
+        product.amount --;
+        updatedProducts.push(product)
+      }
+      else if (product.prod_id !== id)
         updatedProducts.push(product)
     })
     this.setState({
@@ -51,8 +55,8 @@ class MyStash extends React.Component {
         <div id="myStash" class="card shadow">
           <div class="card-body myStash-card-body">
             <h4 class="card-title">My Stash</h4>
-            <div class="row" >
-              <SearchStashProduct />
+            <div>
+              <SearchStashProduct updateFunction={() => this.componentDidMount()} />
             </div>
             <table class="table table-striped">
               <thead>

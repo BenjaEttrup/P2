@@ -39,7 +39,7 @@ class StashRowElement extends React.Component {
         <td>{this.props.product ? this.props.product.title : ""}</td>
         <td>{this.props.product ? this.props.product.amount : ""} {this.props.product ? this.props.product.unit : ""}</td>
         <td>
-          <button type="button" onClick={() => { this.removeIngredient() }}>
+          <button type="button" class="deleteButton" onClick={() => { this.removeIngredient() }}>
             <i class="fa fa-trash"></i></button>
         </td>
       </tr>

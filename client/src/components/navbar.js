@@ -47,8 +47,8 @@ class Navbar extends React.Component {
                 <ul class="navbar-nav" id="user-and-recipe">
                   <li class="nav-item">
                     <div class="btn-group">
-                      <button class='hidden-btn' type='button' data-bs-toggle="dropdown">
-                        <img src="./pictures/cookbook.png" alt="opskrifter" width="50" height="50" />
+                      <button class='hidden-btn icon' type='button' data-bs-toggle="dropdown">
+                        <i class="fa fa-book"></i>
                       </button>
                       <ul class="dropdown-menu dropdown-card">
                         <li id='dropdown-recipes' class="">
@@ -58,7 +58,9 @@ class Navbar extends React.Component {
                     </div>
                   </li>
                   <li class="nav-item">
-                    <img src="./pictures/user.png" alt="brugerprofil" width="50" height="50" />
+                    <button class='hidden-btn icon' type='button' data-bs-toggle="dropdown">
+                        <i class="fa fa-user icon"></i>
+                    </button>
                   </li>
                 </ul>
               </div>

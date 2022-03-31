@@ -64,39 +64,33 @@
     ],
     "myStash": [
         {
-            "prod_id": 5,
-            "title": "gulerod",
-            "amount": "1",
+            "prod_id": 18131,
+            "title": "Kartofler",
+            "amount": 1,
             "unit": "stk"
         },
         {
-            "prod_id": 52,
-            "title": "squash",
-            "amount": "1",
+            "prod_id": 80147,
+            "title": "Køkkenrulle 3-lags halve ark",
+            "amount": 1,
             "unit": "stk"
         },
         {
-            "prod_id": 51,
-            "title": "tomat",
-            "amount": "1",
+            "prod_id": 51138,
+            "title": "Kartofler",
+            "amount": 4,
             "unit": "stk"
         },
         {
-            "prod_id": 54,
-            "title": "agurk",
-            "amount": "1",
+            "prod_id": 85465,
+            "title": "Finvalsede havregryn",
+            "amount": 1,
             "unit": "stk"
         },
         {
-            "prod_id": 55,
-            "title": "skoleagurk",
-            "amount": "1",
-            "unit": "stk"
-        },
-        {
-            "prod_id": 56,
-            "title": "ananas",
-            "amount": "1",
+            "prod_id": 61090,
+            "title": "Agurk øko",
+            "amount": 1,
             "unit": "stk"
         }
     ]
