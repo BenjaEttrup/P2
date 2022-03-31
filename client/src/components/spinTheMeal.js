@@ -15,43 +15,60 @@ class SpinTheMeal extends React.Component {
     super();
     
     this.state ={
-      allRecipes: []
+      allRecipes: [],
+      recipes: [],
+      minPrice: 0,
+      maxPrice: 0
     }
-    
-  }
-
-  /*//Functions go here
-  spin_the_wheel() {
-    var x = 1024;
-    var y = 9999;
-
-    var deg = Math.floor(Math.random() * (x -y)) + y;
-
-    document.getElementById('box').style.transform = "rotate(" + deg + "deg)";
-
-    var element = document.getElementById('mainbox');
-    element.classList.remove('animate');
-    setTimeout(function(){
-      element.classList.add('animate');
-
-      var inputVal = document.getElementById("span2").name;
-      alert(inputVal);
-    }, 5000);
   }
 
   componentDidMount() {
-    fetch("/findAllRecipes").then((response) => response.json()).then(response => {
-      let recipesSort = response.recipes
-      recipesSort.sort(comparePrice)
-
-      let data = {
-        allRecipes: response.recipes,
+    fetch(`/findAllRecipes`, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
-      this.setState(data)
     })
+    .then(res => res.json())
+    .then((json) => {
+      let data = {
+        recipes: json.recipes,
+        allRecipes: json.recipes
+      }
+      this.setState(data, () => {
+      /*  this.refreshSearch(); */
+      });
+    }).catch(err => {
+      console.error(err);
+    });
+  }
 
-  };*/
-  
+  updateRecipes(){
+    let updatedRecipes = betweenPricesSearch(this.state.minPrice, this.state.maxPrice, this.state.allRecipes)
+    this.setState({
+      recipes: updatedRecipes
+    })
+  }
+
+  setMinPriceValue(evt) {
+    this.setState({
+      minPrice: evt.target.value
+    }, () => {
+      console.log(this.state)
+      this.updateRecipes();
+    })
+  }
+
+  setMaxPriceValue(evt) {
+    this.setState({
+      maxPrice: evt.target.value
+    }, () => {
+      console.log(this.state)
+      this.updateRecipes();
+    })
+  }
+
+ 
 
   render() {
     return (
@@ -66,17 +83,18 @@ class SpinTheMeal extends React.Component {
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="">Price</span>
                 </div>
-                <input type="number" class="form-control" placeholder="Min" id="min_price" />
-                <input type="number" class="form-control" placeholder="Max" id="max_price" />
+                <input type="number" class="form-control" placeholder="Min" id="min_price" 
+                onChange={(evt) => {this.setMinPriceValue(evt)}} />
+                <input type="number" class="form-control" placeholder="Max" id="max_price"
+                onChange={(evt) => {this.setMaxPriceValue(evt)}} />
               </div>
               <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
                 <label class="form-check-label" for="defaultCheck1">My stash</label>
               </div>
-              <button type="button" class="btn btn-primary col-sm-12">Submit</button>
             </div>
             <div class="col-lg-8 bg-light border pt-5 pb-5">
-              <Spin />
+              <Spin recipes={this.state.recipes} />
             </div>
           </div>
         </div>
@@ -84,26 +102,28 @@ class SpinTheMeal extends React.Component {
     );
   }
 }
-/* function getChecked() {
-  const checkBox = document.getElementById('MinPrice').checked;
-  if (checkBox === true) {
-    console.log(true);
-    } else {
-      console.log(false);
-  }
-} 
-function getChecked() {
-  const checkBox = document.getElementById('MaxPrice').checked;
-  if (checkBox === true) {
-    console.log(true);
-    } else {
-      console.log(false);
-  }
-}
-
-function comparePrice(a, b) {
-  return a.recipe.price - b.recipe.price;
-}*/
-
 
 export default SpinTheMeal;
+
+/**
+ * Given a list of recipes, return a list of recipes that fall between a min and max price
+ * @param minPrice - The minimum price you want to pay for your recipe.
+ * @param maxPrice - The maximum price you want to pay for your recipe.
+ * @param recipes - an array of recipes
+ * @returns An array of recipes.
+ */
+ function betweenPricesSearch(minPrice, maxPrice, recipes) {
+  let returnRecipes = [];
+  recipes.forEach((recipe) => {
+    let price = 0;
+
+    recipe.ingredients.forEach((ingredient) => {
+        price += ingredient.price;
+    })
+
+    if(price >= minPrice && price <= maxPrice){
+        returnRecipes.push(recipe);
+    }
+  })
+  return returnRecipes;
+}
