@@ -13,39 +13,70 @@ class StashRowElement extends React.Component {
     //runs before our code in the contructor
     super();
     //Your code here
+
+    this.state = {
+      hide: false
+    };
   }
 
   //Functions go here
 
-  removeIngredient() {
-    fetch(`/stash/remove/${this.props.product.prod_id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }).catch(err => {
-      console.error(err);
-    });
-    this.props.updateFunction(this.props.product.prod_id);
+  hideStashRowElement(stashRowElement, endPoint) {
+    this.setState({
+      hide: true
+    })
+
+    let params = {
+      endPoint: endPoint
+    };
+
+    console.log(`this.props.hasOwnProperty = ${this.props.hasOwnProperty('recipeID')}`);
+    if (this.props.hasOwnProperty('recipeID')){
+      params['recipeID'] = this.props.recipeID;
+      this.props.removeIngredient(stashRowElement, params);
+      this.props.updateRecipePrice(stashRowElement);
+    }
+    else {
+      params['recipeID'] = false;
+      this.props.removeIngredient(stashRowElement, params);
+      this.props.updateRecipePrice(stashRowElement);
+    }
   }
-  /* this.state.product.prod_ID */
 
   //This is the render function. This is where the
   //html is.
   render() {
-    return (
-      <tr>
-        {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
-        <td>{this.props.ingredient1 ? this.props.ingredient1 + " ID: " + this.props.ingredient1 : ""}</td>
-        {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
-        <td>{this.props.ingredient1 ? this.props.ingredient1 : ""} {this.props.ingredient1 ? this.props.ingredient1 : ""}</td>
-        <td class ="right-align">
-          <button type="button" onClick={() => { this.removeIngredient() }}>
-            <i class="fa fa-trash"></i></button>
-        </td>
-      </tr>
-    );
+    if (this.state.hide) return null;
+    else {
+      if (this.props.hasOwnProperty('myStash')) {
+        return (
+          <tr>
+            {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
+            <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
+            {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
+            <td class="right-align">{this.props.ingredient ? this.props.ingredient.amount : ""} {this.props.ingredient ? this.props.ingredient.unit : ""}</td>
+            <td class="right-align">
+              <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/stash/remove/') }}>
+                <i class="fa fa-trash"></i></button>
+            </td>
+          </tr>
+        )
+      }
+      else if (this.props.hasOwnProperty('shoppingList')) {
+        return (
+          <tr>
+            {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
+            <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
+            {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
+            <td class="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
+            <td class="right-align">
+              <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/removeIngredientFromShoppingList/') }}>
+                <i class="fa fa-trash"></i></button>
+            </td>
+          </tr>
+        );
+      }
+    }
   }
 }
 

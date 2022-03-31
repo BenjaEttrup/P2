@@ -13,7 +13,7 @@ const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
 const userPath = '../user/user.json';
-const recipeDataPath = '../opskrifter_old/recipes.json';
+const recipeDataPath = '../opskrifter/recipes.json';
 const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));

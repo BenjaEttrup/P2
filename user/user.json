@@ -47,7 +47,7 @@
                 "rating": "rating",
                 "image": "image",
                 "url": "url",
-                "price": 21.9
+                "price": 25.9
             },
             "ingredients": [
                 {
@@ -71,7 +71,7 @@
         },
         {
             "prod_id": 92,
-            "title": "squash",
+            "title": "Kakao",
             "amount": "1",
             "unit": "stk"
         }
