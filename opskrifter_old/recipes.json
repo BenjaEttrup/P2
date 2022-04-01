@@ -45,7 +45,7 @@
             "title": "Lasagne",
             "description": "description",
             "size": "",
-            "ingredients": ["ost"],
+            "ingredients": ["ost", "mel"],
             "time": 2,
             "method": "method",
             "difficulty": "difficulty"

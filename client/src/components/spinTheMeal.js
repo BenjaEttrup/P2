@@ -1,7 +1,7 @@
 import React from 'react'
-import '../stylesheets/spinTheMeal.css'
-import Spin from './spinTheMealv2';
+import Spin from './spinner';
 
+import '../stylesheets/spinTheMeal.css'
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
@@ -44,7 +44,7 @@ class SpinTheMeal extends React.Component {
   }
 
   updateRecipes(){
-    let updatedRecipes = betweenPricesSearch(this.state.minPrice, this.state.maxPrice, this.state.allRecipes)
+    let updatedRecipes = betweenPricesSearch(this.state.minPrice === '' ? '0' : this.state.minPrice, this.state.maxPrice === '' ? '1000' : this.state.maxPrice, this.state.allRecipes)
     this.setState({
       recipes: updatedRecipes
     })
@@ -67,8 +67,6 @@ class SpinTheMeal extends React.Component {
       this.updateRecipes();
     })
   }
-
- 
 
   render() {
     return (
@@ -112,6 +110,7 @@ export default SpinTheMeal;
  * @param recipes - an array of recipes
  * @returns An array of recipes.
  */
+
  function betweenPricesSearch(minPrice, maxPrice, recipes) {
   let returnRecipes = [];
   recipes.forEach((recipe) => {
@@ -124,6 +123,8 @@ export default SpinTheMeal;
     if(price >= minPrice && price <= maxPrice){
         returnRecipes.push(recipe);
     }
+    console.log(minPrice, maxPrice);
   })
   return returnRecipes;
 }
+

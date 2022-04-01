@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../stylesheets/spinTheMealv2.css';
+import '../stylesheets/wheel.css';
 import '../stylesheets/popupRecipe.css';
 
 export default class Wheel extends React.Component {

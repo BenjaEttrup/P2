@@ -1,10 +1,9 @@
 import React from "react";
 import {Modal} from 'bootstrap';
-//import ReactDOM from "react-dom";
 
-import Wheel from "./spin2.js";
+import Wheel from "./wheel.js";
 
-import "../stylesheets/spinTheMealp2.css";
+import "../stylesheets/spinner.css";
 
 /**
  * Here are the elements in the spinner
