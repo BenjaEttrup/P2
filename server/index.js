@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
-const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
+//const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
 // const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
-//const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
@@ -17,7 +17,7 @@ const recipeDataPath = '../opskrifter_old/recipes.json';
 const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
-
+app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
@@ -53,7 +53,7 @@ app.get("/stash/get", (req, res) => {
 app.post("/stash/add", (req, res) => {
     // Product json given via body
     let newProductJson = req.body
-
+    console.log(newProductJson)
     // If file can't be read, create new one with {myStash:[]} structure
     fs.access(userPath, fs.F_OK, (err) => {
         if (err) {
@@ -73,8 +73,17 @@ app.post("/stash/add", (req, res) => {
             }
             else {
                 // Gets already stored data and adds new product to it
-                let parsedJson = JSON.parse(fileData)
-                parsedJson.myStash.push(newProductJson);
+                let parsedJson = JSON.parse(fileData);
+                let duplicatedProduct = true;
+                for (element in parsedJson.myStash){
+                    if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
+                        parsedJson.myStash[element].amount += 1;
+                        duplicatedProduct = false;
+                    }
+                }
+                if (duplicatedProduct) {
+                    parsedJson.myStash.push(newProductJson);
+                }
 
                 fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
                     if (err) console.log("Error writing file:", err);
@@ -104,7 +113,11 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                 // console.log("Req.body.prod_id i if: " + req.params.prod_id)
                 // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
                 if (jsonArray[i].prod_id == req.params.prod_id) {
-                    jsonArray.splice(i, 1)
+                    if (jsonArray[i].amount > 1) {
+                        jsonArray[i].amount --;
+                    }
+                    else {
+                        jsonArray.splice(i, 1)}
                     break;
                 }
             }
@@ -120,9 +133,7 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
-            return res.data;
-        })
+        let apiResponse = await callApi(encodeCharacters(req.params.productName))
         console.log(apiResponse)
         res.json(apiResponse);
     } catch (e) {
@@ -259,7 +270,7 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return { "price": 0, "title": ingredient, "productID": "null" };
+            return { "price": 0, "title": product, "productID": "null" };
         }
     } catch (e) {
         console.error(e);

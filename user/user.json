@@ -64,15 +64,15 @@
     ],
     "myStash": [
         {
-            "prod_id": 5,
-            "title": "squash",
-            "amount": "1",
+            "prod_id": 18593,
+            "title": "Gulerødder øko",
+            "amount": 1,
             "unit": "stk"
         },
         {
-            "prod_id": 92,
-            "title": "squash",
-            "amount": "1",
+            "prod_id": 18357,
+            "title": "Squash",
+            "amount": 1,
             "unit": "stk"
         }
     ]

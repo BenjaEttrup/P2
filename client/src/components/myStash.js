@@ -1,6 +1,7 @@
 import React from 'react';
 import '../stylesheets/myStash.css'
 import StashRowElement from './stashRowElement';
+import SearchStashProduct from './searchStashProduct';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -33,7 +34,11 @@ class MyStash extends React.Component {
   updateTable(id) {
     let updatedProducts = []
     this.state.products.forEach((product) => {
-      if (product.prod_id !== id)
+      if (product.prod_id === id && product.amount > 1) {
+        product.amount --;
+        updatedProducts.push(product)
+      }
+      else if (product.prod_id !== id)
         updatedProducts.push(product)
     })
     this.setState({
@@ -50,18 +55,8 @@ class MyStash extends React.Component {
         <div id="myStash" class="card shadow">
           <div class="card-body myStash-card-body">
             <h4 class="card-title">My Stash</h4>
-            <div class="row">
-              <div class="col-6">
-                <div class="input-group rounded">
-                  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" onKeyUp="stashSearch()" />
-                  <span class="input-group-text border-0" id="search-addon">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="col-1">
-                <i class="fa fa-filter filter-icon myStash-filter-icon" aria-hidden="true"></i>
-              </div>
+            <div>
+              <SearchStashProduct updateFunction={() => this.componentDidMount()} />
             </div>
             <table class="table table-striped">
               <thead>

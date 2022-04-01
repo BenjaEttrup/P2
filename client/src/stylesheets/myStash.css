@@ -50,3 +50,21 @@
 .amount-text {
     margin-top: 2rem;
 }
+
+.searchWidth {
+    width: 50%;
+}
+
+.searchResults {
+    position: absolute;
+    width: inherit;
+    overflow-y: scroll;
+    height: 20em;
+    /* border-bottom: 1px #eeeeee solid; */
+  }
+
+  .deleteButton {
+    border: none;
+    background: none;
+  }
+  
