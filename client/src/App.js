@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import Navbar from "./components/navbar";
-import HomePage from "./components/homepage";
+import HomePage from "./components/homepage/homepage";
 import ShoppingList from "./components/shoppingList";
 import SpinTheMeal from "./components/spinTheMeal";
 import MyStash from "./components/myStash";
