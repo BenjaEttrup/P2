@@ -69,9 +69,9 @@ class ShoppingList extends React.Component {
 
   }
 
-  updateTotalRecipePrice(stashRowElement) {
+  updateTotalRecipePrice(priceElement) {
     this.setState((prevState, props) => ({
-      recipeSum: Number(prevState.recipeSum - stashRowElement.price).toFixed(2)
+      recipeSum: Number(prevState.recipeSum - priceElement.price).toFixed(2)
     }));
   }
 
@@ -94,6 +94,46 @@ class ShoppingList extends React.Component {
     }
   }
 
+  /**
+   *@function searches all recipes after a specific recipe
+   */
+  findIngredientInRecipes(myStashIngredient) {
+    this.state.shoppingListRecipes.forEach(recipe => {
+      recipe.ingredients.forEach(ingredient => {
+        if(myStashIngredient.prod_id == ingredient.prod_id) {
+          
+          console.log(myStashIngredient);
+          this.updateTotalRecipePrice(ingredient);
+        }
+      })
+    });
+    // TODO send this function as a param to stashRow elem
+    // console.log(this);
+    // this.state.shoppingListRecipes.forEach(recipe => {
+    //   console.log("________________________________________")
+    //   console.log(recipe);
+    // })
+  }
+
+  removeRecipe(recipe) {
+    console.log(`Deleting ingredient in stash with recipeID = ${recipe.recipeID}`);
+    console.log(recipe);
+    console.log(`fetching endpoint = /removeRecipeFromShoppingList/${recipe.recipeID}`)
+
+    fetch(`/removeRecipeFromShoppingList/${recipe.recipeID}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+    }).catch(err => {
+      console.error(err);
+    });
+
+    this.updateTotalRecipePrice(recipe)
+    
+  }
+
   //This is the render function. This is where the
   //html is.
   render() {
@@ -111,6 +151,7 @@ class ShoppingList extends React.Component {
                   return (
                     <ShoppingListRecipe
                       removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
+                      removeRecipe={(recipe) => this.removeRecipe(recipe)}
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
                       getTotalRecipePrice={(recipePrice) => this.getTotalRecipePrice(recipePrice)}
                       recipe={recipe}
@@ -137,7 +178,8 @@ class ShoppingList extends React.Component {
                         <StashRowElement 
                         key={this.state.myStashIngredients.indexOf(ingredient)} 
                         ingredient={ingredient} myStash = {true} 
-                        removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
+                        removeIngredient={this.removeIngredient}
+                        findIngredientInRecipes={(ingredient) => this.findIngredientInRecipes(ingredient)}
                         />
                       )
                     })

@@ -15,6 +15,10 @@ class ShoppingListRecipe extends React.Component {
     
     //Your code here
 
+    this.state = {
+      hide: false
+    };
+
   }
 
   //Functions go here
@@ -28,17 +32,32 @@ class ShoppingListRecipe extends React.Component {
   componentDidMount() {
     this.props.getTotalRecipePrice(this.props.recipe.recipe.price);
   }
+
+  hideRecipe(recipe) {
+    this.setState({
+      hide: true
+    })
+
+    // TODO: set removeRecipe as a property in shoppingList
+    console.log(recipe)
+    console.log(this.props.removeRecipe);
+    this.props.removeRecipe(recipe)
+  }
   
   //This is the render function. This is where the
   //html is.
   render() {
+    if(this.state.hide) return null;
     return (
         <table class="table table-striped">
         <thead>
           <tr>
-            <th class='col-9' scope='col'>{this.props.recipe.recipe.title}</th>
-            <th class="text-success">Pris på opskrift: {this.props.recipe.recipe.price} kr.</th>
-            <th></th>
+            <th class='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
+            <th class="col-4 text-success">Pris på opskrift: {this.props.recipe.recipe.price} kr.</th>
+            <th>              
+              <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
+                <i class="fa fa-trash"></i></button>
+            </th>
           </tr>
         </thead>
         <tbody>

@@ -2,16 +2,16 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
-const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
+// const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
 // const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
-//const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+// const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //
+const apiTokens = require('./config.json').token;
+let tokenIndex = 0
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
 
-const config = {
-    headers: { 'Authorization': `Bearer ${token}` }
-};
+
 const userPath = '../user/user.json';
 const recipeDataPath = '../opskrifter/recipes.json';
 const { stringify } = require('querystring');
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 app.get('/findProduct/:productName', async (req, res) => {
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
+        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, getToken()).then((res) => {
             return res.data;
         })
         res.send(apiResponse);
@@ -120,7 +120,7 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
+        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, getgetToken()).then((res) => {
             return res.data;
         })
         console.log(apiResponse)
@@ -254,8 +254,8 @@ app.listen(port, () => {
 async function callApi(product) {
     let apiRes;
     try {
-        sleep(200);
-        apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
+        sleep(150);
+        apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, getToken()).then((res) => {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
@@ -512,3 +512,15 @@ function sleep(milliseconds) {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
 }
+
+
+function getToken() {
+    token = apiTokens[tokenIndex]
+    tokenIndex++
+    if (tokenIndex >= apiTokens.length) tokenIndex = 0;
+    //console.log(`token: ${token}`)
+    return  {
+        headers: { 'Authorization': `Bearer ${token}` }
+    }
+}
+
