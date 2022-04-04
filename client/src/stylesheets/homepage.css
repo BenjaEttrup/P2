@@ -60,15 +60,6 @@
     padding: 10px;
 }
 
-#homepage-carousel {
-    width: 70%;
-}
-
-.carousel-img {
-    object-fit: cover;
-    height: 26rem;
-}
-
 .img-gradient-red:after {
     content: '';
     position: absolute;
@@ -136,6 +127,10 @@ a:hover {
     padding-top: 0;
 }
 
+.card-info-row {
+    height: 150px;
+}
+
 .card-item {
     width: 250px;
     height: 175px !important;
@@ -157,20 +152,29 @@ a:hover {
 
 .card-price {
     text-align: right;
+    padding-left: 0;
+    padding-right: 4px;
+    margin-top: 90px;
+}
+
+.card-title {
+    display: flex;
+    align-items: flex-end;
 }
 
 .card-info {
-    margin-top: 90px;
+    text-align: right;
+    padding-left: 0%;
 }
 
 .button-add {
     background-color: #31AF3E;
     border: 0;
     border-radius: 20px;
-    margin-left: 185px;
     color: white;
     padding-left: 7px;
     padding-right: 7px;
+    width: 30px;
 }
 
 .button-plus {
@@ -293,6 +297,53 @@ a:hover {
 }
 
 .form-check-input:focus {
-    outline: none;
-    box-shadow: none !important;
+	outline: none;
+	box-shadow: none !important;
+}
+
+#homepage-carousel {
+	width: 70%;
+}
+
+.carousel-img {
+	object-fit: cover;
+	height: 26rem;
+}
+
+
+
+.carousel-name {
+	text-align: left;
+}
+
+.carousel-description {
+	text-align: left;
+}
+
+.carousel-price {
+	text-align: right;
+}
+.carousel-add-recipe {
+	text-align: right;
+}
+
+.carousel-add-button {
+	height: 1.75rem;
+	padding-left: 0.4rem;
+	padding-right: 0.4rem;
+	padding-top: 0.2rem;
+	padding-bottom: 0.2rem;
+	border-radius: 5px;
+	color: #fff;
+	border-color: #fff;
+	float: right;
+	font-size: 0.8em;
+}
+.carousel-add-button:hover {
+	color: #222222;
+	background-color: #fff;
+}
+.carousel-add-button:active {
+	color: #222222;
+	background-color: rgb(231, 231, 231);
 }

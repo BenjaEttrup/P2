@@ -48,3 +48,7 @@ body{
     padding-right: 1rem;
     width: 22rem;
 }
+
+.icon {
+    font-size: 1.5rem !important;
+}
