@@ -7,11 +7,13 @@ import '../stylesheets/spinTheMeal.css'
 class SpinTheMeal extends React.Component {
   //This is a contructor this function gets called when a object gets created 
   //from the App class. It is often used to set the values in the object
-  constructor(recipe) {
+  constructor(props) {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
+
+    this.props.updateNavFunction(3);
     
     //Your code here
   }
