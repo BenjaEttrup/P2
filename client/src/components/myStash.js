@@ -26,7 +26,7 @@ class MyStash extends React.Component {
   componentDidMount() {
     fetch("/stash/get").then((response) => response.json()).then(response => {
       this.setState({ products: response }, () => {
-        console.log(this.state.products)
+        //console.log(this.state.products)
       })
     }).catch((e) => console.log(e))
   }

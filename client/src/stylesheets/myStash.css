@@ -60,7 +60,14 @@
     width: inherit;
     overflow-y: scroll;
     height: 20em;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
     /* border-bottom: 1px #eeeeee solid; */
+  }
+
+.searchResults::-webkit-scrollbar {
+    display: none;
   }
 
   .deleteButton {
