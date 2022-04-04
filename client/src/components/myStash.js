@@ -27,7 +27,7 @@ class MyStash extends React.Component {
       .then((response) => response.json())
       .then((response) => {
         this.setState({ products: response }, () => {
-          console.log(this.state.products);
+          //console.log(this.state.products);
         });
       })
       .catch((e) => console.log(e));

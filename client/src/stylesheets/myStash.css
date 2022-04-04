@@ -66,10 +66,11 @@
 .searchResults {
   position: absolute;
   width: inherit;
+  overflow-y: scroll;
   height: 20em;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   text-indent: 33px;
-
-  /* overflow-y: auto; */
 }
 
 .searchResult {
@@ -116,3 +117,13 @@
 .search-bar:focus {
   box-shadow: none;
 }
+
+.searchResults::-webkit-scrollbar {
+    display: none;
+  }
+
+  .deleteButton {
+    border: none;
+    background: none;
+  }
+  
