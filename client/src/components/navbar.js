@@ -9,11 +9,11 @@ import Dropdown from './dropdown';
 class Navbar extends React.Component {
   //This is a contructor this function gets called when a object gets created 
   //from the App class. It is often used to set the values in the object
-  constructor(recipe) {
+  constructor(props) {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
     
     //Your code here
   }
@@ -32,16 +32,16 @@ class Navbar extends React.Component {
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navigationbar">
                   <li class="nav-item">
-                    <Link class="nav-link active" to={"/"}>Inspiration</Link>
+                    <Link class={this.props.active === 1 ? "nav-link active" : "nav-link"} to={"/"}>Inspiration</Link>
                   </li>
                   <li class="nav-item">
-                    <Link class="nav-link" to={"/shoppingList"}>Shopping List</Link>
+                    <Link class={this.props.active === 2 ? "nav-link active" : "nav-link"} to={"/shoppingList"}>Shopping List</Link>
                   </li>
                   <li class="nav-item">
-                    <Link class="nav-link" to={"/spinTheMeal"}>Spin The Meal</Link>
+                    <Link class={this.props.active === 3 ? "nav-link active" : "nav-link"} to={"/spinTheMeal"}>Spin The Meal</Link>
                   </li>
                   <li class="nav-item">
-                    <Link class="nav-link" to={"/myStash"}>My Stash</Link>
+                    <Link class={this.props.active === 4 ? "nav-link active" : "nav-link"} to={"/myStash"}>My Stash</Link>
                   </li>
                 </ul>
                 <ul class="navbar-nav" id="user-and-recipe">
