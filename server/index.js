@@ -3,8 +3,9 @@ const app = express();
 const port = 3001;
 const axios = require('axios');
 // const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
-const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
+// const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
 //const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+const token = '91eff2d1-b1a5-45dd-90bc-5dca35112cd3'
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
@@ -13,7 +14,7 @@ const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
 const userPath = '../user/user.json';
-const recipeDataPath = '../opskrifter_old/recipes.json';
+const recipeDataPath = '../opskrifter_old/newrecipes.json';
 const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
@@ -133,7 +134,7 @@ app.get("/stash/search/:productName", async (req, res) => {
 
 // Recipes
 app.get('/findAllRecipes', async (req, res) => {
-    const recipeData = require('../opskrifter_old/recipes.json');
+    const recipeData = require('../opskrifter_old/newrecipes.json');
 
     var recipeObjects = {
         recipes: []
