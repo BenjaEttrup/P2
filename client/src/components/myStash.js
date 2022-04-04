@@ -21,7 +21,7 @@ class MyStash extends React.Component {
     };
   }
 
-  //Functions go here
+  //Request back-end function stash get, to add my stash data to this.state.products.  
   componentDidMount() {
     fetch("/stash/get")
       .then((response) => response.json())
@@ -33,8 +33,10 @@ class MyStash extends React.Component {
       .catch((e) => console.log(e));
   }
 
+  //removes products from stash overview on front-end. 
   updateTable(id) {
-    let updatedProducts = [];
+    let updatedProducts = []; 
+    //products, not removed by id, is mapped to the new array.
     this.state.products.forEach((product) => {
       if (product.prod_id === id && product.amount > 1) {
         product.amount--;
