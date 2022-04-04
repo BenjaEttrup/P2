@@ -17,7 +17,7 @@ const recipeDataPath = '../opskrifter/recipes.json';
 const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
-
+app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
@@ -53,7 +53,7 @@ app.get("/stash/get", (req, res) => {
 app.post("/stash/add", (req, res) => {
     // Product json given via body
     let newProductJson = req.body
-
+    //console.log(newProductJson)
     // If file can't be read, create new one with {myStash:[]} structure
     fs.access(userPath, fs.F_OK, (err) => {
         if (err) {
@@ -73,8 +73,17 @@ app.post("/stash/add", (req, res) => {
             }
             else {
                 // Gets already stored data and adds new product to it
-                let parsedJson = JSON.parse(fileData)
-                parsedJson.myStash.push(newProductJson);
+                let parsedJson = JSON.parse(fileData);
+                let duplicatedProduct = true;
+                for (element in parsedJson.myStash){
+                    if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
+                        parsedJson.myStash[element].amount += 1;
+                        duplicatedProduct = false;
+                    }
+                }
+                if (duplicatedProduct) {
+                    parsedJson.myStash.push(newProductJson);
+                }
 
                 fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
                     if (err) console.log("Error writing file:", err);
@@ -104,7 +113,11 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                 // console.log("Req.body.prod_id i if: " + req.params.prod_id)
                 // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
                 if (jsonArray[i].prod_id == req.params.prod_id) {
-                    jsonArray.splice(i, 1)
+                    if (jsonArray[i].amount > 1) {
+                        jsonArray[i].amount --;
+                    }
+                    else {
+                        jsonArray.splice(i, 1)}
                     break;
                 }
             }
@@ -120,10 +133,8 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, getgetToken()).then((res) => {
-            return res.data;
-        })
-        console.log(apiResponse)
+        let apiResponse = await callApi(encodeCharacters(req.params.productName))
+        //console.log(apiResponse)
         res.json(apiResponse);
     } catch (e) {
         console.error(e);
@@ -139,6 +150,7 @@ app.get('/findAllRecipes', async (req, res) => {
         recipes: []
     };
 
+		
     //Builds recipeObjects object from a recipe file and then searches 
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
@@ -153,29 +165,36 @@ app.get('/findAllRecipes', async (req, res) => {
         recipeObject.recipe = tempRecipe;
 
         console.log(`Getting ingredients for ${tempRecipe.title}`);
+				startTimer();
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
 
             try {
                 let apiResponse = await callApi(encodeCharacters(tempIngredient));
-                //console.log(apiResponse);
-                if(apiResponse.suggestions[0] === undefined) {
-                    console.log(`Failed to get ${tempIngredient}`);
+                if(apiResponse === false){
+                    console.log(`Something went wrong with ${tempIngredient}`);
+                    console.log(apiResponse);
                 } else {
-                    apiResponse.suggestions.sort(comparePrice);
-                    recipeObject.ingredients.push(apiResponse.suggestions[0])
-                    totalPrice += apiResponse.suggestions[0].price;
+                    if(apiResponse.suggestions[0] === undefined) {
+                        console.log(`Failed to get ${tempIngredient}`);
+                    } else {
+                        apiResponse.suggestions.sort(comparePrice);
+                        recipeObject.ingredients.push(apiResponse.suggestions[0])
+                        totalPrice += apiResponse.suggestions[0].price;
+                    }
                 }
             } catch(e) {
                 console.error(e);
-                res.status(500).send();
+
+                //Dis breka da thing 
+                //res.status(500).send();
             }
         }
         
         recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
 
-        console.log(Number(totalPrice.toFixed(2)))
+				logTime()
 
         recipeObjects.recipes.push(recipeObject);
     }
@@ -251,6 +270,12 @@ app.listen(port, () => {
 
 
 
+/**
+ * This function calls the Salling Group API and returns the product ID and price of the first product
+ * in the list of relevant products
+ * @param product - The product name to search for.
+ * @returns The API returns a JSON object with the following keys:
+ */
 async function callApi(product) {
     let apiRes;
     try {
@@ -259,11 +284,11 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return { "price": 0, "title": ingredient, "productID": "null" };
+            return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
         }
     } catch (e) {
         console.error(e);
-        return false;
+        return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
     }
     return apiRes
 }
@@ -505,6 +530,10 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
     return returnRecipe;
 }
 
+/**
+ * Sleep for a given number of milliseconds
+ * @param milliseconds - The number of milliseconds to wait.
+ */
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
@@ -524,3 +553,19 @@ function getToken() {
     }
 }
 
+var startTime, endTime;
+
+function startTimer() {
+  startTime = new Date();
+};
+
+function logTime() {
+  endTime = new Date();
+  var timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds 
+  var seconds = Math.round(timeDiff);
+  console.log(seconds + " seconds");
+}
