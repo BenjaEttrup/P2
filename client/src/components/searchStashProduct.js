@@ -116,7 +116,7 @@ class SearchStashProduct extends React.Component {
           <div class="form rounded">
             <i class="fa fa-search"></i>
             <input
-              type="text"
+              type="search"
               class="form-control rounded search-bar"
               value={this.state.searchValue}
               placeholder="Add item to my stash..."
