@@ -1,70 +1,122 @@
 #recipedropdown {
-    background-color: #FFFFFF;
-    width: 20rem;
-    height: 30rem;
+  background-color: #ffffff;
+  width: 20rem;
+  height: 30rem;
 }
 
 .shadow {
-    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .shadow-rounded {
-    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
 }
 
 .horizontal-list li {
-    display: inline;
-    list-style-position: inside;
+  display: inline;
+  list-style-position: inside;
 }
 
 .right-align {
-    text-align: right;
+  text-align: right;
 }
 
 .left-align {
-     align-content: left;
+  align-content: left;
 }
 
 #myStash {
-    width: 65rem; 
-    border-radius: 10px;
-    margin-top: 7rem;
-    margin-left: auto;
-    margin-right: auto;
+  width: 65rem;
+  border-radius: 10px;
+  margin-top: 7rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .myStash-card-body {
-    margin-bottom: 20rem;
-    padding: 3rem;
+  min-height: 30rem;
+  padding: 3rem;
+}
+
+#stash-table {
+  margin-top: 1rem;
+}
+
+#search-bar {
+  margin-top: 2rem;
 }
 
 .myStash-filter-icon {
-    font-size: 1.75rem;
+  font-size: 1.75rem;
 }
 
 .product-text {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .amount-text {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .searchWidth {
-    width: 50%;
+  width: 30rem;
 }
 
 .searchResults {
-    position: absolute;
-    width: inherit;
-    overflow-y: scroll;
-    height: 20em;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  position: absolute;
+  width: inherit;
+  overflow-y: scroll;
+  height: 20em;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  text-indent: 33px;
+}
 
-    /* border-bottom: 1px #eeeeee solid; */
-  }
+.searchResult {
+  color: #9ca3af;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+.deleteButton {
+  border: none;
+  background: none;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.right-align-text {
+  text-align: right;
+}
+
+.table-content {
+  font-weight: 500;
+}
+
+.table-content-secondary {
+  font-weight: 400;
+}
+
+/* .table-rounded {
+  overflow: hidden;
+  background: red;
+  border-radius: 40px !important;
+} */
+
+.search-bar {
+  height: 45px;
+  text-indent: 33px;
+  border: 1px solid;
+  border-color: rgb(170, 170, 170);
+  border-radius: 10px;
+}
+
+.search-bar:focus {
+  box-shadow: none;
+}
 
 .searchResults::-webkit-scrollbar {
     display: none;
