@@ -154,3 +154,10 @@
     width: 60px;
   }
   
+  .text-overflow-wheel{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 !important;
+    text-align: left;
+  }

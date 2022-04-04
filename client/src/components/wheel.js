@@ -42,20 +42,21 @@ export default class Wheel extends React.Component {
         <div className={`wheel ${spinning}`} style={wheelVars} onClick={this.selectItem} data-toggle="modal">
           {items.map((item, index) => (
             <div className="wheel-item" key={index} style={{ '--item-nb': index }}>
-              {item.recipe.title}
+              <p class="text-overflow-wheel">{item.recipe.title}</p>
             </div>
           ))}
         </div>
         <div show={this.state.showModal} class="modal fade" id="popupRecipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header modal-recipe-header">
-                <h1 class="modal-title" id="exampleModalLabel">{selectedItem ? this.props.items[selectedItem].recipe.title : ''}</h1>
+              <div class="modal-header">
+                <img src={selectedItem ? this.props.items[selectedItem].recipe.image : ''} alt="popupPicture" class="modal-recipe-header" />
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <div class="row">
                   <div class="col-md-12 top-description">
+                  <h1 class="modal-title" id="exampleModalLabel">{selectedItem ? this.props.items[selectedItem].recipe.title : ''}</h1>
                     <p class="text-left"><i class="fa fa-user"></i></p>
                     <p class="text-left">{selectedItem ? this.props.items[selectedItem].recipe.size : ''}</p>
                     <p class="text-left"><i class="fa fa-clock-o"></i></p>
@@ -67,7 +68,7 @@ export default class Wheel extends React.Component {
                   </div>
                   <div class="col-md-6">
                     <h5>Directions</h5>
-                    <p>FREMGANGSMÅÅÅÅDEN</p>
+                    {selectedItem ? this.props.items[selectedItem].recipe.method : ''} DKK
                   </div>
                   <div class="col-md-6">
                     <h5>Ingredients</h5>
@@ -75,16 +76,17 @@ export default class Wheel extends React.Component {
                       {
                         selectedItem ? this.props.items[selectedItem].recipe.ingredients.map((ingredient) => {
                           return (
-                            <li>
-                            {ingredient}
+                            <li class="row">
+                              <div class="col-8">{Object.keys(ingredient)[0]}</div>
+                              <div class="col-4">{ingredient[Object.keys(ingredient)[0]].amount} {ingredient[Object.keys(ingredient)[0]].unit}</div>
                             </li>
                           )
                         }) : '' 
                       }
                     </ul>
                     <div class="row">
-                      <div class="col-8">Total price</div>
-                      <div class="col-4">
+                      <div class="col-7">Total price</div>
+                      <div class="col-5">
                         {selectedItem ? this.props.items[selectedItem].recipe.price : ''} DKK
                       </div>
                     </div>

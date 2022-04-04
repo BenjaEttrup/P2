@@ -31,6 +31,7 @@ class SpinTheMeal extends React.Component {
     })
     .then(res => res.json())
     .then((json) => {
+      console.log(json)
       let data = {
         recipes: json.recipes,
         allRecipes: json.recipes
