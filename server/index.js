@@ -15,7 +15,7 @@ const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
 const userPath = '../user/user.json';
-const recipeDataPath = '../opskrifter_old/recipes.json';
+const recipeDataPath = '../opskrifter/recipes.json';
 const { stringify } = require('querystring');
 
 app.use(express.urlencoded({ extended: false }));
@@ -77,7 +77,7 @@ app.post("/stash/add", (req, res) => {
                 // Gets already stored data and adds new product to it
                 let parsedJson = JSON.parse(fileData);
                 let duplicatedProduct = true;
-                for (element in parsedJson.myStash){
+                for (element in parsedJson.myStash) {
                     if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
                         parsedJson.myStash[element].amount += 1;
                         duplicatedProduct = false;
@@ -116,10 +116,11 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                 // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
                 if (jsonArray[i].prod_id == req.params.prod_id) {
                     if (jsonArray[i].amount > 1) {
-                        jsonArray[i].amount --;
+                        jsonArray[i].amount--;
                     }
                     else {
-                        jsonArray.splice(i, 1)}
+                        jsonArray.splice(i, 1)
+                    }
                     break;
                 }
             }
@@ -152,7 +153,7 @@ app.get('/findAllRecipes', async (req, res) => {
         recipes: []
     };
 
-		
+
     //Builds recipeObjects object from a recipe file and then searches 
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
@@ -167,18 +168,18 @@ app.get('/findAllRecipes', async (req, res) => {
         recipeObject.recipe = tempRecipe;
 
         console.log(`Getting ingredients for ${tempRecipe.title}`);
-				startTimer();
+        startTimer();
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
 
             try {
                 let apiResponse = await callApi(encodeCharacters(tempIngredient));
-                if(apiResponse === false){
+                if (apiResponse === false) {
                     console.log(`Something went wrong with ${tempIngredient}`);
                     console.log(apiResponse);
                 } else {
-                    if(apiResponse.suggestions[0] === undefined) {
+                    if (apiResponse.suggestions[0] === undefined) {
                         console.log(`Failed to get ${tempIngredient}`);
                     } else {
                         apiResponse.suggestions.sort(comparePrice);
@@ -186,17 +187,17 @@ app.get('/findAllRecipes', async (req, res) => {
                         totalPrice += apiResponse.suggestions[0].price;
                     }
                 }
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
 
                 //Dis breka da thing 
                 //res.status(500).send();
             }
         }
-        
+
         recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
 
-				logTime()
+        logTime()
 
         recipeObjects.recipes.push(recipeObject);
     }
@@ -252,15 +253,23 @@ app.get('/findRecipe/:ID', async (req, res) => {
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
+        // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
+            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0]
+            // console.log(recipeData.recipes[recipeIndex].ingredients[i]);
+            console.log(`Ingredient:   ${ingredient}`)
             details = await callApi(encodeCharacters(ingredient));
-            recipeObject.ingredients[i] = details;
-            recipeObject.recipe = recipeData.recipes[recipeIndex];
-            totalPrice += details.price;
+            console.log(details.suggestions)
+            recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
+            let cheapestPrice = details.suggestions.sort(comparePrice)[0];
+            console.log(cheapestPrice)
+            recipeObject.ingredients[i]["price"] = cheapestPrice
+            totalPrice += cheapestPrice;
         }
         // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
-        recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
+        recipeObject.recipe["totalPrice"] = Number(totalPrice.toFixed(2));
+        recipeObject.recipe["recipeIndex"] = recipeIndex;
+
     }
 
     res.json(recipeObject);
@@ -286,11 +295,11 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
+            return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
         }
     } catch (e) {
         console.error(e);
-        return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
+        return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
     }
     return apiRes
 }
@@ -417,6 +426,9 @@ function findRecipeIndex(ID, filePath, option) {
     let file = require(filePath);
     // TODO reevaluate this function design
 
+    console.log(ID)
+    console.log(option)
+
     if (option === "shoppingList") {
         for (object in file[option]) {
             for (recipe in file[option][object]) {
@@ -427,8 +439,11 @@ function findRecipeIndex(ID, filePath, option) {
         }
     }
     else if (option === "recipes") {
+        console.log("Inde i recipes")
         for (object in file[option]) {
+            console.log(object)
             if (file[option][object].recipeID == ID) {
+                console.log(`file[option][object].recipeID == ID --- ${ID}  \n  ${object}`)
                 return object;
             }
         }
@@ -547,16 +562,16 @@ function sleep(milliseconds) {
 var startTime, endTime;
 
 function startTimer() {
-  startTime = new Date();
+    startTime = new Date();
 };
 
 function logTime() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
+    endTime = new Date();
+    var timeDiff = endTime - startTime; //in ms
+    // strip the ms
+    timeDiff /= 1000;
 
-  // get seconds 
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
+    // get seconds 
+    var seconds = Math.round(timeDiff);
+    console.log(seconds + " seconds");
 }
