@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 
 //This is a React class it extends a React component which
 //means that you can use all the code from the React component and it runs the
@@ -116,7 +116,7 @@ class SearchStashProduct extends React.Component {
           <div class="form rounded">
             <i class="fa fa-search"></i>
             <input
-              type="text"
+              type="search"
               class="form-control rounded search-bar"
               value={this.state.searchValue}
               placeholder="Add item to my stash..."

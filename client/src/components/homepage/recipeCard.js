@@ -11,10 +11,8 @@ class RecipeCard extends React.Component {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
   }
-
-  
   
   //This is the render function. This is where the
   //html is.
@@ -25,7 +23,7 @@ class RecipeCard extends React.Component {
           <a href="#">
             <div class="card card-item h-100">
               <div class="img-gradient img-gradient-black card-img-border">
-                <img src="./pictures/pizza.jpg" class="card-img" alt="..." height="175" />
+                <img src={this.props.recipe.recipe.image} class="card-img" alt="..." height="175" />
               </div>
               <div class="card-img-overlay">
                 <div class="row card-info-row">
