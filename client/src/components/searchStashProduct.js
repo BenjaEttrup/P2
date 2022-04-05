@@ -11,7 +11,7 @@ class SearchStashProduct extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super();
-    //Your code here
+  
     this.state = {
       products: [],
       showDropdown: true,
@@ -19,7 +19,7 @@ class SearchStashProduct extends React.Component {
     };
   }
 
-  //Functions go here
+  //Updates search parameters
   changeSearchValue(evt) {
     this.setState(
       {
@@ -30,6 +30,8 @@ class SearchStashProduct extends React.Component {
       }
     );
   }
+
+  //Take the search parameters to request back-end for the products.
   getIngredient() {
     fetch(`/stash/search/${this.state.searchValue}`, {
       headers: {
@@ -54,6 +56,8 @@ class SearchStashProduct extends React.Component {
       });
   }
 
+
+  //The choosen product, is added to my stash. 
   addIngredient(product) {
     console.log(product);
     let productData = {
@@ -82,7 +86,7 @@ class SearchStashProduct extends React.Component {
         this.props.updateFunction();
       });
   }
-
+  //sets show dropdown to false.
   handleBlur = (evt) => {
     console.log("Blur evt");
     if (!evt.currentTarget.contains(evt.relatedTarget)) {
@@ -91,6 +95,7 @@ class SearchStashProduct extends React.Component {
     }
   };
 
+  //Reset the search value.
   resetSearch(evt) {
     console.log("reset!");
     this.setState({

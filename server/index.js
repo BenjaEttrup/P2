@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
+
 const token = require('./config.json').token;
 //const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
 //const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
