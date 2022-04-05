@@ -1,5 +1,4 @@
 import React from 'react';
-import homePage from '../stylesheets/homepage.css';
 
 //This is a React class it extends a React component which
 //means that you can use all the code from the React component and it runs the
@@ -47,14 +46,13 @@ class StashRowElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
-        console.log(`this.state ${this.state.boxChecked}`);
         this.props.findIngredientInRecipes(this.props.ingredient);
+      }
+      else {
+        // TODO create function that updates the recipes to include the stash ingredient again.
       }
     });
 
-
-
-    // TODO: call removeIngredient 
   }
 
   //This is the render function. This is where the
@@ -62,7 +60,21 @@ class StashRowElement extends React.Component {
   render() {
     if (this.state.hide) return null;
 
-    if (this.props.hasOwnProperty('myStash')) {
+    if (this.props.hasOwnProperty('shoppingList')) {
+      return (
+        <tr>
+          {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
+          <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
+          {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
+          <td class="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
+          <td class="right-align">
+            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/removeIngredientFromShoppingList/') }}>
+              <i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      );
+    }
+    else if (this.props.hasOwnProperty('myStash')) {
       return (
         <tr>
           {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
@@ -76,27 +88,13 @@ class StashRowElement extends React.Component {
           </td>
           <td class="right-align center" width="2%">
             <div class="form-check align-middle">
-              <input class="form-check-input" type="checkbox"  onChange={(evt) => this.checkCheckBox(evt)} 
-                      id="flexCheckChecked" checked={this.state.boxChecked}>
+              <input class="form-check-input" type="checkbox" onChange={(evt) => this.checkCheckBox(evt)}
+                id="flexCheckChecked" checked={this.state.boxChecked}>
               </input>
             </div>
           </td>
         </tr>
       )
-    }
-    else if (this.props.hasOwnProperty('shoppingList')) {
-      return (
-        <tr>
-          {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
-          <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
-          {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
-          <td class="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
-          <td class="right-align">
-            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/removeIngredientFromShoppingList/') }}>
-              <i class="fa fa-trash"></i></button>
-          </td>
-        </tr>
-      );
     }
   }
 }
