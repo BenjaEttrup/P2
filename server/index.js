@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
-//const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
-// const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
-// const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
-const token = '7ad1c415-722e-48b7-8844-766f3576c6e2' //den gode fra mikk
+
+const token = require('./config.json').token;
+//const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
+//const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
 const { json } = require('express');
@@ -54,7 +55,7 @@ app.get("/stash/get", (req, res) => {
 app.post("/stash/add", (req, res) => {
     // Product json given via body
     let newProductJson = req.body
-    console.log(newProductJson)
+    //console.log(newProductJson)
     // If file can't be read, create new one with {myStash:[]} structure
     fs.access(userPath, fs.F_OK, (err) => {
         if (err) {
@@ -135,7 +136,7 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
 app.get("/stash/search/:productName", async (req, res) => {
     try {
         let apiResponse = await callApi(encodeCharacters(req.params.productName))
-        console.log(apiResponse)
+        //console.log(apiResponse)
         res.json(apiResponse);
     } catch (e) {
         console.error(e);
@@ -151,6 +152,7 @@ app.get('/findAllRecipes', async (req, res) => {
         recipes: []
     };
 
+		
     //Builds recipeObjects object from a recipe file and then searches 
     //the salling API for the recipes ingredients.
     for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
@@ -165,29 +167,36 @@ app.get('/findAllRecipes', async (req, res) => {
         recipeObject.recipe = tempRecipe;
 
         console.log(`Getting ingredients for ${tempRecipe.title}`);
+				startTimer();
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
             const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
 
             try {
                 let apiResponse = await callApi(encodeCharacters(tempIngredient));
-                //console.log(apiResponse);
-                if(apiResponse.suggestions[0] === undefined) {
-                    console.log(`Failed to get ${tempIngredient}`);
+                if(apiResponse === false){
+                    console.log(`Something went wrong with ${tempIngredient}`);
+                    console.log(apiResponse);
                 } else {
-                    apiResponse.suggestions.sort(comparePrice);
-                    recipeObject.ingredients.push(apiResponse.suggestions[0])
-                    totalPrice += apiResponse.suggestions[0].price;
+                    if(apiResponse.suggestions[0] === undefined) {
+                        console.log(`Failed to get ${tempIngredient}`);
+                    } else {
+                        apiResponse.suggestions.sort(comparePrice);
+                        recipeObject.ingredients.push(apiResponse.suggestions[0])
+                        totalPrice += apiResponse.suggestions[0].price;
+                    }
                 }
             } catch(e) {
                 console.error(e);
-                res.status(500).send();
+
+                //Dis breka da thing 
+                //res.status(500).send();
             }
         }
         
         recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
 
-        console.log(Number(totalPrice.toFixed(2)))
+				logTime()
 
         recipeObjects.recipes.push(recipeObject);
     }
@@ -263,6 +272,12 @@ app.listen(port, () => {
 
 
 
+/**
+ * This function calls the Salling Group API and returns the product ID and price of the first product
+ * in the list of relevant products
+ * @param product - The product name to search for.
+ * @returns The API returns a JSON object with the following keys:
+ */
 async function callApi(product) {
     let apiRes;
     try {
@@ -271,11 +286,11 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return { "price": 0, "title": product, "productID": "null" };
+            return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
         }
     } catch (e) {
         console.error(e);
-        return false;
+        return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
     }
     return apiRes
 }
@@ -517,10 +532,31 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
     return returnRecipe;
 }
 
+/**
+ * Sleep for a given number of milliseconds
+ * @param milliseconds - The number of milliseconds to wait.
+ */
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
     do {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
+}
+
+var startTime, endTime;
+
+function startTimer() {
+  startTime = new Date();
+};
+
+function logTime() {
+  endTime = new Date();
+  var timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds 
+  var seconds = Math.round(timeDiff);
+  console.log(seconds + " seconds");
 }

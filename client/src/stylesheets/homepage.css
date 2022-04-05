@@ -60,15 +60,6 @@
     padding: 10px;
 }
 
-#homepage-carousel {
-    width: 70%;
-}
-
-.carousel-img {
-    object-fit: cover;
-    height: 26rem;
-}
-
 .img-gradient-red:after {
     content: '';
     position: absolute;
@@ -121,8 +112,8 @@
     display: block;
 }
 
-a,
-a:hover {
+.card-link,
+.card-link:hover {
     color: white;
     text-decoration: none;
 }
@@ -306,6 +297,53 @@ a:hover {
 }
 
 .form-check-input:focus {
-    outline: none;
-    box-shadow: none !important;
+	outline: none;
+	box-shadow: none !important;
+}
+
+#homepage-carousel {
+	width: 70%;
+}
+
+.carousel-img {
+	object-fit: cover;
+	height: 26rem;
+}
+
+
+
+.carousel-name {
+	text-align: left;
+}
+
+.carousel-description {
+	text-align: left;
+}
+
+.carousel-price {
+	text-align: right;
+}
+.carousel-add-recipe {
+	text-align: right;
+}
+
+.carousel-add-button {
+	height: 1.75rem;
+	padding-left: 0.4rem;
+	padding-right: 0.4rem;
+	padding-top: 0.2rem;
+	padding-bottom: 0.2rem;
+	border-radius: 5px;
+	color: #fff;
+	border-color: #fff;
+	float: right;
+	font-size: 0.8em;
+}
+.carousel-add-button:hover {
+	color: #222222;
+	background-color: #fff;
+}
+.carousel-add-button:active {
+	color: #222222;
+	background-color: rgb(231, 231, 231);
 }
