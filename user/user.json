@@ -19,17 +19,7 @@
                 "url": "url",
                 "price": 21.9
             },
-            "ingredients": [
-                {
-                    "id": "37918301",
-                    "prod_id": "41685",
-                    "title": "Mozzarella",
-                    "description": "Mozzarella",
-                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=41685&imgType=jpeg",
-                    "link": "https://www.bilkatogo.dk/p/41685",
-                    "price": 6.95
-                }
-            ]
+            "ingredients": []
         },
         {
             "recipe": {
@@ -49,29 +39,43 @@
                 "url": "url",
                 "price": 21.9
             },
-            "ingredients": [
-                {
-                    "id": "92343951",
-                    "prod_id": "84537",
-                    "title": "Kogt skinke i skiver",
-                    "description": "Kogt skinke i skiver",
-                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-                    "link": "https://www.bilkatogo.dk/p/84537",
-                    "price": 8.95
-                }
-            ]
+            "ingredients": []
         }
     ],
     "myStash": [
         {
-            "prod_id": 18593,
-            "title": "Gulerødder øko",
+            "prod_id": 51138,
+            "title": "Kartofler",
+            "amount": 3,
+            "unit": "stk"
+        },
+        {
+            "prod_id": 17010,
+            "title": "Hvedemel",
             "amount": 1,
             "unit": "stk"
         },
         {
-            "prod_id": 18357,
-            "title": "Squash",
+            "prod_id": 81992,
+            "title": "Sukker",
+            "amount": 1,
+            "unit": "stk"
+        },
+        {
+            "prod_id": 64006,
+            "title": "Hakkede tomater",
+            "amount": 1,
+            "unit": "stk"
+        },
+        {
+            "prod_id": 41685,
+            "title": "Mozzarella",
+            "amount": 1,
+            "unit": "stk"
+        },
+        {
+            "prod_id": 18131,
+            "title": "Kartofler",
             "amount": 1,
             "unit": "stk"
         }
