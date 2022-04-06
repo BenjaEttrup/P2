@@ -6,6 +6,7 @@ import '../stylesheets/popupRecipe.css';
 export default class Wheel extends React.Component {
   constructor(props) {
     super(props);
+    this.index = 0
     this.state = {
       selectedItem: null,
     };
@@ -25,7 +26,14 @@ export default class Wheel extends React.Component {
       setTimeout(this.selectItem, 500);
     }
   }
+  
+  getIndex() {
 
+  }
+
+  addToIndex() {
+    this.index ++
+  }
   
 
   render() {
@@ -50,8 +58,8 @@ export default class Wheel extends React.Component {
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <img src={selectedItem ? this.props.items[selectedItem].recipe.image : ''} alt="popupPicture" class="modal-recipe-header" />
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <img src={selectedItem ? this.props.items[selectedItem].recipe.image : ''} alt="popupPicture" class="modal-recipe-header picture-perfect" />
+                <button type="button" class="btn-close exit-btn" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <div class="row">
@@ -66,35 +74,50 @@ export default class Wheel extends React.Component {
                     <h5>Description</h5>
                     {selectedItem ? this.props.items[selectedItem].recipe.description : ''}
                   </div>
-                  <div class="col-md-6">
+                 {/* <div class="col-md-6">
                     <h5>Directions</h5>
                     {selectedItem ? this.props.items[selectedItem].recipe.method : ''} DKK
                   </div>
-                  <div class="col-md-6">
-                    <h5>Ingredients</h5>
-                    <ul>
-                      {
+          <div class="col-md-6"> */}
+          <h5>Ingredients</h5> 
+          
+          <ul class="ingrediens-list">
+          <table class="table table-striped table-borderless" id="stash-table">
+          <thead>
+                <tr>
+                  <th class="col-6" scope="col">
+                    Ingredients
+                  </th>
+                  <th scope="col-3">Amount</th>
+                  <th scope="col-3">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                      { 
+
                         selectedItem ? this.props.items[selectedItem].recipe.ingredients.map((ingredient) => {
+                          let currentIndex = this.index
+                          this.addToIndex()
                           return (
-                            <li class="row">
-                              <div class="col-8">{Object.keys(ingredient)[0]}</div>
-                              <div class="col-4">{ingredient[Object.keys(ingredient)[0]].amount} {ingredient[Object.keys(ingredient)[0]].unit}</div>
-                            </li>
+                            <tr>
+                              <td>{Object.keys(ingredient)[0]}</td>
+                              <td>{ingredient[Object.keys(ingredient)[0]].amount} {ingredient[Object.keys(ingredient)[0]].unit}</td>
+                              <td>{this.props.items[selectedItem].ingredients[currentIndex].price +" DKK"}</td>
+                            </tr>
+                            
                           )
                         }) : '' 
                       }
+              </tbody>
+            </table>
                     </ul>
                     <div class="row">
-                      <div class="col-7">Total price</div>
+                      <b><div class="col-7">Total price</div></b>
                       <div class="col-5">
                         {selectedItem ? this.props.items[selectedItem].recipe.price : ''} DKK
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer modal-recipe-footer">
-                <div class="row">
+                    <div class="row">
                   <div class="col-6">
                     <button type="button" class="btn btn-primary col-12">Add to shopping list</button>
                   </div>
@@ -102,11 +125,12 @@ export default class Wheel extends React.Component {
                     <button type="button" class="btn btn-secondary col-12">Go to recipe</button>
                   </div>
                 </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }
