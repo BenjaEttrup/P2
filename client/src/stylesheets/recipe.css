@@ -170,4 +170,9 @@ body {
     margin-right: auto;
     margin-bottom: 10rem;
     padding: 3rem;
+    background-color: #ffffff;
+}
+
+.card {
+    background-color: #f3f3f3 !important;
 }

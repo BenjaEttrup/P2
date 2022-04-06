@@ -243,31 +243,38 @@ app.get('/findRecipe/:ID', async (req, res) => {
     const recipeData = require(recipeDataPath);
 
     let recipeObject = {
-        recipe: {},
-        ingredients: []
+        recipe: {
+            ingredients: []
+        }
     };
 
-    recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
+    let recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
-        let details;
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
         // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0]
-            // console.log(recipeData.recipes[recipeIndex].ingredients[i]);
-            console.log(`Ingredient:   ${ingredient}`)
-            details = await callApi(encodeCharacters(ingredient));
-            console.log(details.suggestions)
-            recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
-            let cheapestPrice = details.suggestions.sort(comparePrice)[0];
-            console.log(cheapestPrice)
-            recipeObject.ingredients[i]["price"] = cheapestPrice
-            totalPrice += cheapestPrice;
+            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0] //keys from JSON recipe file, inserted in ingredient.
+            let details = await callApi(encodeCharacters(ingredient)); //API call
+            // recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i]; //
+            details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
+            console.log(details)
+            recipeObject.recipe.ingredients[i] = details.suggestions[0] //Store cheapest ingredient in recipeObject
+            recipeObject.recipe.ingredients[i].title = ingredient
+            totalPrice += details.suggestions[0].price; //sum of recipe.
+            console.log(recipeObject)
         }
         // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
-        recipeObject.recipe["totalPrice"] = Number(totalPrice.toFixed(2));
+        recipeObject.recipe["method"] = recipeData.recipes[recipeIndex].method
+        recipeObject.recipe["url"] = recipeData.recipes[recipeIndex].url
+        recipeObject.recipe["image"] = recipeData.recipes[recipeIndex].image
+        recipeObject.recipe["size"] = recipeData.recipes[recipeIndex].size
+        recipeObject.recipe["time"] = recipeData.recipes[recipeIndex].time
+        recipeObject.recipe["rating"] = recipeData.recipes[recipeIndex].rating
+        recipeObject.recipe["description"] = recipeData.recipes[recipeIndex].description
+        recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
+        recipeObject.recipe["totalPrice"] = totalPrice.toFixed(2);
         recipeObject.recipe["recipeIndex"] = recipeIndex;
 
     }
@@ -443,7 +450,7 @@ function findRecipeIndex(ID, filePath, option) {
         for (object in file[option]) {
             console.log(object)
             if (file[option][object].recipeID == ID) {
-                console.log(`file[option][object].recipeID == ID --- ${ID}  \n  ${object}`)
+                console.log(`file[option][object].recipeID == ID-- - ${ID}  \n  ${object}`)
                 return object;
             }
         }
