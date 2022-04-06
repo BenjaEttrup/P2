@@ -21,9 +21,17 @@ class ShoppingListRecipe extends React.Component {
 
   }
 
-  updateRecipePrice(stashRowElement) {
-    this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price - stashRowElement.price).toFixed(2);
-    this.props.updateTotalRecipePrice(stashRowElement, true);
+  updateRecipePrice(stashRowElement, remove) {
+    if (remove){
+      this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price - stashRowElement.price).toFixed(2);
+      this.props.updateTotalRecipePrice(stashRowElement, true);
+    }
+    else {
+      this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price + stashRowElement.price).toFixed(2);
+      this.props.updateTotalRecipePrice(stashRowElement, true);
+    }
+
+
   }
 
   componentDidMount() {
@@ -57,9 +65,9 @@ class ShoppingListRecipe extends React.Component {
         </thead>
         <tbody>
           {
-            this.props.recipe.ingredients.map((ingredient) => {
-              if (this.props.isIngredientInStash(ingredient, this.props.recipeIndex)){
-                this.updateRecipePrice(ingredient);
+            this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
+              if (this.props.isIngredientInStash(ingredient, this.props.recipeIndex, ingredientIndex)){
+                this.updateRecipePrice(ingredient, true);
                 return null;
               }
 

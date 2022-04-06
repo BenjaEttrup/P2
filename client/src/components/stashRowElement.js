@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 
 //This is a React class it extends a React component which
 //means that you can use all the code from the React component and it runs the
@@ -33,7 +33,7 @@ class StashRowElement extends React.Component {
     if (this.props.hasOwnProperty('recipeID')) {
       params['recipeID'] = this.props.recipeID;
       this.props.removeIngredient(stashRowElement, params);
-      this.props.updateRecipePrice(stashRowElement);
+      this.props.updateRecipePrice(stashRowElement, true);
     }
     else {
       params['recipeID'] = false;
@@ -49,6 +49,8 @@ class StashRowElement extends React.Component {
         this.props.findIngredientInRecipes(this.props.ingredient);
       }
       else {
+        console.log("Unchecked")
+        this.props.findIngredientInRecipes(this.props.ingredient)
         // TODO create function that updates the recipes to include the stash ingredient again.
       }
     });

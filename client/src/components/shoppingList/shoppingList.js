@@ -16,6 +16,7 @@ class ShoppingList extends React.Component {
     super();
 
     this.state = {
+      tempShoppingListRecipes: [],
       shoppingListRecipes: [],
       myStashIngredients: [],
       recipeSum: 0,
@@ -34,9 +35,12 @@ class ShoppingList extends React.Component {
     })
       .then(res => res.json())
       .then((res) => {
+        console.log(res)
         let data = {
-          shoppingListRecipes: res
+          tempShoppingListRecipes: res,
+          shoppingListRecipes: res,
         };
+        console.log(data);
         this.setState(data);
       }).catch(err => {
         console.error(err);
@@ -64,37 +68,34 @@ class ShoppingList extends React.Component {
   //Functions go here
 
   /**
-   *@function searches all recipes after a specific recipe and removes ingreient from stash
+   *@function searches all recipes after a specific recipe and removes ingredient from stash
    *@returns true if passed ingredient is in stash. Else false
   */
 
 //  TODO should either pass the recipeIndex of the ingredient or add it to the shoppingListIngredient object
 //  Move shoppingListIngredient into this.state.hiddenStashIngredients with the ingredient recipeIndex
 //  
-  isIngredientInStash(shoppingListIngredient, recipeIndex) {
+  isIngredientInStash(shoppingListIngredient, recipeIndex, ingredientIndex) {
+    console.log("tempShoppingListRecipes")
+    console.log(this.state.tempShoppingListRecipes)
+    console.log("shoppingListRecipes")
+    console.log(this.state.shoppingListRecipes)
+    
     let isInStash = false;
-    let ingredientIndex = 0;
-    let shoppingList = this.state.shoppingListRecipes;
-
-    this.state.myStashIngredients.forEach(ingredient => {
-      if (ingredient.prod_id == shoppingListIngredient.prod_id){
-        isInStash = true
-        shoppingList[0].ingredients.splice(0, 1);
-        // this.setState({
-        //   shoppingListRecipes: shoppingList
-        // })
-
-        // this.setState(this.moveIngredientToHiddenStash(shoppingListIngredient, ingredientIndex, recipeIndex));
-        // this.updateTotalRecipePrice(shoppingListIngredient, true);
-      }
-
-      ingredientIndex++;
-    });
+    if(ingredientIndex === undefined){
+      return isInStash
+    }
+      this.state.myStashIngredients.forEach((ingredient, i) => {
+        if (ingredient.prod_id == shoppingListIngredient.prod_id){
+          isInStash = true
+          console.log("removing ingredients");
+          this.setState(this.moveIngredientToHiddenStash(shoppingListIngredient, ingredientIndex, recipeIndex));
+        }});
 
     return isInStash
   }
-  
-  /**
+
+    /**
    * 
    * @param {*} shoppingListIngredient the shoppingListIngredient object 
    * @param {*} ingredientIndex the index of the ingredient within the Recipe
@@ -102,18 +103,48 @@ class ShoppingList extends React.Component {
    * @returns an object with two properties: shoppingListRecipes 
    * (the now updated array of shoppingListRecipes) and hiddenShoppingListIngredients (where the ingredient was moved to)
    */
-  moveIngredientToHiddenStash(shoppingListIngredient, ingredientIndex, recipeIndex){
-    let hiddenShoppingListIngredients = this.state.hiddenShoppingListIngredients;
-    let shoppingList = this.state.shoppingListRecipes;
-    console.log(shoppingListIngredient);
-    console.log(ingredientIndex);
-    console.log(recipeIndex);
+     moveIngredientToHiddenStash(shoppingListIngredient, ingredientIndex, recipeIndex){
+      let hiddenShoppingListIngredients = this.state.hiddenShoppingListIngredients;
+      let tempShoppingListRecipes = this.state.tempShoppingListRecipes;
+  
+      tempShoppingListRecipes[recipeIndex].ingredients.splice(ingredientIndex, 1); //should use recipeIndex to remove the specific ingredient
+      hiddenShoppingListIngredients.push(shoppingListIngredient);
+  
+      return {
+        tempShoppingListRecipes: tempShoppingListRecipes,
+        hiddenShoppingListIngredients: hiddenShoppingListIngredients
+      }
+    }
 
-    shoppingList[recipeIndex].ingredients.splice(ingredientIndex, 1); //should use recipeIndex to remove the specific ingredient
-    hiddenShoppingListIngredients.push(shoppingListIngredient);
+  findIngredientInRecipes(stashIngredient) {
+    let shoppingList = this.state.shoppingListRecipes;
+    let tempShoppingList = this.state.tempShoppingListRecipes; 
+    let hiddenShoppingListIngredients = this.state.hiddenShoppingListIngredients;
+
+    shoppingList.forEach((recipe, recipeIndex) => {
+      recipe.ingredients.forEach((ingredient) => {
+
+        console.log(`stashIngredient.prod_id ${stashIngredient.prod_id} ingredient.prod_id = ${ingredient.prod_id}`)
+          if (stashIngredient.prod_id == ingredient.prod_id){
+            // this.moveIngredientFromHiddenStash(shoppingListIngredient, recipeIndex);
+            // hiddenShoppingListIngredients.splice(index, 1);
+          }
+      })
+    })
+
+  }
+
+
+  moveIngredientFromHiddenStash(shoppingListIngredient, recipeIndex){
+    let hiddenShoppingListIngredients = this.state.hiddenShoppingListIngredients;
+    let tempShoppingList = this.state.tempShoppingListRecipes;
+    let shoppingList = this.state.shoppingListRecipes;
 
     return {
-      shoppingListRecipes: shoppingList, hiddenShoppingListIngredients: hiddenShoppingListIngredients}
+      tempShoppingListRecipes: tempShoppingList, 
+      hiddenShoppingListIngredients: hiddenShoppingListIngredients,
+      shoppingListRecipes: shoppingList
+    }
   }
 
   /**
@@ -195,19 +226,6 @@ class ShoppingList extends React.Component {
     
   }
 
-  // findIngredientInRecipes(myStashIngredient) {
-  //   let ingredientToHide;
-  //   this.state.shoppingListRecipes.forEach(recipe => {
-  //     recipe.ingredients.forEach(ingredient => {
-  //       if(myStashIngredient.prod_id == ingredient.prod_id) {
-  //         ingredientToHide = ingredient;
-  //       }
-  //     })
-  //   });
-
-  //   this.updateTotalRecipePrice(ingredientToHide, true);
-  // }
-
   //This is the render function. This is where the
   //html is.
   render() {
@@ -220,14 +238,14 @@ class ShoppingList extends React.Component {
                 Shoppinglist
               </h4>
               {
-                this.state.shoppingListRecipes.map((recipe, index) => {
+                this.state.tempShoppingListRecipes.map((recipe, index) => {
                   return (
                     <ShoppingListRecipe
                       removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                       removeRecipe={(recipe) => this.removeRecipe(recipe)}
-                      key={this.state.shoppingListRecipes.indexOf(recipe)}
+                      key={this.state.tempShoppingListRecipes.indexOf(recipe)}
                       calculateTotalRecipePrice={(recipePrice) => this.calculateTotalRecipePrice(recipePrice)}
-                      isIngredientInStash={(ingredient) => this.isIngredientInStash(ingredient)}
+                      isIngredientInStash={(ingredient, recipeIndex, ingredientIndex) => this.isIngredientInStash(ingredient, recipeIndex, ingredientIndex)}
                       recipe={recipe}
                       recipeIndex={index}
                       updateTotalRecipePrice={(priceElement, remove) => this.updateTotalRecipePrice(priceElement, remove)}
@@ -256,6 +274,7 @@ class ShoppingList extends React.Component {
                         ingredient={ingredient} myStash = {true} 
                         removeIngredient={this.removeIngredient}
                         findIngredientInRecipes={(ingredient) => this.findIngredientInRecipes(ingredient)}
+                        moveIngredientFromHiddenStash={(ingredient) => {this.moveIngredientFromHiddenStash(ingredient)}}                
                         />
                       )
                     })
