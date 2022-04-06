@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import '../stylesheets/wheel.css';
 import '../stylesheets/popupRecipe.css';
@@ -12,16 +13,36 @@ export default class Wheel extends React.Component {
     };
     this.selectItem = this.selectItem.bind(this);
   }
+  addRecipe(recipe) {
+    fetch(`/addRecipeToShoppingList`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(recipe),
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .then(() => {
+      console.log('Success');
+    });
+  }
 
   selectItem() {
     if (this.state.selectedItem === null) {
-      const selectedItem = Math.floor(Math.random() * this.props.items.length);
-      
-      if (this.props.onSelectItem) {
-        this.props.onSelectItem(selectedItem, this.props.items);
+      if(this.props.isSpinning === false){
+        const selectedItem = Math.floor(Math.random() * this.props.items.length);
+        
+        if (this.props.onSelectItem) {
+          this.props.onSelectItem(selectedItem, this.props.items);
+        }
+        this.setState({ selectedItem });
       }
-      this.setState({ selectedItem });
-    } else {
+    }
+    else {
       this.setState({ selectedItem: null });
       setTimeout(this.selectItem, 500);
     }
@@ -102,7 +123,7 @@ export default class Wheel extends React.Component {
                             <tr>
                               <td>{Object.keys(ingredient)[0]}</td>
                               <td>{ingredient[Object.keys(ingredient)[0]].amount} {ingredient[Object.keys(ingredient)[0]].unit}</td>
-                              <td>{this.props.items[selectedItem].ingredients[currentIndex].price +" DKK"}</td>
+                              <td>{this.props.items[selectedItem].ingredients[currentIndex] ? this.props.items[selectedItem].ingredients[currentIndex].price +" DKK":""}</td>
                             </tr>
                             
                           )
@@ -111,20 +132,20 @@ export default class Wheel extends React.Component {
               </tbody>
             </table>
                     </ul>
-                    <div class="row">
+                    <div class="row mb-3">
                       <b><div class="col-7">Total price</div></b>
                       <div class="col-5">
                         {selectedItem ? this.props.items[selectedItem].recipe.price : ''} DKK
                       </div>
                     </div>
                     <div class="row">
-                  <div class="col-6">
-                    <button type="button" class="btn btn-primary col-12">Add to shopping list</button>
-                  </div>
-                  <div class="col-6">
-                    <button type="button" class="btn btn-secondary col-12">Go to recipe</button>
-                  </div>
-                </div>
+                      <div class="col-6">
+                        <button type="button" onClick={() => this.addRecipe(this.props.items[selectedItem])} class="btn btn-primary col-12">Add to shopping list</button>
+                      </div>
+                      <div class="col-6">
+                        <Link to={`/recipe/${selectedItem ? this.props.items[selectedItem].recipe.recipeID : ''}`} class="btn btn-secondary col-12">Go to recipe</Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -12,14 +12,21 @@ export class Spin extends React.Component {
   constructor() {
     super();
     this.state = {
-      selectedItem: ''
+      selectedItem: '',
+      isSpinning: false
     }
   }
  
   activePopup(value, recipes){
+    this.setState({
+      isSpinning: true
+    })
     setTimeout(() => {
       var myModal = new Modal(document.getElementById("popupRecipeModal"), {});
       myModal.show()
+      this.setState({
+        isSpinning: false
+      })
     }, 5000)
     console.log(recipes[value]);
   }
@@ -28,7 +35,7 @@ export class Spin extends React.Component {
     return (
       <div className="Spin">
         {
-         this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={this.activePopup} setStateFunction={this.setState} /> : ''
+         this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={(value, recipes) => this.activePopup(value, recipes)} setStateFunction={this.setState} isSpinning={this.state.isSpinning} /> : ''
         }
       </div>
     );
