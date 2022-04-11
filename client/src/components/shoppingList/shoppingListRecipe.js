@@ -12,7 +12,7 @@ class ShoppingListRecipe extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super(props);
-    
+
     //Your code here
 
     this.state = {
@@ -22,7 +22,7 @@ class ShoppingListRecipe extends React.Component {
   }
 
   updateRecipePrice(stashRowElement, remove) {
-    if (remove){
+    if (remove) {
       this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price - stashRowElement.price).toFixed(2);
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }
@@ -30,8 +30,6 @@ class ShoppingListRecipe extends React.Component {
       this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price + stashRowElement.price).toFixed(2);
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }
-
-
   }
 
   componentDidMount() {
@@ -46,18 +44,18 @@ class ShoppingListRecipe extends React.Component {
     // TODO: set removeRecipe as a property in shoppingList
     this.props.removeRecipe(recipe)
   }
-  
+
   //This is the render function. This is where the
   //html is.
   render() {
-    if(this.state.hide) return null;
+    if (this.state.hide) return null;
     return (
-        <table className="table table-striped">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th className='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
             <th className="col-4 text-success">Pris på opskrift: {this.props.recipe.recipe.price} kr.</th>
-            <th>              
+            <th>
               <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
                 <i className="fa fa-trash"></i></button>
             </th>
@@ -66,23 +64,30 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
-              console.log("Before isIngredientInStash");
-              console.log(this.props.recipe);
-              // Måske er problemet her, men jeg smutter på toilet...
-              if (this.props.isIngredientInStash(ingredient, this.props.recipeIndex, ingredientIndex)){
-                this.updateRecipePrice(ingredient, true);
-                return null;
+              if (this.props.isIngredientInStash(ingredient, ingredientIndex)) {
+                return (
+                  <StashRowElement
+                    key={ingredientIndex}
+                    hideInitially={true}
+                    recipeID={this.props.recipe.recipe.recipeID}
+                    ingredient={ingredient}
+                    shoppingList={true}
+                    removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
+                    updateRecipePrice={(stashRowElement) => this.updateRecipePrice(stashRowElement)}
+                    recipeIndex={this.props.recipeIndex}
+                  />
+                )
               }
-
               return (
                 <StashRowElement
-                key={ingredientIndex}
-                recipeID = {this.props.recipe.recipe.recipeID} 
-                ingredient={ingredient} 
-                shoppingList = {true}
-                removeIngredient = {(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
-                updateRecipePrice = {(stashRowElement) => this.updateRecipePrice(stashRowElement)}
-                recipeIndex = {this.props.recipeIndex}
+                  key={ingredientIndex}
+                  hideInitially={false}
+                  recipeID={this.props.recipe.recipe.recipeID}
+                  ingredient={ingredient}
+                  shoppingList={true}
+                  removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
+                  updateRecipePrice={(stashRowElement) => this.updateRecipePrice(stashRowElement)}
+                  recipeIndex={this.props.recipeIndex}
                 />
               )
             })
