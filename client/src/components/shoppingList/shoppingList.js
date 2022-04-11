@@ -86,7 +86,7 @@ class ShoppingList extends React.Component {
     // If we want to add element
     else if (remove === false) {
       this.setState((prevState) => ({
-        recipeSum: Number(prevState.recipeSum + priceElement.price).toFixed(2)
+        recipeSum: Number(+prevState.recipeSum + +priceElement.price).toFixed(2)
       }));
     }
   }
@@ -114,6 +114,21 @@ class ShoppingList extends React.Component {
     if (Number.isInteger(params.recipeID)) {
       this.updateTotalRecipePrice(stashRowElement, true);
     }
+  }
+
+  matchIngredient(stashIngredient, subtract){
+    let myStashIngredients = this.state.myStashIngredients;
+    myStashIngredients.forEach((recipeIngredient, i) => {
+      if (stashIngredient.prod_id == recipeIngredient.prod_id) {
+        this.updateTotalRecipePrice(recipeIngredient, false)
+      }
+    });
+  }
+
+
+  testRecipePrice(priceElement){
+    console.log(priceElement);
+    this.updateTotalRecipePrice(priceElement, false);
   }
 
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
@@ -199,6 +214,7 @@ class ShoppingList extends React.Component {
                           key={this.state.myStashIngredients.indexOf(ingredient)}
                           ingredient={ingredient} myStash={true}
                           removeIngredient={this.removeIngredient}
+                          testRecipePrice={(priceElement) => this.testRecipePrice(priceElement)}
                         />
                       )
                     })

@@ -48,8 +48,10 @@ class StashRowElement extends React.Component {
     }), () => {
       if (this.state.boxChecked) {
         console.log("Checked")
+        this.props.testRecipePrice({"price": 6.95});
       }
       else {
+        this.props.testRecipePrice({"price": 6.95});
         console.log("Unchecked")
         // TODO create function that updates the recipes to include the stash ingredient again.
       }
