@@ -77,7 +77,7 @@ export default class Wheel extends React.Component {
           ))}
         </div>
         <div show={this.state.showModal} class="modal fade" id="popupRecipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <img src={selectedItem ? this.props.items[selectedItem].recipe.image : ''} alt="popupPicture" class="modal-recipe-header picture-perfect" />
