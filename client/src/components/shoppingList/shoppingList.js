@@ -35,6 +35,7 @@ class ShoppingList extends React.Component {
     })
       .then(res => res.json())
       .then((res) => {
+        console.log("Fetching shoppinglist")
         console.log(res)
         let data = {
           tempShoppingListRecipes: res,
