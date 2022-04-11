@@ -39,7 +39,6 @@ class RecipeCard extends React.Component {
     return (
       <div className="RecipeCard">
         <div class="col mb-4 outer-item-card hover-shadow">
-          <a class="card-link" href="#">
             <div class="card card-item h-100">
               <div class="img-gradient img-gradient-black card-img-border">
                 <img src={this.props.recipe.recipe.image} class="card-img" alt="..." height="175" />
@@ -56,7 +55,6 @@ class RecipeCard extends React.Component {
                 </div>
               </div>
             </div>
-          </a>
         </div>
       </div>
     );
