@@ -112,8 +112,8 @@
     display: block;
 }
 
-a,
-a:hover {
+.card-link,
+.card-link:hover {
     color: white;
     text-decoration: none;
 }

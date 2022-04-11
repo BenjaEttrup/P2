@@ -2,8 +2,56 @@
   "recipes": [
     {
       "recipeID": 0,
-      "title": "Risotto med anderester",
-      "description": "Dagen efter at der har været and på menuen, giver det mening at lave en nem og lækker ret med resterne fra anden. Pluk resterne af kødet fra skroget og brug det i en lækker cremet risotto – det smager super godt 🙂",
+      "title": "Simpel wokret",
+      "description": "Nem og simpel wokret med få ingedienser.",
+      "size": 1,
+      "ingredients": [
+        {
+          "kyllingebryst": {
+            "amount": 1,
+            "unit": "stk"
+          }
+        },
+        {
+          "wokblanding": {
+            "amount": 0.5,
+            "unit": "stk"
+          }
+        },
+        {
+          "rød karry pasta": {
+            "amount": 1,
+            "unit": "spsk"
+          }
+        },
+        {
+          "kokosmælk": {
+            "amount": 0.5,
+            "unit": "ds"
+          }
+        },
+        {
+          "ris": {
+            "amount": "",
+            "unit": ""
+          }
+        }        
+      ],
+      "time": 30,
+      "method": [
+        "Kyllingen skæres i mundrette stykker og svitses i en wok. Tilsæt lidt salt.",
+        "Når kyllingen er gennemstegt tilsættes karrypastaen og det svitses lidt.",
+        "Så tilsættes grønsagerne og de steges til de lige akkurat er blevet gennemvarme.",
+        "Til sidst tilsættes kokosmælken, og maden er klar når det har kogt et minut."
+      ],
+      "rating": 3,
+      "image": "https://www.kogebog.dk/images/show_images/34/2018/10/kylling-i-wok_1539787209020.png",
+      "url": "https://su-mad.dk/opskrifter/hovedretter/simpel-wokret"
+    },
+    {
+      "recipeID": 1,
+      "title": "Svampe risotto ",
+      "description": "Lækker cremet svamperisotto på alm. ris.",
       "size": 1,
       "ingredients": [
         {
@@ -13,21 +61,145 @@
           }
         },
         {
-          "blomkålsris": {
-            "amount": 87.5,
-            "unit": "g"
-          }
-        },
-        {
-          "spinat": {
-            "amount": 25.0,
+          "champingon": {
+            "amount": 100,
             "unit": "g"
           }
         },
         {
           "løg": {
             "amount": 0.25,
+            "unit": "stk"
+          }
+        },
+        {
+          "hvidløg": {
+            "amount": "0.25",
+            "unit": "fed"
+          }
+        },
+        {
+          "parmesan": {
+            "amount": 12.5,
+            "unit": "g"
+          }
+        },
+        {
+          "boullion": {
+            "amount": 0.25,
+            "unit": "tsk"
+          }
+        },
+        {
+          "peber": {
+            "amount": "",
             "unit": ""
+          }
+        },
+        {
+          "salt": {
+            "amount": "",
+            "unit": ""
+          }
+        }
+      ],
+      "time": 30,
+      "method": [
+        "Vask champignonerne grundigt og skær dem i skiver.",
+        "Løg og hvidløg hakkes fint.",
+        "Varm fedtstof i en gryde og rist champignonerne til de er gyldne. Tilsæt hakket løg og hvidløg og lad det stege med 1 minuts tid.",
+        "Tilsæt ris, bouillon og vand samt blomkålsrisen. Lad retten koge ved middel varme uden låg i 15-20 minutter til risene er møre. Rør i retten undervejs – især til sidst hvor den ellers godt kan brænde på.",
+        "Tilsæt parmesan til retten lige inden serveringen.",
+        "Smag til med salt og peber.",
+        "Serveres med det samme, evt. med et ekstra drys parmesan ved siden af."
+      ],
+      "rating": 3,
+      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/02/2021-02-02-090015055-800x530.jpg",
+      "url": "https://sundpaabudget.dk/cremet-snyde-risotto-med-champignon/"
+    },
+    {
+      "recipeID": 2,
+      "title": "Pastaret i ovn m/brocolli og bacon",
+      "description": "Lækker og mild pastaret i ovn med bacon og broccoli.",
+      "size": 1,
+      "ingredients": [
+        {
+          "bacon": {
+            "amount": 4,
+            "unit": "skiver"
+          }
+        },
+        {
+          "pasta": {
+            "amount": 75,
+            "unit": "g"
+          }
+        },
+        {
+          "brocolli": {
+            "amount": 65,
+            "unit": "g"
+          }
+        },
+        {
+          "mornaysauce": {
+            "amount": 0.75,
+            "unit": "dl"
+          }
+        },
+        {
+          "mozarella": {
+            "amount": 50,
+            "unit": "g"
+          }
+        },
+        {
+          "salt": {
+            "amount": "",
+            "unit": ""
+          }
+        },
+        {
+          "peber": {
+            "amount": "",
+            "unit": ""
+          }
+        }
+      ],
+      "time": 30,
+      "method": [
+        "Læg baconskiverne på en bageplade beklædt med bagepapir. Tænd ovnen på 225 grader, og sæt bagepladen i ovnen. Steg baconen sprødt i de ca. 20 minutter, det tager for ovnen at forvarme. Der kan være forskel på ovne, så hold øje med, at det ikke brænder på, og giv det evt. lidt længere tid, hvis baconen ikke er sprød efter de 20 minutter.",
+        "Kog imens pastaen i letsaltet vand, til den næsten er al dente. Pastaen skal efterfølgende bages i ovnen, så hæld vandet fra, inden den er helt færdigkogt.",
+        "Skær broccoli eller aspargesbroccoli ud i mindre buketter. Skær de sprøde baconskiver i mindre stykker.",
+        "Bland pasta, broccoli og bacon sammen med mornaysaucen og halvdelen af osten i et ovnfast fald. Krydr med salt og peber, og drys resten af osten på toppen.",
+        "Bag pastaretten i ca. 10 minutter – sæt evt. ovnen på grill, så osten smelter og bliver gylden."
+],
+      "rating": 0,
+      "image": "https://www.webopskrifter.dk/images/7606/620x310/pastabaconbroccoliovn.jpg",
+      "url": "https://www.webopskrifter.dk/opskrifter/pastaiovnmedbaconogbroccoli-22518/"
+    },
+    {
+      "recipeID": 3,
+      "title": "Lasagne",
+      "description": "Nem basis opskrift på lasagne. Tilføj ekstra ingredienter som det lyster.",
+      "size": 1,
+      "ingredients": [
+        {
+          "oksekød": {
+            "amount": 125,
+            "unit": "g"
+          }
+        },
+        {
+          "hakkede tomater": {
+            "amount": 0.25,
+            "unit": "stk"
+          }
+        },
+        {
+          "løg": {
+            "amount": 0.25,
+            "unit": "stk"
           }
         },
         {
@@ -37,100 +209,15 @@
           }
         },
         {
-          "vand": {
-            "amount": 0.25,
-            "unit": "liter"
-          }
-        },
-        {
-          "bouillonterning": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "timian": {
-            "amount": 0.25,
-            "unit": "tsk"
-          }
-        },
-        {
-          "parmesan ost": {
-            "amount": 12.5,
-            "unit": "g"
-          }
-        },
-        {
-          "and": {
-            "amount": 100,
-            "unit": "g"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "smør": {
-            "amount": "",
-            "unit": ""
-          }
-        }
-      ],
-      "time": 40,
-      "method": [
-        "Løg og hvidløg hakkes fint.",
-        "Varm fedtstof i en gryde og svist løgene til de er klare. Tilsæt hvidløg og lad det stege med 1 minuts tid.",
-        "Tilsæt ris, bouillon, spinat, timian og vand samt blomkålsrisen. Lad retten koge ved middel varme uden låg i 15-20 minutter til risene er møre. Rør i retten undervejs – især til sidst hvor den ellers godt kan brænde på.",
-        "Når risottoen er næsten færdig tilføjes parmesan og andekødet, og varmes med til risottoen er færdig.",
-        "Smag til med salt og peber, og evt. mere timian."
-      ],
-      "rating": 0,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/02/Sund-paa-budget-opskrift-750x500.jpg",
-      "url": "https://sundpaabudget.dk/risotto-med-anderester/"
-    },
-    {
-      "recipeID": 1,
-      "title": "Andesteg med tilbehør",
-      "description": "4",
-      "size": 1,
-      "ingredients": [
-        {
-          "and": {
-            "amount": 450,
-            "unit": "g"
-          }
-        },
-        {
-          "svesker": {
-            "amount": 0.25,
-            "unit": "ps"
-          }
-        },
-        {
-          "æble": {
+          "basilikum": {
             "amount": 0.5,
-            "unit": ""
+            "unit": "tsk"
           }
         },
         {
-          "smør": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "løg": {
+          "oregano": {
             "amount": 0.25,
-            "unit": ""
+            "unit": "tsk"
           }
         },
         {
@@ -140,31 +227,19 @@
           }
         },
         {
-          "laurbærblade": {
-            "amount": 0.75,
-            "unit": ""
+          "mozarella": {
+            "amount": 0.25,
+            "unit": "stk"
           }
         },
         {
-          "vand": {
-            "amount": 2.0,
-            "unit": "dl"
-          }
-        },
-        {
-          "madlavningsfløde": {
-            "amount": 0.62,
-            "unit": "dl"
-          }
-        },
-        {
-          "hvedemel": {
+          "lasagneplader": {
             "amount": "",
             "unit": ""
           }
         },
         {
-          "kulør": {
+          "salt": {
             "amount": "",
             "unit": ""
           }
@@ -173,117 +248,6 @@
           "peber": {
             "amount": "",
             "unit": ""
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "kartofler": {
-            "amount": 0.25,
-            "unit": "kg"
-          }
-        },
-        {
-          "gulerødder": {
-            "amount": 0.125,
-            "unit": "kg"
-          }
-        },
-        {
-          "rødkål": {
-            "amount": 0.25,
-            "unit": "gl"
-          }
-        },
-        {
-          "kartofler": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "sukker": {
-            "amount": 0.75,
-            "unit": "spsk"
-          }
-        },
-        {
-          "smør": {
-            "amount": 0.25,
-            "unit": "spsk"
-          }
-        }
-      ],
-      "time": 38,
-      "method": [
-        "And",
-        "And",
-        "Start med at fjerne evt. indmad i anden. Skær herefter de 2 yderste led af vingerne samt fedtstykket omkring halsen, og brun dem af i en gryde med lidt smør. Når andestykkerne er brune, tilsættes laurbærblade, timian, et løg i både, samt et par æblebåde og et par svesker. Hæld vand over and, løg, æbler og svesker, og lad det småkoger indtil anden er færdig.",
-        "Rens anden godt for blod. Rens den både indvendigt og udvendigt. Herefter gnides den grundigt med salt, både indvendigt og udvendigt.",
-        "Anden fyldes med æblestykker og svesker. Luk enden sammen på anden med kødnål eller lignende.",
-        "Læg anden på brystet med ryggen opad på en rist ovenpå bradepanden, så fedtet kan dryppe ned i bradepanden.",
-        "Steg anden ved 150 grader i cirka 3 timer. Efter 1½ time vendes anden om på ryggen med brystet opad. Drys med rigeligt salt igen.",
-        "Hvis skindet ikke er helt sprødt så giv den lidt grill i ovnen – men hold godt øje med den!",
-        "Sauce",
-        "Sauce",
-        "Si andestykker, æbler, løg og svesker fra vandet, så du kun har andefonden tilbage. Tilsæt fløde og kulør og varm saucen igennem. Saucen jævnes og smages til med salt og peber.",
-        "Tilbehør",
-        "Tilbehør",
-        "Skræl kartofler og gulerødder, og kog dem i letsaltet vand til de er møre. Lun rødkålen og server det hele til den færdigstegte and.",
-        "Brunede kartofler",
-        "Brunede kartofler",
-        "Hæld vandet fra glaskartoflerne og lad dem dryppe godt af. Fordel 3 spsk sukker på en kold pande.",
-        "Smelt sukkeret på panden uden omrøring – først 1-2 minutter ved høj varme og herefter skrues ned til jævn varme. Når sukkeret er smeltet tilsættes smør. Når smøret er smeltet tilsættes kartoflerne.",
-        "Brun kartoflerne i ca. 5 minutter. Undgå at røre for meget i dem, men ryst dem i stedet rundt på panden, så der kommer sukker overalt på kartoflerne."
-      ],
-      "rating": 5,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2018/11/mortens-and.jpg",
-      "url": "https://sundpaabudget.dk/mortens-and-med-tilbehoer/"
-    },
-    {
-      "recipeID": 2,
-      "title": "Pankorejer med peanut dressing",
-      "description": "Pankorejer behøver ikke at blive friturestegt, for at være en lækker og sprød snack. Disse er paneret i pankorasp og kokosmel, og stegt i lidt fedtstof på panden. Server dem med en sprød kålsalat og den tilhørende peanutdressing, og du har et fantastisk måltid.",
-      "size": 1,
-      "ingredients": [
-        {
-          "rejer": {
-            "amount": 50.0,
-            "unit": "g"
-          }
-        },
-        {
-          "æg": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "hvedemel": {
-            "amount": 0.75,
-            "unit": "spsk"
-          }
-        },
-        {
-          "pankorasp": {
-            "amount": 0.25,
-            "unit": "dl"
-          }
-        },
-        {
-          "kokosmel": {
-            "amount": 0.25,
-            "unit": "dl"
-          }
-        },
-        {
-          "salt": {
-            "amount": 0.125,
-            "unit": "tsk"
           }
         },
         {
@@ -291,114 +255,372 @@
             "amount": "",
             "unit": ""
           }
-        },
-        {
-          "peanut butter": {
-            "amount": 0.75,
-            "unit": "spsk"
-          }
-        },
-        {
-          "lime": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "soyasauce": {
-            "amount": 0.25,
-            "unit": "spsk"
-          }
-        },
-        {
-          "hvidløg": {
-            "amount": 0.25,
-            "unit": "fed"
-          }
-        },
-        {
-          "vand": {
-            "amount": "",
-            "unit": ""
-          }
         }
       ],
-      "time": 20,
+      "time": 60,
       "method": [
-        "Hæld hvedemel i en skål, pisk ægget i en anden skål og bland salt, kokosmel og panko raps i en tredje skål.",
-        "Vend rejerne først i hvedemel, så pisket æg og til sidst i kokos-pankorasp.",
-        "Opvarm olie på en pande og steg rejerne 2-3 minutter på hver side til de gyldne og sprøde.",
-        "Rør er dressing af peanut butter, limesaft, presset hvidløg og soyasauce. Juster tykkelsen på dressingen med kold vand. Pas på at den ikke bliver alt for tynd, den må gerne være lidt cremet.",
-        "Servér de stegte rejer med med peanut dressing, lidt sød chilisauce og en sprød kålsalat."
+
+      "Snit løg og hvidløg, og steg dem i en gryde med olie i et par minutter.",
+      "Tilsæt kødet og rør rundt i gryden med en grydeske, til det er gennemstegt ved høj varme.",
+      "Tilsæt hakkede tomater, tomatpure og krydderier.",
+      "Smag sovsen til med salt og peber, og evt. ekstra krydderier.",
+      "Skru ned på lav varme og tænd ovnen på 200 grader.",
+      "Nu er det tid til at lave Mornaysovsen. Klik på linket for at få opskriften.",
+      "Nu skal du lave/samle din lasagne i et ildfast fad ved, skiftevis, at tilføje kødsovs, plader og mornaysauce i 3-4 lag, eller til der ikke er mere kødsovs. Slut evt. af med lidt revet ost på toppen.",
+      "Bag lasagnen i 35-40 minutter, til lasagnepladerne er bløde og osten på toppen er gylden.",
+      "Tag lasagnen ud og lad den stå 5-10 minutter inden servering, så bliver den lidt mere fast at skære i."
       ],
-      "rating": 0,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/11/20211116193925_IMG_0956-750x500.jpg",
-      "url": "https://sundpaabudget.dk/pankorejer-med-peanutdressing/"
+      "rating": 4,
+      "image": "https://vielskermad.dk/wp-content/uploads/2020/11/lasagne-360x361.jpg",
+      "url": "https://vielskermad.dk/opskrift/lasagne/"
     },
     {
-      "recipeID": 3,
-      "title": "Stegte nudler med rejer og grøntsager",
-      "description": "En smagfuld og hurtig hverdagsret med store lækre rejer og masser af grønt. Er man ikke til rejer, kan retten også laves med oksetrimler, svin eller kylling 🙂",
+      "recipeID": 4,
+      "title": "Pasta med tomatsovs",
+      "description": "En lækker og basisopskrift på tomatsovs. Tilføj evt. kylling eller oksekød.",
       "size": 1,
       "ingredients": [
         {
-          "spidskål": {
-            "amount": 125.0,
-            "unit": "g"
-          }
-        },
-        {
-          "porre": {
-            "amount": 0.25,
+          "løg": {
+            "amount": 0.5,
             "unit": "stk"
           }
         },
         {
-          "gulerødder": {
-            "amount": 0.5,
-            "unit": ""
-          }
-        },
-        {
-          "peberfrugt": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
           "hvidløg": {
             "amount": 0.5,
             "unit": "fed"
           }
         },
         {
-          "rejer": {
-            "amount": 50.0,
-            "unit": "g"
-          }
-        },
-        {
-          "rød karrypasta": {
+          "oregano": {
             "amount": 0.25,
             "unit": "tsk"
           }
         },
         {
-          "nudler": {
-            "amount": 62.5,
+          "sukker": {
+            "amount": 0.25,
+            "unit": "tsk"
+          }
+        },
+        {
+          "hakkede tomater": {
+            "amount": 0.5,
+            "unit": "stk"
+          }
+        },
+        {
+          "pasta": {
+            "amount": 75,
             "unit": "g"
           }
         },
         {
-          "lime": {
+          "salt": {
+            "amount": "",
+            "unit": ""
+          }
+        },
+        {
+          "peber": {
+            "amount": "",
+            "unit": ""
+          }
+        },
+        {
+          "olie": {
+            "amount": "",
+            "unit": ""
+          }
+        }
+      ],
+      "time": 45,
+      "method": [
+        "Løg og hvidløg hakkes helt fint, og er du glad for hvidløg, kan du sagtens tilføje et enkelt hvidløgsfed mere. Men tomatsovsen skal heller ikke drukne i hvidløgssmag.",
+        "Varm lidt olivenolie i en tykbundet gryde, og svits nu løg og hvidløg uden det tager farve. Det tager 3-4 minutter.",
+        "Kom sukker og oregano i, og lad det lige svitse af, inden du tilsætter hakkede tomater",
+        "Rør rundt og lad nu tomatsovsen småkoge i 10 minutter.",
+        "Imens koger du pasta, og det kan være pastapenne eller spaghetti.",
+        "Dryp den færdigkogte pasta af og vend den sammen med den færdige tomatsovs.",
+        "Hak persille fint og vend den i. Smag til med salt og peber, og servér straks."
+      ],
+      "rating": 5,
+      "image": "https://madensverden.dk/wp-content/uploads/2018/03/verdens-nemmeste-tomatsovs-opskrift.jpg",
+      "url": "https://madensverden.dk/tomatsovs/"
+    },
+    {
+      "recipeID": 5,
+      "title": "Søde kartofler med kyllingesalat",
+      "description": "Fantastiske fyldte søde kartofler med kyllingesalat samt friske tomater og spinat - en virkelig lækker kombination, der tilmed er super simpel at lave.",
+      "size": 1,
+      "ingredients": [
+        {
+          "søde kartofler": {
+            "amount": 1,
+            "unit": "stk"
+          }
+        },
+        {
+          "kyllingebryst": {
+            "amount": 1,
+            "unit": "stk"
+          }
+        },
+        {
+          "forårsløg": {
+            "amount": 2,
+            "unit": "stk"
+          }
+        },
+        {
+          "creme fraiche": {
+            "amount": 75,
+            "unit": "g"
+          }
+        },
+        {
+          "tomater": {
+            "amount": 1,
+            "unit": "stk"
+          }
+        },
+        {
+          "spinat": {
+            "amount": 12.5,
+            "unit": " g"
+          }
+        },
+        {
+          "salt": {
+            "amount": "",
+            "unit": ""
+          }
+        },
+        {
+          "peber": {
+            "amount": "",
+            "unit": ""
+          }
+        },
+        {
+          "olie": {
+            "amount": 1,
+            "unit": "spsk"
+          }
+        }
+      ],
+      "time": 60,
+      "method": [
+        "Tænd ovnen på 180 grader varmluft.",
+        "Skræl og vask jordskokker, kartofler og løg, og skær dem i tern.",
+        "Kom jordskokker, løg og kartofler i en gryde med hvidløg, 1 liter vand, bouillonterninger og timian.",
+        "Lad suppen simre til kartofler og jordskokker er møre (imens går du igang med torsken), og blend suppen helt jævn. ",
+        "Tilsæt madlavningsfløde og smag suppen til.",
+        "Bagt torsk",
+        "Bagt torsk",
+        "Kom torskefileterne i et ildfast og kom en klat smør ved samt citronsaft. Drys med salt og peber.",
+        "Bag torsken i ovnen i 15 minutter.",
+        "Del torsken over i mindre stykker, så der er et stykke torske pr. portion.",
+        "Server jordskokkesuppen med et stykke torsk på toppen, lunt fuldkornsbrød og evt. lidt persille til pynt."
+      ],
+      "rating": 4,
+      "image": "https://www.webopskrifter.dk/images/7226/620x310/soede-kartofler-kyllingesalat.jpg",
+      "url": "https://www.webopskrifter.dk/opskrifter/fyldte-sweet-potato-med-kyllingesalat-23845/"
+    },
+    {
+      "recipeID": 6,
+      "title": "koldskål",
+      "description": "En rigtig lækker sommer klassiker. Spis evt sammen med jordbær eller tilføj ekstra citron",
+      "size": 1,
+      "ingredients": [
+        {
+          "tykmælk": {
+            "amount": 0.25,
+            "unit": "l"
+          }
+        },
+        {
+          "kærnemælk": {
+            "amount": 0.25,
+            "unit": "l"
+          }
+        },
+        {
+          "sukker": {
+            "amount": 1,
+            "unit": "spsk"
+          }
+        },
+        {
+          "vaniljesukker": {
+            "amount": 1,
+            "unit": "tsk"
+          }
+        },
+        {
+          "citron": {
+            "amount": "1",
+            "unit": "tsk"
+          }
+        }
+      ],
+      "time": 10,
+      "method": [
+        "Hæld tykmælken i en stor skål.",
+        "Tilsæt sukker, vaniljesukker og citronsaft og rør godt rundt, indtil sukkeret er opløst.",
+        "Tilsæt kærnemælk og pisk sammen til en lækker og cremet koldskål. Smag til med sukker og citron.",
+        "Opbevar koldskålen til køl indtil servering. Server med kammerjunkere og evt. friske jordbær."
+      ],
+      "rating": 5,
+      "image": "https://madenimitliv.dk/wp-content/uploads/2013/07/Koldskaal-med-citron-og-vanilje-150x150.jpg",
+      "url": "https://madenimitliv.dk/2013/07/koldskal-vanille-uden-aeg/"
+    },
+    {
+      "recipeID": 7,
+      "title": "Stegte nudler",
+      "description": "Smager skønt som tilbehør eller som en selvstændig ret med f.eks. stegt kylling, fisk eller skinke i.",
+      "size": 1,
+      "ingredients": [
+        {
+          "nudler": {
+            "amount": 50,
+            "unit": "g"
+          }
+        },
+        {
+          "hvidkål": {
+            "amount": 25.0,
+            "unit": "g"
+          }
+        },
+        {
+          "hvidløg": {
+            "amount": 1,
+            "unit": "fed"
+          }
+        },
+        {
+          "æg": {
+            "amount": 1,
+            "unit": "stk"
+          }
+        },
+        {
+          "chili": {
+            "amount": 0.25,
+            "unit": "tsk"
+          }
+        },
+        {
+          "sukker": {
+            "amount": 0.25,
+            "unit": "tsk"
+          }
+        },
+        {
+          "sojasauce": {
+            "amount": "0.25",
+            "unit": "spsk"
+          }
+        },
+        {
+          "sød chilisauce": {
+            "amount": "0.25",
+            "unit": "spsk"
+          }
+        },
+        {
+          "lime saft": {
             "amount": 0.25,
             "unit": ""
           }
         },
         {
-          "soyasauce": {
+          "ingefær": {
             "amount": 0.5,
             "unit": "spsk"
+          }
+        },
+        {
+          "salt": {
+            "amount": "",
+            "unit": ""
+          }
+        },
+        {
+          "peber": {
+            "amount": "",
+            "unit": ""
+          }
+        }
+      ],
+      "time": 25,
+      "method": [
+      "Kog nudlerne efter anvisningen på pakken, og skyl dem derefter med koldt vand, og lad dem dryppe af i et dørslag eller en sigte.",
+      "Snit hvidkålen, drys den med lidt groft salt, og ”ælt” den i et par minutter.",
+      "Lad den stå i 10-15 minutter, ”kram” den, hæld væsken fra, og lad derefter kålen dryppe af.",
+      "Pil hvidløgsfeddene, og hak dem fint, eller riv dem.",
+      "Skær rod og ”doven” top af forårsløgene, og skær løgene i tynde ringe.",
+      "Varm 1 spsk. olie op i wokken.",
+      "Slå æggene ud i wokken, og rør rundt i dem, så blomme og hvide bliver blandet under stegningen.",
+      "Tag æggene op efter et minuts tid.",
+      "Varm resten af olien op i wokken, og svits chilif, ingefær og hvidløg ved høj varme i et minuts tid.",
+      "Tilsæt hvidkål og lad det svitse med i et par minutter. De skal stadig have lidt bid.",
+      "Vend de kogte nudler og de stegte æg i wokken.",
+      "Tilsæt soja- og chilisauce.",
+      "Smag til med sukker, limesaft, salt og peber."
+      ],
+      "rating": 4.5,
+      "image": "https://www.hurtigmums.dk/wp-content/uploads/2019/03/stegte-nudler.jpg",
+      "url": "https://www.hurtigmums.dk/stegte-nudler/"
+    },
+    {
+      "recipeID": 8,
+      "title": "One pot kylling i karry",
+      "description": "Opskrift på saftig, nem og lækker one pot kylling i karry. Det er verdens nemmeste aftensmad.",
+      "size": 1,
+      "ingredients": [
+        {
+          "kyllingebryst": {
+            "amount": 1,
+            "unit": "stk"
+          }
+        },
+        {
+          "karry": {
+            "amount": 1.5,
+            "unit": "tsk"
+          }
+        },
+        {
+          "paprika": {
+            "amount": 0.25,
+            "unit": "tsk"
+          }
+        },
+        {
+          "sukker": {
+            "amount": 0.5,
+            "unit": "spsk"
+          }
+        },
+        {
+          "kokosmælk": {
+            "amount": 0.5,
+            "unit": "stk"
+          }
+        },
+        {
+          "hønseboullion": {
+            "amount": 0.5,
+            "unit": "stk"
+          }
+        },
+        {
+          "ris": {
+            "amount": 80,
+            "unit": "g"
           }
         },
         {
@@ -422,632 +644,69 @@
       ],
       "time": 30,
       "method": [
-        "Kog nudlerne som anvist på posen og sæt til side.",
-        "Vask, skræl og snit grøntsagerne i fine strimler.",
-        "Opvarm lidt olie i en stor pande eller wok, og svits rejer, hvidløg og karrypasta ganske kort. Tilsæt resten af grøntsagerne og steg under omrøring indtil kålen er faldet sammen.",
-        "Tilsæt kogte nudler, soyasauce og limesaft, og steg det et par minutter, hæld evt. lidt vand ved efter behov, så nudlerne ikke brænder på.",
-        "Smag til med salt og peber, og evt. soya eller mere rød karrypasta."
-      ],
-      "rating": 4,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/11/20211117183847_IMG_0980-750x959.jpg",
-      "url": "https://sundpaabudget.dk/stegte-nudler-med-rejer-og-groentsager/"
-    },
-    {
-      "recipeID": 4,
-      "title": "Ovnbagt laks og grønt med citronsauce og spaghetti",
-      "description": "En lækker og nem måde at få fisk på 🙂 Er der familiemedlemmer der ikke er så glad for fisk, kan laksen erstattes med lidt kylling.",
-      "size": 1,
-      "ingredients": [
-        {
-          "porrer": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "squash": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "cherrytomater": {
-            "amount": 62.5,
-            "unit": "g"
-          }
-        },
-        {
-          "laks": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        },
-        {
-          "smør": {
-            "amount": 0.5,
-            "unit": "spsk"
-          }
-        },
-        {
-          "citron": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "hvidløg": {
-            "amount": 0.25,
-            "unit": "fed"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "dild": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "vand": {
-            "amount": "2,5",
-            "unit": "dl"
-          }
-        },
-        {
-          "bouillonterning": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "citronsaft": {
-            "amount": 0.75,
-            "unit": "spsk"
-          }
-        },
-        {
-          "madlavningsfløde": {
-            "amount": 62.5,
-            "unit": "g"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "mel": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "fuldkornspasta": {
-            "amount": 75.0,
-            "unit": "g"
-          }
-        }
-      ],
-      "time": 45,
-      "method": [
-        "Tænd ovnen på 180 grader.",
-        "Porrerne renses og skæres i skiver. Skær squashen i tern. Opvarm 1 spsk fedtstof på panden og svits porre og squash kort på panden til porrerne er faldet sammen.",
-        "Cherrytomaterne vaskes, og kommes sammen med porre og squash i bunden af et ildfast fad.",
-        "Læg laksen ovnen på grøntsagerne Rør olie sammen med citronsaft og hvidløg, og fordel det udover laksen. Drys med salt og peber, evt. lidt dild hvis du er til det.",
-        "Dæk fadet med sølvpapir og bag laksen i 20-22 minutter.",
-        "Kog spaghettien som anvist på posen.",
-        "Citronsauce",
-        "Citronsauce",
-        "Bring vand, citronsaft og bouillonterning. Skru ned og tilsæt madlavningsfløden. Varm sauce igennem.",
-        "Ønsker du en tykkere sauce kan du jævne den med lidt mel og vand, og ellers smages den til med salt og peber, og evt mere citronsaft. Ønsker du en kraftigere citronsmag, kan du rive lidt citronskal og tilsætte – jeg brugte skallen fra ½ citron 🙂",
-        "Server citronsaucen sammen med ovnbagt laks, grøntsagerog fuldkornsspaghetti."
+        "Fjern eventuelle sener fra kyllingen.",
+        "Du kan vælge at brænde karry af i gryden inden i lidt olie, men det gjorde vi ikke og det smagte rigtig godt alligevel. Hvis du vælger at brænde karryen af inden, så tilsætter du blot de andre ingredienser efter og følger fremgangsmåden.",
+        "Tag en gryde. Placer kyllingen (kylling skal hel i og ikke hakkes eller noget) og alle de andre ingredienser der i. Rør det hele godt rundt.",
+        "Sæt låget på, men lad der være en lille sprække, hvor damp kan slippe ud.",
+        "Sæt gryden på komfuret, tænd for varmen (middel) og lad det simre i 30 minutter.",
+        "Efter de 30 minutter tages gryden af varmen. Brug to gafler til at “rive” kyllingen fra hinanden.",
+        "Sæt gryden tilbage i 5 minutter på blusset og lad det få et lille opkog. Smag til med salt og peber."
       ],
       "rating": 5,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/01/2021-01-20-031055152-750x741.jpg",
-      "url": "https://sundpaabudget.dk/ovnbagt-laks-og-groent-med-citronsauce-og-spaghetti/"
+      "image": "https://img.mummum.dk/wp-content/uploads/2020/04/P1140970-3-1350x1233.jpg",
+      "url": "https://mummum.dk/one-pot-kylling-i-karry/"
     },
     {
-      "recipeID": 5,
-      "title": "Jordskokke suppe med bagt torsk",
-      "description": "En rigtig lækker suppe med bagt torsk, som også er meget velegnet som forret f.eks. til nytår eller andre festlige lejligheder 🙂",
+      "recipeID": 9,
+      "title": "Pita-Pizza m/kartoffel",
+      "description": "Nem og lækker hverdagsret, med mulighed for at skifte tilbehøret ud til hvad man bedst kan lide.",
       "size": 1,
       "ingredients": [
         {
-          "jordskokker": {
-            "amount": 0.125,
-            "unit": "kg"
+          "pitabrød": {
+            "amount": 2,
+            "unit": "stk"
+          }
+        },
+        {
+          "mozarella": {
+            "amount": 50,
+            "unit": "g"
           }
         },
         {
           "kartofler": {
-            "amount": 0.125,
-            "unit": "kg"
-          }
-        },
-        {
-          "løg": {
-            "amount": 0.5,
-            "unit": ""
-          }
-        },
-        {
-          "hvidløg": {
-            "amount": 0.5,
-            "unit": "fed"
-          }
-        },
-        {
-          "vand": {
-            "amount": 0.25,
-            "unit": "liter"
-          }
-        },
-        {
-          "bouillonterninger": {
-            "amount": 0.5,
-            "unit": ""
-          }
-        },
-        {
-          "timian": {
-            "amount": 0.5,
-            "unit": "tsk"
-          }
-        },
-        {
-          "madlavningsfløde": {
-            "amount": 0.625,
-            "unit": "dl"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "torskefileter": {
-            "amount": 56.25,
-            "unit": "g"
-          }
-        },
-        {
-          "smør": {
-            "amount": 25,
-            "unit": "g"
-          }
-        },
-        {
-          "citronsaft": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "flerkornsbaguettes": {
             "amount": 1,
             "unit": "stk"
           }
-        }
-      ],
-      "time": 60,
-      "method": [
-        "Tænd ovnen på 180 grader varmluft.",
-        "Skræl og vask jordskokker, kartofler og løg, og skær dem i tern.",
-        "Kom jordskokker, løg og kartofler i en gryde med hvidløg, 1 liter vand, bouillonterninger og timian.",
-        "Lad suppen simre til kartofler og jordskokker er møre (imens går du igang med torsken), og blend suppen helt jævn. ",
-        "Tilsæt madlavningsfløde og smag suppen til.",
-        "Bagt torsk",
-        "Bagt torsk",
-        "Kom torskefileterne i et ildfast og kom en klat smør ved samt citronsaft. Drys med salt og peber.",
-        "Bag torsken i ovnen i 15 minutter.",
-        "Del torsken over i mindre stykker, så der er et stykke torske pr. portion.",
-        "Server jordskokkesuppen med et stykke torsk på toppen, lunt fuldkornsbrød og evt. lidt persille til pynt."
-      ],
-      "rating": 4,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2020/10/chicken-soup-chicken-soup-food-750x498.jpg",
-      "url": "https://sundpaabudget.dk/jordskokkesuppe-med-bagt-torsk/"
-    },
-    {
-      "recipeID": 6,
-      "title": "Æg og rejer",
-      "description": "En rigtig lækker klassiker som kan spises både på frokostbordet eller som nem aftensmad 😛",
-      "size": 1,
-      "ingredients": [
-        {
-          "æg": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        },
-        {
-          "tomater": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        },
-        {
-          "reje": {
-            "amount": 42.5,
-            "unit": "g"
-          }
-        },
-        {
-          "fuldkorns toastbrød": {
-            "amount": 2.0,
-            "unit": "skiver"
-          }
-        },
-        {
-          "mayonnaise": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "gulerødder": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        }
-      ],
-      "time": 20,
-      "method": [
-        "Kog æggene i en gryde under låg i ca. 8 minutter til de hårdkogte. Efter kogning, skyl straks med koldt vand og pil skallen af. Skær æggene i skiver.",
-        "Tomaterne vaskes og skæres i skiver. Hæld lagen fra rejerne.",
-        "Rist toastbrødet på brødrister. Fordel tomat og æggeskiver på brødene og top med rejer og mayonnaise. Drys evt. med peber.",
-        "Servér grøntsagsstave ved siden af."
-      ],
-      "rating": 4,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2020/01/2020-09-11-031658704-750x750.jpg",
-      "url": "https://sundpaabudget.dk/ristet-broed-med-aeg-tomat-og-rejer/"
-    },
-    {
-      "recipeID": 7,
-      "title": "Panini med kylling, pesto, mozzarella og grønt",
-      "description": "En panini er en genial kombination af en sandwich og en toast, hvilket giver mulighed for lidt flere smagsvarianter og ikke mindst grøntsager, end hvis man bare gik med den sædvanlige parisertoast. Det er samtidig virkelig nem aftensmad, og et rigtig sikkert hit hos ungerne 😉 Her har jeg lavet en udgave med kylling. pesto, mozzarella, spinat og tomat 😛  Ønskes en vegetarisk udgave, kan kyllingen skiftes ud med veggiepålæg.",
-      "size": 1,
-      "ingredients": [
-        {
-          "paninibrød": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        },
-        {
-          "kyllingepålæg": {
-            "amount": 40.0,
-            "unit": "g"
-          }
-        },
-        {
-          "spinat": {
-            "amount": 18.75,
-            "unit": "g"
-          }
-        },
-        {
-          "tomater": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        },
-        {
-          "mozzarella 13%": {
-            "amount": 25.0,
-            "unit": "g"
-          }
-        },
-        {
-          "grøn pesto": {
-            "amount": 0.25,
-            "unit": "gl"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "agurk": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "gulerødder": {
-            "amount": 1.0,
-            "unit": ""
-          }
-        }
-      ],
-      "time": 25,
-      "method": [
-        "Flæk brødene og vask grøntsagerne grundigt.",
-        "Tomaterne skæres i tynde skiver.",
-        "Smør brødene med pesto og fordel spinat, tomat, kylling og mozzarella i brødene – drys evt med lidt salt og peber",
-        "Luk brødene sammen og steg dem i et paninijern eller toaster til de er gyldne og sprøde, og osten er smeltet. (Har du hverken toast- eller paninijern, kan du grille dem i ovnen i 5-10 minutter, hold øje med dem).",
-        "(Har du hverken toast- eller paninijern, kan du grille dem i ovnen i 5-10 minutter, hold øje med dem).",
-        "Skær de færdige paninier over i to og server dem med grøntsagsstave."
-      ],
-      "rating": 4,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2022/01/20220129122511_IMG_1083-750x1125.jpg",
-      "url": "https://sundpaabudget.dk/panini-med-kylling-pesto-mozzarella-og-groent/"
-    },
-    {
-      "recipeID": 8,
-      "title": "Spaghetti squash ala chicken alfredo",
-      "description": "En super skøn ret, der praktisk talt bare er grøntsager, kylling og ostesauce 😛 Har du aldrig prøvet spaghetti squash, så kan det virkelig anbefales – mild og let sødelig græskarsmag og god konsistens, desværre fås de kun et par måneder om året, så det gælder om at springe til når de endelig er i butikkerne.",
-      "size": 1,
-      "ingredients": [
-        {
-          "spaghetti squash": {
-            "amount": 0.5,
-            "unit": "stk"
-          }
-        },
-        {
-          "olie": {
-            "amount": 0.5,
-            "unit": "spsk"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "kyllingebryst": {
-            "amount": 100.0,
-            "unit": "g"
-          }
         },
         {
           "hvidløg": {
-            "amount": 0.5,
-            "unit": "fed"
-          }
-        },
-        {
-          "madlavningsfløde": {
-            "amount": 0.625,
-            "unit": "dl"
-          }
-        },
-        {
-          "vand": {
-            "amount": 0.625,
-            "unit": "dl"
-          }
-        },
-        {
-          "bouillonterning": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "flødeost": {
-            "amount": 25.0,
-            "unit": "g"
-          }
-        },
-        {
-          "revet mozzarella": {
-            "amount": 31.25,
-            "unit": "g"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "fuldkornsbrød": {
             "amount": 1,
-            "unit": "evt."
-          }
-        }
-      ],
-      "time": 60,
-      "method": [
-        "Tænd ovnen på 200 grader.",
-        "Vask og skær spaghetti squashen over i to halve på den lange led. Skrab kernerne ud og smør indersiden af squashen med lidt olie. Drys til sidst med lidt salt.Første gang at man skal tilberede en spaghetti squash kan det være lidt tricky, så hvis du har brug for at se hvordan man gør, er her en fin video 🙂",
-        "",
-        "Første gang at man skal tilberede en spaghetti squash kan det være lidt tricky, så hvis du har brug for at se hvordan man gør, er her en fin video 🙂",
-        "en fin video",
-        "Læg squashen med indersiden nedad på en bageplade med bagepapir, og bag dem i ovnen 30-35 minutter.",
-        "Skrab kødet ud af den færdigbagte spaghetti squash med en gaffel og trevl det fra hinanden. Sæt det til side og gem skallerne.",
-        "Skær kyllingen i mundrette bider.",
-        "Opvarm 1 spsk olie på en stor pande, og steg kyllingestykkerne et par minutter til de har taget farve.",
-        "Tilsæt presset hvidløg, madlavningsfløde, vand, bouillonterning og flødeost, og lad sauce og kylling simre ved svag varme i 5 minutter, til saucen er kogt ind og kyllingen gennemstegt. Tilsæt halvdelen af osten, og lad den smelte i saucen. Er saucen stadig tynd kan den jævnes med lidt mel og vand eller maizena.",
-        "Tilsæt den trevlede spaghetti squash og rør det ud i saucen. Smag til med salt og peber.",
-        "Fordel retten i de 4 halve græskarskaller og top med resten af osten.",
-        "Bag i ovnen i ca. 5-10 minutter til osten er smeltet og let gylden.",
-        "Servér evt. med et drys persille og lunt fuldkornsbrød."
-      ],
-      "rating": 4,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/08/20210830172030_IMG_0774-750x500.jpg",
-      "url": "https://sundpaabudget.dk/spaghetti-squash-ala-chicken-alfredo/"
-    },
-    {
-      "recipeID": 9,
-      "title": "Syrlig rispilaf med kylling og blomkål",
-      "description": "Nem og lækker hverdagsret med skøn citronsmag 🙂 Retten er også god med revet squash, porre eller lidt revet parmesan.",
-      "size": 1,
-      "ingredients": [
-        {
-          "kyllingebryst": {
-            "amount": 100.0,
-            "unit": "g"
-          }
-        },
-        {
-          "olie": {
-            "amount": 0.5,
-            "unit": "spsk"
-          }
-        },
-        {
-          "citronsaft": {
-            "amount": 0.5,
-            "unit": "spsk"
-          }
-        },
-        {
-          "balsamico": {
-            "amount": 0.25,
-            "unit": "spsk"
-          }
-        },
-        {
-          "hvidløg": {
-            "amount": 0.25,
             "unit": "fed"
           }
         },
         {
-          "oregano": {
-            "amount": 0.5,
-            "unit": "tsk"
-          }
-        },
-        {
-          "salt": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "peber": {
-            "amount": "",
-            "unit": ""
-          }
-        },
-        {
-          "smør": {
-            "amount": 0.25,
-            "unit": "tsk"
-          }
-        },
-        {
-          "ris": {
-            "amount": 75.0,
+          "skinke": {
+            "amount": 20,
             "unit": "g"
-          }
-        },
-        {
-          "forårsløg": {
-            "amount": 0.25,
-            "unit": "bundt"
-          }
-        },
-        {
-          "blomkålsris": {
-            "amount": 87.5,
-            "unit": "g"
-          }
-        },
-        {
-          "vand": {
-            "amount": 2.5,
-            "unit": "dl"
-          }
-        },
-        {
-          "bouillonterning": {
-            "amount": 0.25,
-            "unit": ""
-          }
-        },
-        {
-          "citronsaft": {
-            "amount": 1.25,
-            "unit": "spsk"
-          }
-        },
-        {
-          "persille": {
-            "amount": "",
-            "unit": "evt"
           }
         }
       ],
-      "time": 45,
+      "time": 10,
       "method": [
-        "Bland olie, oregano, citronsaft, balsamico, presset hvidløg og salt og peber, vend kyllingen i marinaden og lad det trække 5-10 minutter (eller længere hvis du har tid)",
-        "Rens forårsløgene og skær dem i skiver.",
-        "Opvarm en stor gryde, tag kyllingen op ad marinaden og kassér den overskydende marinade. Steg kyllingen i gryden ved middelvarme på begge sider til den er gennemstegt ca. 5-7 minutter alt efter hvor tyk kyllingen er. ",
-        "Tag kyllingen op af gryden og pak den ind i staniol og hold den varm.",
-        "Smelt smøret i gryden og tilsæt forårsløg i skiver samt risen. Steg ris og forårsløg et par minutter. Tilsæt blomkålsris, vand, bouillonterning og citronsaft.",
-        "Lad vandet koge lige så stille ind, til risen er møre. Smag til med salt og peber.",
-        "Server rispilaffen med kylling på toppen."
+        "Opvarm ovnen til 200 grader varmluft.",
+        "Gør en bageplade klar med bagepapir. Læg pitabrødene herpå.",
+        "Knus hvidløg og fordel det på pitabrødene. Du kan også smøre dem med lidt olie.",
+        "Skyl kartofler og skær dem i tynde skiver. Læg dem oven på pitaerne.",
+        "Riv mozzarella og fordel ovenpå. Drys med lidt salt/peber.",
+        "Bages i ovnen i cirka 10 minutter eller indtil osten er smeltet og gyldent.",
+        "Steg serranoskinken på en pande med olie til det er sprødt, imens pita-pizzaerne er i ovnen.",
+        "Top de færdige pita-pizzaer med sprødstegt serrano og evt. frisk persille."
       ],
       "rating": 3,
-      "image": "https://sundpaabudget.dk/wp-content/uploads/2021/08/20210810172736_IMG_0757-750x500.jpg",
-      "url": "https://sundpaabudget.dk/syrlig-rispilaf-med-kylling-og-blomkaal/"
+      "image": "https://img.mummum.dk/wp-content/uploads/2020/01/pitapizza-med-kartofler.jpg",
+      "url": "https://mummum.dk/pita-pizza-med-kartoffel-og-hvidloeg/"
     }
   ]
 }

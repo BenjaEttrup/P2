@@ -11,8 +11,10 @@ class ShoppingList extends React.Component {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
     
+    this.props.updateNavFunction(2);
+
     //Your code here
   }
 

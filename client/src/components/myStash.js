@@ -9,11 +9,14 @@ import SearchStashProduct from "./searchStashProduct";
 class MyStash extends React.Component {
   //This is a contructor this function gets called when a object gets created
   //from the App class. It is often used to set the values in the object
-  constructor(recipe) {
+  constructor(props) {
+
     //Super has to be called as the first thing
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
+
+    this.props.updateNavFunction(4);
 
     //Your code here
     this.state = {
@@ -21,7 +24,8 @@ class MyStash extends React.Component {
     };
   }
 
-  //Functions go here
+
+  //Request back-end function stash get, to add my stash data to this.state.products.  
   componentDidMount() {
     fetch("/stash/get")
       .then((response) => response.json())
@@ -33,7 +37,9 @@ class MyStash extends React.Component {
       .catch((e) => console.log(e));
   }
 
+  //removes products from stash overview on front-end. 
   updateTable(id) {
+    //products, not removed by id, is mapped to the new array.
     let updatedProducts = [];
     this.state.products.forEach((product) => {
       if (product.prod_id === id && product.amount > 1) {
