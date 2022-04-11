@@ -68,10 +68,10 @@ class StashRowElement extends React.Component {
           {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
-          <td class="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
-          <td class="right-align">
+          <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
+          <td className="right-align">
             <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/removeIngredientFromShoppingList/') }}>
-              <i class="fa fa-trash"></i></button>
+              <i className="fa fa-trash"></i></button>
           </td>
         </tr>
       );
@@ -82,15 +82,15 @@ class StashRowElement extends React.Component {
           {/* <td>{this.props.ingredient1 ? this.props.ingredient1.title + " ID: " + this.props.ingredient1.prod_ID : ""}</td> */}
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           {/* <td>{this.props.ingredient1 ? this.props.ingredient1.amount : ""} {this.props.ingredient1 ? this.props.ingredient1.unit : ""}</td> */}
-          <td class="right-align">{this.props.ingredient ? this.props.ingredient.amount : ""} {this.props.ingredient ? this.props.ingredient.unit : ""}</td>
-          <td class="right-align">
+          <td className="right-align">{this.props.ingredient ? this.props.ingredient.amount : ""} {this.props.ingredient ? this.props.ingredient.unit : ""}</td>
+          <td className="right-align">
             <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/stash/remove/') }}>
-              <i class="fa fa-trash"></i>
+              <i className="fa fa-trash"></i>
             </button>
           </td>
-          <td class="right-align center" width="2%">
-            <div class="form-check align-middle">
-              <input class="form-check-input" type="checkbox" onChange={(evt) => this.checkCheckBox(evt)}
+          <td className="right-align center" width="2%">
+            <div className="form-check align-middle">
+              <input className="form-check-input" type="checkbox" onChange={(evt) => this.checkCheckBox(evt)}
                 id="flexCheckChecked" checked={this.state.boxChecked}>
               </input>
             </div>

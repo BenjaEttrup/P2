@@ -41,7 +41,6 @@ class ShoppingList extends React.Component {
           tempShoppingListRecipes: res,
           shoppingListRecipes: res,
         };
-        console.log(data);
         this.setState(data);
       }).catch(err => {
         console.error(err);
@@ -77,19 +76,20 @@ class ShoppingList extends React.Component {
 //  Move shoppingListIngredient into this.state.hiddenStashIngredients with the ingredient recipeIndex
 //  
   isIngredientInStash(shoppingListIngredient, recipeIndex, ingredientIndex) {
-    console.log("tempShoppingListRecipes")
-    console.log(this.state.tempShoppingListRecipes)
-    console.log("shoppingListRecipes")
-    console.log(this.state.shoppingListRecipes)
+    // console.log("tempShoppingListRecipes")
+    // console.log(this.state.tempShoppingListRecipes)
+    // console.log("shoppingListRecipes")
+    // console.log(this.state.shoppingListRecipes)
     
     let isInStash = false;
     if(ingredientIndex === undefined){
       return isInStash
     }
       this.state.myStashIngredients.forEach((ingredient, i) => {
-        if (ingredient.prod_id == shoppingListIngredient.prod_id){
+        if (ingredient.prod_id === shoppingListIngredient.prod_id){
           isInStash = true
           console.log("removing ingredients");
+          console.log(this.state.shoppingListRecipes);
           this.setState(this.moveIngredientToHiddenStash(shoppingListIngredient, ingredientIndex, recipeIndex));
         }});
 
@@ -107,7 +107,9 @@ class ShoppingList extends React.Component {
      moveIngredientToHiddenStash(shoppingListIngredient, ingredientIndex, recipeIndex){
       let hiddenShoppingListIngredients = this.state.hiddenShoppingListIngredients;
       let tempShoppingListRecipes = this.state.tempShoppingListRecipes;
-  
+      console.log("Tempshoppinglist")
+      console.log(tempShoppingListRecipes);
+      // tempShoppingListRecipes[recipeIndex].ingredients = this.elementRemove(ingredientIndex, tempShoppingListRecipes[recipeIndex].ingredients);
       tempShoppingListRecipes[recipeIndex].ingredients.splice(ingredientIndex, 1); //should use recipeIndex to remove the specific ingredient
       hiddenShoppingListIngredients.push(shoppingListIngredient);
   
@@ -124,9 +126,8 @@ class ShoppingList extends React.Component {
 
     shoppingList.forEach((recipe, recipeIndex) => {
       recipe.ingredients.forEach((ingredient) => {
-
         console.log(`stashIngredient.prod_id ${stashIngredient.prod_id} ingredient.prod_id = ${ingredient.prod_id}`)
-          if (stashIngredient.prod_id == ingredient.prod_id){
+          if (stashIngredient.prod_id === ingredient.prod_id){
             // this.moveIngredientFromHiddenStash(shoppingListIngredient, recipeIndex);
             // hiddenShoppingListIngredients.splice(index, 1);
           }
@@ -135,6 +136,24 @@ class ShoppingList extends React.Component {
 
   }
 
+  elementRemove(index, array){
+    let tempArray = array.slice();
+
+    if(index === 0){
+      tempArray.length--;
+      return tempArray;
+    }
+    for (let i = 0; i < array.length-1; i++){
+      if (i >= index){
+        tempArray[i] = tempArray[i+1];
+      }
+    }
+
+    // only work on tempArray;
+    console.log(tempArray);
+    tempArray.length--;
+    return tempArray;
+  }
 
   moveIngredientFromHiddenStash(shoppingListIngredient, recipeIndex){
     let hiddenShoppingListIngredients = this.state.hiddenShoppingListIngredients;
@@ -232,9 +251,9 @@ class ShoppingList extends React.Component {
   render() {
     return (
       <div className="ShoppingList">
-        <div class="card shadow shoppingList">
-          <div class="card-body shoppingList-card-body">
-            <div class="">
+        <div className="card shadow shoppingList">
+          <div className="card-body shoppingList-card-body">
+            <div className="">
               <h4>
                 Shoppinglist
               </h4>
@@ -259,10 +278,10 @@ class ShoppingList extends React.Component {
                   this.state.recipeSum
                 } kr.</p>
               </div>
-              <table class="table table-striped">
+              <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th class='col-9' scope='col'>My Stash</th>
+                    <th className='col-9' scope='col'>My Stash</th>
                     <th></th>
                   </tr>
                 </thead>

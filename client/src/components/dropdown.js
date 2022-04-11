@@ -24,32 +24,32 @@ class Dropdown extends React.Component {
   render() {
     return (
       <div className="Dropdown">
-        <h5 class="">Recipes</h5>
-        <div class="row">
-          <div class="col-6">
+        <h5 className="">Recipes</h5>
+        <div className="row">
+          <div className="col-6">
             Pasta med ketchup
           </div>
-          <div class="col-3 right-align">
+          <div className="col-3 right-align">
             49,95 kr.
           </div>
-          <div class="col-2">
-            <i class="fa fa-trash"></i>
+          <div className="col-2">
+            <i className="fa fa-trash"></i>
           </div>
         </div>
-        <div class="row">
-          <div class="col-6">
+        <div className="row">
+          <div className="col-6">
             Pasta med ketchup
           </div>
-          <div class="col-3 right-align">
+          <div className="col-3 right-align">
             49,95 kr.
           </div>
-          <div class="col-2">
-            <i class="fa fa-trash"></i>
+          <div className="col-2">
+            <i className="fa fa-trash"></i>
           </div>
         </div>
-        <div class="btn-row">
+        <div className="btn-row">
           <Link to="/shoppingList">
-            <button class="btn btn-primary">
+            <button className="btn btn-primary">
               Shopping List
             </button>
           </Link>

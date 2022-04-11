@@ -40,24 +40,24 @@ class SpinTheMeal extends React.Component {
   render() {
     return (
       <div className="SpinTheMeal">
-        <div class="spinTheMeal">
+        <div className="spinTheMeal">
           <h1><center>What's for dinner?</center></h1><br />
-          <div id="mainbox" class="mainbox">
-            <div id="box" class="box">
-              <div class="box1">
-                <span class="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Test</b></span>
-                <span class="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Pasta med ketchup</b></span>
-                <span class="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Fisk med ris</b></span>
-                <span class="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>burger</b></span>
+          <div id="mainbox" className="mainbox">
+            <div id="box" className="box">
+              <div className="box1">
+                <span className="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Test</b></span>
+                <span className="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Pasta med ketchup</b></span>
+                <span className="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Fisk med ris</b></span>
+                <span className="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>burger</b></span>
               </div>
-              <div class="box2">
-                <span class="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Shoplifters</b></span>
-                <span class="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Inception</b></span>
-                <span class="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Deadpool</b></span>
-                <span class="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Terminator</b></span>
+              <div className="box2">
+                <span className="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Shoplifters</b></span>
+                <span className="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Inception</b></span>
+                <span className="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Deadpool</b></span>
+                <span className="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Terminator</b></span>
               </div>
             </div>
-            <button class="spin" onClick={() => this.spin_the_wheel()}>SPIN</button>
+            <button className="spin" onClick={() => this.spin_the_wheel()}>SPIN</button>
           </div>
         </div>
       </div>

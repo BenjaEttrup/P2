@@ -52,20 +52,23 @@ class ShoppingListRecipe extends React.Component {
   render() {
     if(this.state.hide) return null;
     return (
-        <table class="table table-striped">
+        <table className="table table-striped">
         <thead>
           <tr>
-            <th class='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
-            <th class="col-4 text-success">Pris på opskrift: {this.props.recipe.recipe.price} kr.</th>
+            <th className='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
+            <th className="col-4 text-success">Pris på opskrift: {this.props.recipe.recipe.price} kr.</th>
             <th>              
               <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
-                <i class="fa fa-trash"></i></button>
+                <i className="fa fa-trash"></i></button>
             </th>
           </tr>
         </thead>
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
+              console.log("Before isIngredientInStash");
+              console.log(this.props.recipe);
+              // Måske er problemet her, men jeg smutter på toilet...
               if (this.props.isIngredientInStash(ingredient, this.props.recipeIndex, ingredientIndex)){
                 this.updateRecipePrice(ingredient, true);
                 return null;
@@ -73,6 +76,7 @@ class ShoppingListRecipe extends React.Component {
 
               return (
                 <StashRowElement
+                key={ingredientIndex}
                 recipeID = {this.props.recipe.recipe.recipeID} 
                 ingredient={ingredient} 
                 shoppingList = {true}
