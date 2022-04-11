@@ -8,11 +8,11 @@ import '../stylesheets/dropdown.css'
 class Dropdown extends React.Component {
   //This is a contructor this function gets called when a object gets created 
   //from the App class. It is often used to set the values in the object
-  constructor(recipe) {
+  constructor(props) {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
     
     //Your code here
   }
@@ -25,31 +25,26 @@ class Dropdown extends React.Component {
     return (
       <div className="Dropdown">
         <h5 class="">Recipes</h5>
-        <div class="row">
-          <div class="col-6">
-            Pasta med ketchup
-          </div>
-          <div class="col-3 right-align">
-            49,95 kr.
-          </div>
-          <div class="col-2">
-            <i class="fa fa-trash"></i>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            Pasta med ketchup
-          </div>
-          <div class="col-3 right-align">
-            49,95 kr.
-          </div>
-          <div class="col-2">
-            <i class="fa fa-trash"></i>
-          </div>
+        <div>
+            {this.props.recipes.map((recipe) => {
+              return (
+                <div class="row recipe-row">
+                  <div class="col-6">
+                    {recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}
+                  </div>
+                  <div class="col-4 right-align">
+                    {recipe.recipe.price + ' DKK'}
+                  </div>
+                  <div class="col-1">
+                    <i class="fa fa-trash"></i>
+                  </div>
+                </div>
+              )
+            })}
         </div>
         <div class="btn-row">
           <Link to="/shoppingList">
-            <button class="btn btn-primary">
+            <button class="btn btn-primary add-recipe-btn">
               Shopping List
             </button>
           </Link>

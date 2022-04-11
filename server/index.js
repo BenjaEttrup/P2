@@ -15,6 +15,7 @@ const config = {
 const userPath = '../user/user.json';
 const recipeDataPath = '../opskrifter_old/recipes.json';
 const { stringify } = require('querystring');
+const { Console } = require('console');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -335,9 +336,25 @@ app.post('/addRecipeToShoppingList', (req, res) => {
 
 // Retrieves the data from the user's shoppinglist
 app.get('/shoppingList', (req, res) => {
-    let userData = require(userPath);
+    fs.readFile(userPath, "utf-8", (err, userDataString) => {
+        if(err) {
+            console.log("Error reading file from disk:", err);
+            return;
+        }
 
-    res.send(userData.shoppingList);
+        try {
+            userData = JSON.parse(userDataString);
+            //let userData = require(userPath);
+            console.log('test')
+            userData.shoppingList.forEach((recipe) => {
+                console.log(recipe.recipe.title);
+            })
+            //console.log(userData.shoppingList);
+            res.json(userData.shoppingList);
+        } catch (err) {
+            Console.log(err);
+        }
+    })
 });
 
 app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
