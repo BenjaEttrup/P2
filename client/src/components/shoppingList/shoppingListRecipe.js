@@ -16,7 +16,8 @@ class ShoppingListRecipe extends React.Component {
     //Your code here
 
     this.state = {
-      hide: false
+      hide: false,
+      sucInit: false
     };
 
   }
@@ -33,9 +34,15 @@ class ShoppingListRecipe extends React.Component {
   }
 
   initShoppingListIngredient(ingredient, ingredientIndex) {
-    // if(this.props.ingredientInStash(ingredient, ingredientIndex)){
-    //   this.props.updateTotalRecipePrice(ingredient, true);
-    // }
+    let isInStash = this.props.ingredientInStash(ingredient, ingredientIndex)
+    
+    if(isInStash && !this.state.sucInit){
+      this.setState({
+        sucInit: true
+      });
+
+      this.updateRecipePrice(ingredient, true);
+    }
     return this.props.ingredientInStash(ingredient, ingredientIndex);
   }
 
