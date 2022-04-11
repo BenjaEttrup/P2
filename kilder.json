@@ -1,0 +1,4 @@
+{
+    "handlingAsyncSetState" : "https://sentry.io/answers/forget-set-state-is-async/",
+    "passingStateOfParentToChildComponentAsProps": "https://www.pluralsight.com/guides/passing-state-of-parent-to-child-component-as-props"
+}

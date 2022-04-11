@@ -47,11 +47,10 @@ class StashRowElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
-        this.hideStashRowElement(this.props.ingredient, "");
+        console.log("Checked")
       }
       else {
         console.log("Unchecked")
-        this.hideStashRowElement(this.props.ingredient, "");
         // TODO create function that updates the recipes to include the stash ingredient again.
       }
     });
