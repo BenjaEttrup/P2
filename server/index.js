@@ -244,8 +244,9 @@ app.get('/findRecipe/:ID', async (req, res) => {
 
     let recipeObject = {
         recipe: {
-            ingredients: []
-        }
+            
+        },
+        ingredients: []
     };
 
     let recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
@@ -256,16 +257,18 @@ app.get('/findRecipe/:ID', async (req, res) => {
         // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
             let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0] //keys from JSON recipe file, inserted in ingredient.
+            //console.log(ingredient)//
             let details = await callApi(encodeCharacters(ingredient)); //API call
-            // recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i]; //
+            //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
             details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
-            console.log(details)
-            recipeObject.recipe.ingredients[i] = details.suggestions[0] //Store cheapest ingredient in recipeObject
-            recipeObject.recipe.ingredients[i].title = ingredient
+            recipeObject.ingredients[i] = details.suggestions[0] //Store cheapest ingredient in recipeObject
+            recipeObject.ingredients[i].title = ingredient
             totalPrice += details.suggestions[0].price; //sum of recipe.
-            console.log(recipeObject)
+            recipeObject.ingredients[i]["amount"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].amount;
+            recipeObject.ingredients[i]["unit"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].unit;
         }
-        // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
+        // Rounds the price of the recipe to two decimals and converts it to a number in this case float. 
+        recipeObject.recipe["title"] = recipeData.recipes[recipeIndex].title
         recipeObject.recipe["method"] = recipeData.recipes[recipeIndex].method
         recipeObject.recipe["url"] = recipeData.recipes[recipeIndex].url
         recipeObject.recipe["image"] = recipeData.recipes[recipeIndex].image
@@ -277,6 +280,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
         recipeObject.recipe["totalPrice"] = totalPrice.toFixed(2);
         recipeObject.recipe["recipeIndex"] = recipeIndex;
 
+        console.log(recipeObject)
     }
 
     res.json(recipeObject);

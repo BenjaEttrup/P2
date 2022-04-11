@@ -8,7 +8,6 @@ import RecipePage from './recipePage';
 //standart code in the React component
 function Recipe() {
     let { id } = useParams();
-
     function errorMessage() {
         return (
             <div>
