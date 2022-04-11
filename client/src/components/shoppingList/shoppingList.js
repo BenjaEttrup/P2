@@ -55,7 +55,6 @@ class ShoppingList extends React.Component {
         let data = {
           myStashIngredients: res
         };
-        console.log(res);
         this.setState(data);
       }).catch(err => {
         console.error(err);
@@ -120,11 +119,7 @@ class ShoppingList extends React.Component {
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
     let isInStash = false;
     let myStashIngredients = this.state.myStashIngredients;
-
-    console.log("Running ingredientInStash")
-    console.log(myStashIngredients)
-    console.log(shoppingListIngredient)
-    console.log(`ingredientIndex = ${ingredientIndex}`)
+    
     if (ingredientIndex === undefined) {
       return isInStash
     }
@@ -178,7 +173,7 @@ class ShoppingList extends React.Component {
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
                       calculateTotalRecipePrice={(recipePrice) => this.calculateTotalRecipePrice(recipePrice)}
                       recipe={recipe}
-                      ingredientInStash={() => this.ingredientInStash()}
+                      ingredientInStash={(ingredient, ingredientIndex) => this.ingredientInStash(ingredient, ingredientIndex)}
                       recipeIndex={index}
                       updateTotalRecipePrice={(priceElement, remove) => this.updateTotalRecipePrice(priceElement, remove)}
                     />

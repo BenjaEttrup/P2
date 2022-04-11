@@ -1,4 +1,4 @@
-    import React from 'react';
+import React from 'react';
 
 //This is a React class it extends a React component which
 //means that you can use all the code from the React component and it runs the
@@ -61,10 +61,9 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    console.log(this.state.hide)
-    console.log(this.props.isHidden)
+    console.log(`hide = ${this.state.hide} isHidden = ${this.props.isHidden}`)
     if (this.state.hide) return null;
-    if (this.props.isHidden) return null
+    if (this.props.isHidden) return null;
 
     if (this.props.hasOwnProperty('shoppingList')) {
       return (

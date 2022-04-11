@@ -33,10 +33,10 @@ class ShoppingListRecipe extends React.Component {
   }
 
   initShoppingListIngredient(ingredient, ingredientIndex) {
-    console.log("initShoppingListIngredient");
-    console.log(ingredient)
-    console.log(ingredientIndex);
-    return this.props.ingredientInStash(ingredient, ingredientIndex)
+    // if(this.props.ingredientInStash(ingredient, ingredientIndex)){
+    //   this.props.updateTotalRecipePrice(ingredient, true);
+    // }
+    return this.props.ingredientInStash(ingredient, ingredientIndex);
   }
 
   componentDidMount() {
@@ -74,7 +74,6 @@ class ShoppingListRecipe extends React.Component {
               return (
                 <StashRowElement
                   key={ingredientIndex}
-                  ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
                   isHidden={this.initShoppingListIngredient(ingredient, ingredientIndex)}
                   ingredient={ingredient}
