@@ -47,7 +47,7 @@ class Navbar extends React.Component {
                 <ul class="navbar-nav" id="user-and-recipe">
                   <li class="nav-item">
                     <div class="btn-group">
-                      <button class='hidden-btn icon' type='button' data-bs-toggle="dropdown" onClick={() => {this.props.updateRecipes()}}>
+                      <button class='hidden-btn icon' type='button' data-bs-auto-close="false" data-bs-toggle="dropdown" onClick={() => {this.props.updateRecipes()}}>
                         <i class="fa fa-book"></i>
                       </button>
                       <ul class="dropdown-menu dropdown-card dropdown-menu-end">
