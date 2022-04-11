@@ -21,19 +21,7 @@ class StashRowElement extends React.Component {
 
   //Functions go here
 
-  componentDidMount() {
-    // console.log("componentDidmount");
-    // console.log(this);
-    console.log(this.props.hideInitially)
-    if (this.props.hideInitially){
-      console.log("SETTING STATEMOF")
-      this.setState({
-        hide: true
-      })
-      console.log("setstate")
 
-    }
-  }
 
   hideStashRowElement(stashRowElement, endPoint) {
     this.setState({
@@ -54,8 +42,6 @@ class StashRowElement extends React.Component {
     }
   }
 
-
-
   checkCheckBox(evt) {
     this.setState((prevState) => ({
       boxChecked: !prevState.boxChecked
@@ -75,7 +61,10 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
+    console.log(this.state.hide)
+    console.log(this.props.isHidden)
     if (this.state.hide) return null;
+    if (this.props.isHidden) return null
 
     if (this.props.hasOwnProperty('shoppingList')) {
       return (

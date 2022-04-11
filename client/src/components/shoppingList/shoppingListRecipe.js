@@ -32,6 +32,13 @@ class ShoppingListRecipe extends React.Component {
     }
   }
 
+  initShoppingListIngredient(ingredient, ingredientIndex) {
+    console.log("initShoppingListIngredient");
+    console.log(ingredient)
+    console.log(ingredientIndex);
+    return this.props.ingredientInStash(ingredient, ingredientIndex)
+  }
+
   componentDidMount() {
     this.props.calculateTotalRecipePrice(this.props.recipe.recipe.price);
   }
@@ -64,25 +71,12 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
-              if (this.props.isIngredientInStash(ingredient, ingredientIndex)) {
-                return (
-                  <StashRowElement
-                    key={ingredientIndex}
-                    hideInitially={true}
-                    recipeID={this.props.recipe.recipe.recipeID}
-                    ingredient={ingredient}
-                    shoppingList={true}
-                    removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
-                    updateRecipePrice={(stashRowElement) => this.updateRecipePrice(stashRowElement)}
-                    recipeIndex={this.props.recipeIndex}
-                  />
-                )
-              }
               return (
                 <StashRowElement
                   key={ingredientIndex}
-                  hideInitially={false}
+                  ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
+                  isHidden={this.initShoppingListIngredient(ingredient, ingredientIndex)}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}

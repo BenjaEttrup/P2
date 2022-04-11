@@ -25,6 +25,7 @@ class ShoppingList extends React.Component {
 
   // Base function in react, called immediately after a component is mounted. Triggered after re-rendering
   componentDidMount() {
+    console.log("shoppingListDidMount")
     // Retrieves shoppinglist information
     fetch(`/shoppingList`, {
       headers: {
@@ -54,6 +55,7 @@ class ShoppingList extends React.Component {
         let data = {
           myStashIngredients: res
         };
+        console.log(res);
         this.setState(data);
       }).catch(err => {
         console.error(err);
@@ -77,7 +79,7 @@ class ShoppingList extends React.Component {
    */
   updateTotalRecipePrice(priceElement, remove) {
     // If we want to remove element
-    if (remove === true){
+    if (remove === true) {
       this.setState((prevState) => ({
         recipeSum: Number(prevState.recipeSum - priceElement.price).toFixed(2)
       }));
@@ -98,9 +100,9 @@ class ShoppingList extends React.Component {
   removeIngredient(stashRowElement, params) {
     console.log(`Deleting ingredient in stash with prod_id = ${stashRowElement.prod_id}, endPoint = ${params.endPoint} recipeID = ${params.recipeID}`);
     console.log(stashRowElement);
-    console.log(`fetching endpoint = ${params.endPoint}${Number.isInteger(params.recipeID)? params.recipeID + "&" : ""}${stashRowElement.prod_id}`)
-    
-    fetch(`${params.endPoint}${Number.isInteger(params.recipeID)? params.recipeID + "&" : ""}${stashRowElement.prod_id}`, {
+    console.log(`fetching endpoint = ${params.endPoint}${Number.isInteger(params.recipeID) ? params.recipeID + "&" : ""}${stashRowElement.prod_id}`)
+
+    fetch(`${params.endPoint}${Number.isInteger(params.recipeID) ? params.recipeID + "&" : ""}${stashRowElement.prod_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -109,26 +111,33 @@ class ShoppingList extends React.Component {
     }).catch(err => {
       console.error(err);
     });
-    
-    if(Number.isInteger(params.recipeID)){
+
+    if (Number.isInteger(params.recipeID)) {
       this.updateTotalRecipePrice(stashRowElement, true);
     }
   }
- 
+
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
     let isInStash = false;
-    if(ingredientIndex === undefined){
+    let myStashIngredients = this.state.myStashIngredients;
+
+    console.log("Running ingredientInStash")
+    console.log(myStashIngredients)
+    console.log(shoppingListIngredient)
+    console.log(`ingredientIndex = ${ingredientIndex}`)
+    if (ingredientIndex === undefined) {
       return isInStash
     }
-      this.state.myStashIngredients.forEach((ingredient, i) => {
-        if (ingredient.prod_id === shoppingListIngredient.prod_id){
-          isInStash = true
-        }});
 
-      console.log(`Ingredient in stash = ${isInStash}`)
+    myStashIngredients.forEach((ingredient, i) => {
+      if (ingredient.prod_id == shoppingListIngredient.prod_id) {
+        isInStash = true
+      }
+    });
+
+    console.log(`Ingredient in stash = ${isInStash}`)
     return isInStash
   }
-
 
   removeRecipe(recipe) {
     console.log(`Deleting ingredient in stash with recipeID = ${recipe.recipeID}`);
@@ -146,7 +155,7 @@ class ShoppingList extends React.Component {
     });
 
     this.updateTotalRecipePrice(recipe, true)
-    
+
   }
 
   //This is the render function. This is where the
@@ -169,8 +178,8 @@ class ShoppingList extends React.Component {
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
                       calculateTotalRecipePrice={(recipePrice) => this.calculateTotalRecipePrice(recipePrice)}
                       recipe={recipe}
+                      ingredientInStash={() => this.ingredientInStash()}
                       recipeIndex={index}
-                      isIngredientInStash={(shoppingListIngredient, ingredientIndex) => this.ingredientInStash(shoppingListIngredient, ingredientIndex)}
                       updateTotalRecipePrice={(priceElement, remove) => this.updateTotalRecipePrice(priceElement, remove)}
                     />
                   )
@@ -192,10 +201,10 @@ class ShoppingList extends React.Component {
                   {
                     this.state.myStashIngredients.map((ingredient) => {
                       return (
-                        <StashRowElement 
-                        key={this.state.myStashIngredients.indexOf(ingredient)} 
-                        ingredient={ingredient} myStash = {true} 
-                        removeIngredient={this.removeIngredient}               
+                        <StashRowElement
+                          key={this.state.myStashIngredients.indexOf(ingredient)}
+                          ingredient={ingredient} myStash={true}
+                          removeIngredient={this.removeIngredient}
                         />
                       )
                     })
