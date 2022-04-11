@@ -161,7 +161,16 @@ app.get('/findAllRecipes', async (req, res) => {
             return
         } 
 
-        let parsedData = JSON.parse(data);
+        let parsedData;
+
+        try{
+            parsedData = JSON.parse(data);
+        } catch(err) {
+            parsedData = {
+                date: 0
+            }
+        }
+        
 
         if(new Date() - Date.parse(parsedData.date) > 3*60*60*100){
             console.log("Making new data");
