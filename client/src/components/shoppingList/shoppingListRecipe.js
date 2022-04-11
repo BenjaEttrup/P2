@@ -22,8 +22,8 @@ class ShoppingListRecipe extends React.Component {
 
   }
 
-  updateRecipePrice(stashRowElement, remove) {
-    if (remove) {
+  updateRecipePrice(stashRowElement, subtract) {
+    if (subtract) {
       this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price - stashRowElement.price).toFixed(2);
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }

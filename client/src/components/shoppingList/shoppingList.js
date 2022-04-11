@@ -119,7 +119,6 @@ class ShoppingList extends React.Component {
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
     let isInStash = false;
     let myStashIngredients = this.state.myStashIngredients;
-    
     if (ingredientIndex === undefined) {
       return isInStash
     }
