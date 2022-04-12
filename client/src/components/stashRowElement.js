@@ -44,6 +44,7 @@ class StashRowElement extends React.Component {
       endPoint: endPoint
     };
 
+
     console.log("pushed Trashcan")
     console.log(this);
     if (this.props.hasOwnProperty('recipeID')) {
@@ -52,6 +53,7 @@ class StashRowElement extends React.Component {
     }
     else {
       params['recipeID'] = false;
+    // TODO removeIngredient should fetch delete.
       this.props.matchIngredient(stashRowElement, false);
       this.props.removeIngredient(stashRowElement, params);
     }
@@ -62,6 +64,7 @@ class StashRowElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
+        // TODO check if matchIngredient 
         this.props.matchIngredient(this.props.ingredient, true);
 
         console.log("Checked");
@@ -72,7 +75,7 @@ class StashRowElement extends React.Component {
 
         let stashRowElement = this;
 
-        // TODO check if backend is able to find duplicate product
+        // TODO check if backend is able to find duplicate product as amount is being dublicated
         fetch(`/stash/add`, {
           method: 'POST',
           headers: {
@@ -98,7 +101,6 @@ class StashRowElement extends React.Component {
         this.props.matchIngredient(this.props.ingredient, true);
       }
       else {
-        // TODO HANDLE the scenario where the price was originally subtracted due to the recipeIngredient isHidden
         console.log("Unchecked")
         this.props.matchIngredient(this.props.ingredient, false);
       }

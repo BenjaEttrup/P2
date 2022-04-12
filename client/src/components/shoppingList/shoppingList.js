@@ -134,7 +134,8 @@ class ShoppingList extends React.Component {
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListElements.forEach(recipeIngredient => {
       if(recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id){
-        console.log(recipeIngredient);
+      console.log(recipeIngredient);
+
         recipeIngredient.setState({
           hide: !recipeIngredient.state.hide,
           // Figure out why it is always unchecked with boxChecked being true :')
@@ -142,7 +143,6 @@ class ShoppingList extends React.Component {
         })
         console.log(`recipeIngredient.state.hide = ${recipeIngredient.state.hide}`);
       }
-      console.log(recipeIngredient);
     })
     
     // Updates the price of the recipes
@@ -156,7 +156,6 @@ class ShoppingList extends React.Component {
               this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
             }
           	this.updateTotalRecipePrice(recipeIngredient, subtract);
-            // TODO need to somehow update state of the stashRowElement maybe usestate
         }  
       })
     });
