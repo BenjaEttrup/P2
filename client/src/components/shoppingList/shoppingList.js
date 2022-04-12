@@ -70,6 +70,19 @@ class ShoppingList extends React.Component {
   }
 
   /**
+   * @function updates the state of myStashIngredients to add the new ingredient
+   * @param {*} stashIngredient the stashIngredient
+   */
+  updateMyStashIngredients(stashIngredient) {
+    let stash = this.state.myStashIngredients;
+
+    stash.push(stashIngredient);
+    this.setState((prevState) => ({
+      myStashIngredients: stash
+    }))
+  }
+
+  /**
    * 
    * @param {*} priceElement Ingredient object
    * @param {*} subtract Removes element if true, and adds element if false
@@ -118,7 +131,7 @@ class ShoppingList extends React.Component {
   matchIngredient(stashIngredient, subtract) {
     let recipes = this.state.shoppingListRecipes;
 
-    // Updates the state of the prop.
+    // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListElements.forEach(recipeIngredient => {
       if(recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id){
         recipeIngredient.setState({
@@ -190,16 +203,6 @@ class ShoppingList extends React.Component {
     this.setState({
       shoppingListElements: shoppingListElements
     })
-
-    
-    // this.setState({
-    //   shoppingListElements: this.state.shoppingListElements
-    // })
-
-    // Here we can unhide elements.
-    // this.state.shoppingListElements[0].setState({
-    //   hide: false
-    // });
   }
 
   //This is the render function. This is where the
@@ -217,6 +220,7 @@ class ShoppingList extends React.Component {
                 this.state.shoppingListRecipes.map((recipe, index) => {
                   return (
                     <ShoppingListRecipe
+                    matchIngredient={(stashIngredient, subtract) => this.matchIngredient(stashIngredient, subtract)}
                       removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                       removeRecipe={(recipe) => this.removeRecipe(recipe)}
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
@@ -226,6 +230,7 @@ class ShoppingList extends React.Component {
                       recipeIndex={index}
                       updateTotalRecipePrice={(priceElement, remove) => this.updateTotalRecipePrice(priceElement, remove)}
                       trackStashRowElement={(stashRowElementInstance) => this.trackStashRowElement(stashRowElementInstance)}
+                      updateMyStashIngredients={(stashIngredient) => this.updateMyStashIngredients(stashIngredient)}
                     />
                   )
                 })

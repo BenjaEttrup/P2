@@ -16,7 +16,8 @@ class StashRowElement extends React.Component {
     this.state = {
       hide: false,
       boxChecked: true,
-      passedToShoppingList: false
+      passedToShoppingList: false,
+      movedToMyStash: false,
     };
   }
 
@@ -59,12 +60,30 @@ class StashRowElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
+        this.props.matchIngredient(this.props.ingredient, true);
+
         // TODO Add item to stash
         console.log("Checked");
       }
       else {
         // TODO remove item from stash
         console.log("Unchecked");
+        this.props.matchIngredient(this.props.ingredient, true);
+
+        let stashRowElement = this;
+
+        fetch(`/stash/add`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(this.props.ingredient)
+        }).then(stashRowElement.props.updateMyStashIngredients(stashRowElement.props.ingredient));
+
+        this.setState({
+          movedToMyStash: true
+        });
       }
     });
   }
@@ -92,7 +111,7 @@ class StashRowElement extends React.Component {
     if (this.props.hasOwnProperty('passToShoppingList') && !this.state.passedToShoppingList) {
       this.initStashRowElement(this.props.isHidden);
     }
-    if (this.state.hide) return null;
+    if (this.state.hide || this.state.movedToMyStash) return null;
     // if (this.props.isHidden) return null;
 
     if (this.props.hasOwnProperty('shoppingList')) {

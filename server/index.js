@@ -77,6 +77,7 @@ app.post("/stash/add", (req, res) => {
                 let duplicatedProduct = true;
                 for (element in parsedJson.myStash){
                     if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
+                        // This line causes trouble because it concatenates strings instead of treating them as numbers
                         parsedJson.myStash[element].amount += 1;
                         duplicatedProduct = false;
                     }
