@@ -20,6 +20,7 @@ const recipeDataPath = '../opskrifter_old/recipes.json';
 const cachePath = '../cache/cache.json';
 
 const { stringify } = require('querystring');
+const { Console } = require('console');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -172,7 +173,7 @@ app.get('/findAllRecipes', async (req, res) => {
         }
         
 
-        if(new Date() - Date.parse(parsedData.date) > 3*60*60*100){
+        if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
             console.log("Making new data");
             //Builds recipeObjects object from a recipe file and then searches 
             //the salling API for the recipes ingredients.
@@ -369,9 +370,24 @@ app.post('/addRecipeToShoppingList', (req, res) => {
 
 // Retrieves the data from the user's shoppinglist
 app.get('/shoppingList', (req, res) => {
-    let userData = require(userPath);
+    fs.readFile(userPath, "utf-8", (err, userDataString) => {
+        if(err) {
+            console.log("Error reading file from disk:", err);
+            return;
+        }
 
-    res.send(userData.shoppingList);
+        try {
+            userData = JSON.parse(userDataString);
+            //let userData = require(userPath);
+            userData.shoppingList.forEach((recipe) => {
+                console.log(recipe.recipe.title);
+            })
+            //console.log(userData.shoppingList);
+            res.json(userData.shoppingList);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 });
 
 app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
@@ -411,9 +427,9 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
     try {
         fs.readFile(userPath, function readFileCallback(err, data) {
             let userData = JSON.parse(data);
-            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            let recipeIndex = findRecipeIndex(req.params.ID, userData, "shoppingList");
             console.log(recipeIndex);
-            if (recipeIndex) {
+            if (recipeIndex !== false) {
                 userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
             }
             else {
@@ -425,6 +441,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
 
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
+                    console.error(err)
                     res.status(500).send();
                 }
                 res.status(202).send();
@@ -445,28 +462,32 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
  * @param option - member we want to acess in the file.
  * @returns The index of the recipe.
  */
-function findRecipeIndex(ID, filePath, option) {
-    let file = require(filePath);
-    // TODO reevaluate this function design
-
+function findRecipeIndex(ID, data, option) {
+    let numberID = Number.parseInt(ID)
+    let returnValue = false;
     if (option === "shoppingList") {
-        for (object in file[option]) {
-            for (recipe in file[option][object]) {
-                if (file[option][object][recipe].recipeID == ID) {
-                    return object;
-                }
+        let index = 0;
+        data[option].forEach((recipe) => {
+            console.log(Number.parseInt(ID))
+            console.log(recipe.recipe.recipeID)
+            if (recipe.recipe.recipeID === numberID) {
+                console.log("test");
+                returnValue = index;
             }
-        }
+            index++
+        })
     }
     else if (option === "recipes") {
-        for (object in file[option]) {
-            if (file[option][object].recipeID == ID) {
+        for (object in data[option]) {
+            if (data[option][object].recipeID == ID) {
                 return object;
             }
         }
     }
 
-    return false;
+    return returnValue;
+    // TODO reevaluate this function design
+
 }
 
 /**

@@ -40,15 +40,32 @@ body{
     background-color: inherit;
 }
 
+.recipe-row {
+    margin-top: 1rem;
+}
+
 #dropdown-recipes:hover {
     background-color: inherit;
 }
 
+#dropdown-recipes {
+    margin-right: 0 !important;
+    margin-left: 0 !important; 
+}
+
 .dropdown-card {
-    padding-right: 1rem;
-    width: 22rem;
+    width: 21rem !important;
+}
+
+.dropdown-menu-end[data-bs-popper] {
+    right: -50px;
 }
 
 .icon {
     font-size: 1.5rem !important;
+}
+
+.add-recipe-btn {
+    width: 95%;
+    margin-left: .5rem;
 }
