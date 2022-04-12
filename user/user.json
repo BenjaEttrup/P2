@@ -73,25 +73,10 @@
     ],
     "myStash": [
         {
-            "prod_id": 41685,
-            "title": "Mozzarella",
-            "amount": "1",
-            "unit": "stk"
-        },
-        {
             "prod_id": 84537,
             "title": "Kogt skinke",
-            "amount": "1",
+            "amount": 10,
             "unit": "stk"
-        },
-        {
-            "id": "92343951",
-            "prod_id": 84536,
-            "title": "Kogt skinke i skiver2",
-            "description": "Kogt skinke i skiver2",
-            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-            "link": "https://www.bilkatogo.dk/p/84537",
-            "price": 8.95
         }
     ]
 }

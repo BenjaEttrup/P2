@@ -134,10 +134,15 @@ class ShoppingList extends React.Component {
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListElements.forEach(recipeIngredient => {
       if(recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id){
+        console.log(recipeIngredient);
         recipeIngredient.setState({
-          hide: !recipeIngredient.state.hide
+          hide: !recipeIngredient.state.hide,
+          // Figure out why it is always unchecked with boxChecked being true :')
+          boxChecked: true
         })
+        console.log(`recipeIngredient.state.hide = ${recipeIngredient.state.hide}`);
       }
+      console.log(recipeIngredient);
     })
     
     // Updates the price of the recipes

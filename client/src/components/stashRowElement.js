@@ -37,13 +37,15 @@ class StashRowElement extends React.Component {
 
   hideStashRowElement(stashRowElement, endPoint) {
     this.setState({
-      hide: true
+      hide: !this.state.hide,
     })
 
     let params = {
       endPoint: endPoint
     };
 
+    console.log("pushed Trashcan")
+    console.log(this);
     if (this.props.hasOwnProperty('recipeID')) {
       params['recipeID'] = this.props.recipeID;
       this.props.updateRecipePrice(stashRowElement, true);
@@ -62,16 +64,15 @@ class StashRowElement extends React.Component {
       if (this.state.boxChecked) {
         this.props.matchIngredient(this.props.ingredient, true);
 
-        // TODO Add item to stash
         console.log("Checked");
       }
       else {
-        // TODO remove item from stash
         console.log("Unchecked");
         this.props.matchIngredient(this.props.ingredient, true);
 
         let stashRowElement = this;
 
+        // TODO check if backend is able to find duplicate product
         fetch(`/stash/add`, {
           method: 'POST',
           headers: {
@@ -111,7 +112,7 @@ class StashRowElement extends React.Component {
     if (this.props.hasOwnProperty('passToShoppingList') && !this.state.passedToShoppingList) {
       this.initStashRowElement(this.props.isHidden);
     }
-    if (this.state.hide || this.state.movedToMyStash) return null;
+    if (this.state.hide) return null;
     // if (this.props.isHidden) return null;
 
     if (this.props.hasOwnProperty('shoppingList')) {
