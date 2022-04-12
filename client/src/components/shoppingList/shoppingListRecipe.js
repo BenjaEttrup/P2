@@ -75,6 +75,7 @@ class ShoppingListRecipe extends React.Component {
               <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
                 <i className="fa fa-trash"></i></button>
             </th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -89,7 +90,7 @@ class ShoppingListRecipe extends React.Component {
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
-                  updateRecipePrice={(stashRowElement) => this.updateRecipePrice(stashRowElement)}
+                  updateRecipePrice={(stashRowElement, subtract) => this.updateRecipePrice(stashRowElement, subtract)}
                   recipeIndex={this.props.recipeIndex}
                   passStashRowElement={(stashRowElementInstance) => this.props.trackStashRowElement(stashRowElementInstance)}
                 />

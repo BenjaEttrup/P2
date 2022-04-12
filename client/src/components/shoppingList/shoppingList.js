@@ -115,11 +115,19 @@ class ShoppingList extends React.Component {
     }
   }
 
-  matchIngredient(stashIngredient, subtract, stashRowElement) {
-    console.log(stashRowElement);
-    
-    let stashIngredients = this.state.myStashIngredients;
+  matchIngredient(stashIngredient, subtract) {
     let recipes = this.state.shoppingListRecipes;
+
+    // Updates the state of the prop.
+    this.state.shoppingListElements.forEach(recipeIngredient => {
+      if(recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id){
+        recipeIngredient.setState({
+          hide: !recipeIngredient.state.hide
+        })
+      }
+    })
+    
+    // Updates the price of the recipes
     recipes.forEach((recipe, recipeIndex) => {
       recipe.ingredients.forEach((recipeIngredient, index) => {
         if (recipeIngredient.prod_id == stashIngredient.prod_id){
@@ -177,13 +185,21 @@ class ShoppingList extends React.Component {
   }
 
   trackStashRowElement(stashRowElementInstance) {
+    let shoppingListElements = this.state.shoppingListElements;
+    shoppingListElements.push(stashRowElementInstance); 
     this.setState({
-      shoppingListElements: this.state.shoppingListElements.push(stashRowElementInstance)
+      shoppingListElements: shoppingListElements
     })
+
+    
+    // this.setState({
+    //   shoppingListElements: this.state.shoppingListElements
+    // })
+
     // Here we can unhide elements.
-    this.state.shoppingListElements[0].setState({
-      hide: false
-    });
+    // this.state.shoppingListElements[0].setState({
+    //   hide: false
+    // });
   }
 
   //This is the render function. This is where the

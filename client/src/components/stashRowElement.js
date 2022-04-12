@@ -22,17 +22,15 @@ class StashRowElement extends React.Component {
 
   //Functions go here
   initStashRowElement(hide) {
-      if(hide){
-        console.log(`Setting state hide = ${hide}`)
-        this.setState({
-          passedToShoppingList: true,
-          hide: hide
-        });
-        console.log(`isHidden = ${this.props.isHidden} hide = ${this.state.hide}`)
+    if (hide) {
+      this.setState({
+        passedToShoppingList: true,
+        hide: hide
+      });
 
-        this.props.passStashRowElement(this)
-      }
+      this.props.passStashRowElement(this)
     }
+  }
 
 
 
@@ -51,8 +49,24 @@ class StashRowElement extends React.Component {
     }
     else {
       params['recipeID'] = false;
+      this.props.matchIngredient(stashRowElement, false);
       this.props.removeIngredient(stashRowElement, params);
     }
+  }
+
+  addItemToStash(evt) {
+    this.setState((prevState) => ({
+      boxChecked: !prevState.boxChecked
+    }), () => {
+      if (this.state.boxChecked) {
+        // TODO Add item to stash
+        console.log("Checked");
+      }
+      else {
+        // TODO remove item from stash
+        console.log("Unchecked");
+      }
+    });
   }
 
   checkCheckBox(evt) {
@@ -61,12 +75,12 @@ class StashRowElement extends React.Component {
     }), () => {
       if (this.state.boxChecked) {
         console.log("Checked")
-        this.props.matchIngredient(this.props.ingredient, false);
+        this.props.matchIngredient(this.props.ingredient, true);
       }
       else {
         // TODO HANDLE the scenario where the price was originally subtracted due to the recipeIngredient isHidden
         console.log("Unchecked")
-        this.props.matchIngredient(this.props.ingredient, true);
+        this.props.matchIngredient(this.props.ingredient, false);
       }
     });
 
@@ -75,9 +89,9 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    if (this.props.hasOwnProperty('passToShoppingList') && !this.state.passedToShoppingList){
+    if (this.props.hasOwnProperty('passToShoppingList') && !this.state.passedToShoppingList) {
       this.initStashRowElement(this.props.isHidden);
-    } 
+    }
     if (this.state.hide) return null;
     // if (this.props.isHidden) return null;
 
@@ -87,8 +101,15 @@ class StashRowElement extends React.Component {
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
           <td className="right-align">
-            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/removeIngredientFromShoppingList/') }}>
+            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '') }}>
               <i className="fa fa-trash"></i></button>
+          </td>
+          <td className="right-align center" width="2%">
+            <div className="form-check align-middle">
+              <input className="form-check-input" type="checkbox" onChange={(evt) => this.addItemToStash(evt)}
+                id="flexCheckChecked" checked={!this.state.boxChecked}>
+              </input>
+            </div>
           </td>
         </tr>
       );
