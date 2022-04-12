@@ -161,16 +161,3 @@ class RecipePage extends React.Component {
 
 
 export default RecipePage;
-
-
-            // <div class="shoppingList">
-            //     <div class="card shadow shoppingList">
-            //         <div class="card-body shoppingList-card-body">
-            //             <div class="">
-            //                 <h4>
-            //                     hej {id}
-            //                 </h4>
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>
