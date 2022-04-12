@@ -50,14 +50,15 @@ body{
 
 #dropdown-recipes {
     margin-right: 0 !important;
+    margin-left: 0 !important; 
 }
 
 .dropdown-card {
-    width: 22rem !important;
+    width: 21rem !important;
 }
 
 .dropdown-menu-end[data-bs-popper] {
-    right: -160px;
+    right: -50px;
 }
 
 .icon {
@@ -66,4 +67,5 @@ body{
 
 .add-recipe-btn {
     width: 95%;
+    margin-left: .5rem;
 }

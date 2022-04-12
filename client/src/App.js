@@ -31,7 +31,6 @@ class App extends React.Component {
   }
 
   updateRecipes() {
-    console.log('test')
     fetch(`/shoppingList`, {
       headers : { 
         'Content-Type': 'application/json',

@@ -18,29 +18,51 @@ class Dropdown extends React.Component {
   }
 
   //Functions go here
+  removeRecipe(recipeID) {
+    fetch(`/removeRecipeFromShoppingList/${recipeID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).catch((err) => {
+      console.error(err);
+    });
+    this.props.updateRecipes();
+  }
+
 
   //This is the render function. This is where the
   //html is.
   render() {
     return (
       <div className="Dropdown">
-        <h5 class="">Recipes</h5>
+        <h5 class="dropdown-title">Recipes</h5>
         <div>
-            {this.props.recipes.map((recipe) => {
-              return (
-                <div class="row recipe-row">
-                  <div class="col-6">
-                    {recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}
-                  </div>
-                  <div class="col-4 right-align">
-                    {recipe.recipe.price + ' DKK'}
-                  </div>
-                  <div class="col-1">
-                    <i class="fa fa-trash"></i>
-                  </div>
-                </div>
-              )
-            })}
+        <table class="table table-striped table-borderless">
+          <thead>
+            <tr>
+              <th class="col-6" scope="col"></th>
+              <th class="col-4" scope="col"></th>
+              <th class="col-1" scope="col"></th>
+            </tr>
+          </thead>
+              <tbody>
+                {this.props.recipes.map((recipe) => {
+                  return (
+                    <tr class="table-content  table-rounded">
+                      <td>{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</td>
+                      <td class="table-content-secondary">
+                      {recipe.recipe.price + ' DKK'}
+                      </td>
+                      <td class="right-align-text">
+                        <i class="fa fa-trash" onClick={() => this.removeRecipe(recipe.recipe.recipeID)}></i>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
         </div>
         <div class="btn-row">
           <Link to="/shoppingList">
