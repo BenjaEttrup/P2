@@ -16,7 +16,8 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      activeNav: 0
+      activeNav: 0,
+      recipes: []
     }
   }
 
@@ -30,12 +31,32 @@ class App extends React.Component {
     })
   }
 
+  updateRecipes() {
+    fetch(`/shoppingList`, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((res) => {
+      console.log(res)
+      this.setState({
+        recipes: res
+      }, () => {
+        console.log(this.state.recipes)
+      })
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+
   render() {
     return (
       <Router>
         <div>
-          <Navbar active={this.state.activeNav} />
 
+          <Navbar active={this.state.activeNav} updateRecipes={() => {this.updateRecipes()}} recipes={this.state.recipes} />
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
@@ -52,7 +73,8 @@ class App extends React.Component {
               <Recipe />
             </Route>
             <Route path="/">
-              <HomePage updateNavFunction={(id) => { this.updateNav(id) }} />
+
+              <HomePage updateNavFunction={(id) => {this.updateNav(id)}} updateShoppingList={() => this.updateRecipes()} />
             </Route>
           </Switch>
         </div>
