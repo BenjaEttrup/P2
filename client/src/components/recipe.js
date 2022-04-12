@@ -15,14 +15,11 @@ function Recipe() {
             </div>
         )
     }
-
     // HTML
     return (
         <div>
             {id ? <RecipePage id={id} /> : errorMessage()}
         </div>
     );
-
 }
-
 export default Recipe;
