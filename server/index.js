@@ -466,15 +466,10 @@ function findRecipeIndex(ID, data, option) {
     let numberID = Number.parseInt(ID)
     let returnValue = false;
     if (option === "shoppingList") {
-        let index = 0;
-        data[option].forEach((recipe) => {
-            console.log(Number.parseInt(ID))
-            console.log(recipe.recipe.recipeID)
+        data[option].forEach((recipe, recipeIndex) => {
             if (recipe.recipe.recipeID === numberID) {
-                console.log("test");
-                returnValue = index;
+                returnValue = recipeIndex;
             }
-            index++
         })
     }
     else if (option === "recipes") {
