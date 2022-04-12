@@ -13,14 +13,32 @@ class RecipeCard extends React.Component {
     //runs before our code in the contructor
     super(props);
   }
+
+  addRecipe(recipe) {
+    fetch(`/addRecipeToShoppingList`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(recipe),
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .then(() => {
+      console.log('Success');
+      this.props.updateShoppingList()
+    });
+  }
   
   //This is the render function. This is where the
   //html is.
   render() {
     return (
       <div className="RecipeCard">
-        <div class="col mb-4 outer-item-card">
-          <a href="#">
+        <div class="col mb-4 outer-item-card hover-shadow">
             <div class="card card-item h-100">
               <div class="img-gradient img-gradient-black card-img-border">
                 <img src={this.props.recipe.recipe.image} class="card-img" alt="..." height="175" />
@@ -29,7 +47,7 @@ class RecipeCard extends React.Component {
                 <div class="row card-info-row">
                   <h5 class="card-title col-7">{ this.props.recipe ? this.props.recipe.recipe.title : '' }</h5>
                   <div class="card-info col-5">
-                    <button type="button col" class="button-add">
+                    <button type="button col" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
                       <h4 class="button-plus">+</h4>
                     </button>
                     <p class="card-text card-price col">{ this.props.recipe ? this.props.recipe.recipe.price + ' DKK' : '' }</p>
@@ -37,7 +55,6 @@ class RecipeCard extends React.Component {
                 </div>
               </div>
             </div>
-          </a>
         </div>
       </div>
     );

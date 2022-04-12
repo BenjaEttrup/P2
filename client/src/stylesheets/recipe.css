@@ -23,7 +23,7 @@ body {
 }
 
 .right-align {
-    text-align: right;
+    text-align: right !important;
     padding: 0px;
 }
 
@@ -34,7 +34,6 @@ body {
 .info-row {
     align-content: center;
     margin: 0px;
-    width: 10em;
     color: #949494;
     display: flex;
 }
@@ -66,7 +65,12 @@ body {
 }
 
 .info-duration {
-    width: 5em;
+    width: 7em;
+    text-align: right;
+}
+
+.info-title {
+    width: 100%;
 }
 
 .card-popup {
@@ -170,4 +174,24 @@ body {
     margin-right: auto;
     margin-bottom: 10rem;
     padding: 3rem;
+    background-color: #ffffff;
+}
+
+.card {
+    background-color: #f3f3f3 !important;
+}
+
+.ingredientsTabelCol {
+    height: 1rem;
+}
+
+.recipe-button {
+    width: 25em;
+    text-align: center;
+    margin: auto;
+    float: center !important;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

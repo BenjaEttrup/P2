@@ -14,9 +14,13 @@ const { json } = require('express');
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
 };
+
 const userPath = '../user/user.json';
 const recipeDataPath = '../opskrifter/recipes.json';
+const cachePath = '../cache/cache.json';
+
 const { stringify } = require('querystring');
+const { Console } = require('console');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -149,92 +153,121 @@ app.get("/stash/search/:productName", async (req, res) => {
 app.get('/findAllRecipes', async (req, res) => {
     const recipeData = require('../opskrifter/recipes.json');
 
-    var recipeObjects = {
+    let recipeObjects = {
         recipes: []
     };
 
+	fs.readFile(cachePath, async (err, data) => {
+        if(err) {
+            console.log(err);
+            return
+        } 
 
-    //Builds recipeObjects object from a recipe file and then searches 
-    //the salling API for the recipes ingredients.
-    for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
-        const tempRecipe = recipeData.recipes[index1];
-        let totalPrice = 0;
+        let parsedData;
 
-        var recipeObject = {
-            recipe: {},
-            ingredients: []
-        };
-
-        recipeObject.recipe = tempRecipe;
-
-        console.log(`Getting ingredients for ${tempRecipe.title}`);
-        startTimer();
-
-        for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
-            const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
-
-            try {
-                let apiResponse = await callApi(encodeCharacters(tempIngredient));
-                if (apiResponse === false) {
-                    console.log(`Something went wrong with ${tempIngredient}`);
-                    console.log(apiResponse);
-                } else {
-                    if (apiResponse.suggestions[0] === undefined) {
-                        console.log(`Failed to get ${tempIngredient}`);
-                    } else {
-                        apiResponse.suggestions.sort(comparePrice);
-                        recipeObject.ingredients.push(apiResponse.suggestions[0])
-                        totalPrice += apiResponse.suggestions[0].price;
-                    }
-                }
-            } catch (e) {
-                console.error(e);
-
-                //Dis breka da thing 
-                //res.status(500).send();
+        try{
+            parsedData = JSON.parse(data);
+        } catch(err) {
+            parsedData = {
+                date: 0
             }
         }
 
-        recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
 
-        logTime()
+        if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
+            console.log("Making new data");
+            //Builds recipeObjects object from a recipe file and then searches 
+            //the salling API for the recipes ingredients.
+            for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
+                const tempRecipe = recipeData.recipes[index1];
+                let totalPrice = 0;
 
-        recipeObjects.recipes.push(recipeObject);
-    }
-    console.log('Done getting recipes');
+                var recipeObject = {
+                    recipe: {},
+                    ingredients: []
+                };
 
-    //Filters the recipes given some search params. This can be a string for 
-    //title or two number for max and min price
-    if (Object.keys(req.query).length !== 0) {
-        if (req.query.search !== undefined) {
-            let searchedRecipes = [];
+                recipeObject.recipe = tempRecipe;
 
-            stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach((recipe) => {
-                searchedRecipes.push(recipe);
-            })
+                console.log(`Getting ingredients for ${tempRecipe.title}`);
+                        startTimer();
 
-            let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
-                return !searchedRecipes.includes(recipe);
-            })
+                for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
+                    const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
 
-            stringIngredientSearch(req.query.search, notAlreadyChosen).forEach((recipe) => {
-                searchedRecipes.push(recipe)
-            })
+                    try {
+                        let apiResponse = await callApi(encodeCharacters(tempIngredient));
+                        if(apiResponse === false){
+                            console.log(`Something went wrong with ${tempIngredient}`);
+                            console.log(apiResponse);
+                        } else {
+                            if(apiResponse.suggestions[0] === undefined) {
+                                console.log(`Failed to get ${tempIngredient}`);
+                            } else {
+                                apiResponse.suggestions.sort(comparePrice);
+                                recipeObject.ingredients.push(apiResponse.suggestions[0])
+                                totalPrice += apiResponse.suggestions[0].price;
+                            }
+                        }
+                    } catch(e) {
+                        console.error(e);
 
-            recipeObjects.recipes = searchedRecipes;
+                        //Dis breka da thing 
+                        //res.status(500).send();
+                    }
+                }
+                
+                recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
+
+                        logTime()
+
+                recipeObjects.recipes.push(recipeObject);
+            }
+            console.log('Done getting recipes');
+
+            //Filters the recipes given some search params. This can be a string for 
+            //title or two number for max and min price
+            if (Object.keys(req.query).length !== 0) {
+                if (req.query.search !== undefined) {
+                    let searchedRecipes = [];
+
+                    stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach((recipe) => {
+                        searchedRecipes.push(recipe);
+                    })
+
+                    let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
+                        return !searchedRecipes.includes(recipe);
+                    })
+
+                    stringIngredientSearch(req.query.search, notAlreadyChosen).forEach((recipe) => {
+                        searchedRecipes.push(recipe)
+                    })
+
+                    recipeObjects.recipes = searchedRecipes;
+                }
+
+                if (req.query.maxPrice !== undefined && req.query.minPrice !== undefined) {
+                    let minPrice = req.query.minPrice;
+                    let maxPrice = req.query.maxPrice;
+
+                    let searchedRecipes = betweenPricesSearch(minPrice, maxPrice, recipeObjects.recipes)
+
+                    recipeObjects.recipes = searchedRecipes;
+                }
+            }
+
+            let cacheData = {
+                date: new Date(),
+                data: recipeObjects
+            }
+
+            fs.writeFile(cachePath, JSON.stringify(cacheData, null, 2), (err) => {if(err) console.log(err)})
+        } else {
+            console.log("Using old data");
+            recipeObjects = parsedData.data;
         }
-
-        if (req.query.maxPrice !== undefined && req.query.minPrice !== undefined) {
-            let minPrice = req.query.minPrice;
-            let maxPrice = req.query.maxPrice;
-
-            let searchedRecipes = betweenPricesSearch(minPrice, maxPrice, recipeObjects.recipes)
-
-            recipeObjects.recipes = searchedRecipes;
-        }
-    }
-
-    res.json(recipeObjects);
+        res.json(recipeObjects);
+    })
 });
 
 
@@ -243,33 +276,44 @@ app.get('/findRecipe/:ID', async (req, res) => {
     const recipeData = require(recipeDataPath);
 
     let recipeObject = {
-        recipe: {},
+        recipe: {
+            
+        },
         ingredients: []
     };
 
-    recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
+    let recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
-        let details;
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
         // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0]
-            // console.log(recipeData.recipes[recipeIndex].ingredients[i]);
-            console.log(`Ingredient:   ${ingredient}`)
-            details = await callApi(encodeCharacters(ingredient));
-            console.log(details.suggestions)
-            recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
-            let cheapestPrice = details.suggestions.sort(comparePrice)[0];
-            console.log(cheapestPrice)
-            recipeObject.ingredients[i]["price"] = cheapestPrice
-            totalPrice += cheapestPrice;
+            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0] //keys from JSON recipe file, inserted in ingredient.
+            //console.log(ingredient)//
+            let details = await callApi(encodeCharacters(ingredient)); //API call
+            //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
+            details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
+            recipeObject.ingredients[i] = details.suggestions[0] //Store cheapest ingredient in recipeObject
+            recipeObject.ingredients[i].title = ingredient
+            totalPrice += details.suggestions[0].price; //sum of recipe.
+            recipeObject.ingredients[i]["amount"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].amount;
+            recipeObject.ingredients[i]["unit"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].unit;
         }
-        // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
-        recipeObject.recipe["totalPrice"] = Number(totalPrice.toFixed(2));
+        // Rounds the price of the recipe to two decimals and converts it to a number in this case float. 
+        recipeObject.recipe["title"] = recipeData.recipes[recipeIndex].title
+        recipeObject.recipe["method"] = recipeData.recipes[recipeIndex].method
+        recipeObject.recipe["url"] = recipeData.recipes[recipeIndex].url
+        recipeObject.recipe["image"] = recipeData.recipes[recipeIndex].image
+        recipeObject.recipe["size"] = recipeData.recipes[recipeIndex].size
+        recipeObject.recipe["time"] = recipeData.recipes[recipeIndex].time
+        recipeObject.recipe["rating"] = recipeData.recipes[recipeIndex].rating
+        recipeObject.recipe["description"] = recipeData.recipes[recipeIndex].description
+        recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
+        recipeObject.recipe["totalPrice"] = totalPrice.toFixed(2);
         recipeObject.recipe["recipeIndex"] = recipeIndex;
 
+        console.log(recipeObject)
     }
 
     res.json(recipeObject);
@@ -346,9 +390,24 @@ app.post('/addRecipeToShoppingList', (req, res) => {
 
 // Retrieves the data from the user's shoppinglist
 app.get('/shoppingList', (req, res) => {
-    let userData = require(userPath);
+    fs.readFile(userPath, "utf-8", (err, userDataString) => {
+        if(err) {
+            console.log("Error reading file from disk:", err);
+            return;
+        }
 
-    res.send(userData.shoppingList);
+        try {
+            userData = JSON.parse(userDataString);
+            //let userData = require(userPath);
+            userData.shoppingList.forEach((recipe) => {
+                console.log(recipe.recipe.title);
+            })
+            //console.log(userData.shoppingList);
+            res.json(userData.shoppingList);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 });
 
 app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
@@ -388,9 +447,9 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
     try {
         fs.readFile(userPath, function readFileCallback(err, data) {
             let userData = JSON.parse(data);
-            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            let recipeIndex = findRecipeIndex(req.params.ID, userData, "shoppingList");
             console.log(recipeIndex);
-            if (recipeIndex) {
+            if (recipeIndex !== false) {
                 userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
             }
             else {
@@ -402,6 +461,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
 
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
+                    console.error(err)
                     res.status(500).send();
                 }
                 res.status(202).send();
@@ -422,34 +482,33 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
  * @param option - member we want to acess in the file.
  * @returns The index of the recipe.
  */
-function findRecipeIndex(ID, filePath, option) {
-    let file = require(filePath);
-    // TODO reevaluate this function design
 
-    console.log(ID)
-    console.log(option)
-
+function findRecipeIndex(ID, data, option) {
+    let numberID = Number.parseInt(ID)
+    let returnValue = false;
     if (option === "shoppingList") {
-        for (object in file[option]) {
-            for (recipe in file[option][object]) {
-                if (file[option][object][recipe].recipeID == ID) {
-                    return object;
-                }
+        let index = 0;
+        data[option].forEach((recipe) => {
+            console.log(Number.parseInt(ID))
+            console.log(recipe.recipe.recipeID)
+            if (recipe.recipe.recipeID === numberID) {
+                console.log("test");
+                returnValue = index;
             }
-        }
+            index++
+        })
     }
     else if (option === "recipes") {
-        console.log("Inde i recipes")
-        for (object in file[option]) {
-            console.log(object)
-            if (file[option][object].recipeID == ID) {
-                console.log(`file[option][object].recipeID == ID --- ${ID}  \n  ${object}`)
+        for (object in data[option]) {
+            if (data[option][object].recipeID == ID) {
                 return object;
             }
         }
     }
 
-    return false;
+    return returnValue;
+    // TODO reevaluate this function design
+
 }
 
 /**
