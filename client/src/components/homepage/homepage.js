@@ -181,7 +181,7 @@ class HomePage extends React.Component {
               {
                 this.state.recipes.map((recipe) => {
                   return (
-                    <RecipeCard recipe={recipe}/>
+                    <RecipeCard recipe={recipe} updateShoppingList={() => this.props.updateShoppingList()}/>
                   )
                 })
               }
@@ -270,7 +270,7 @@ function comparePrice(a, b) {
 }
 
 function myStashSearch(recipes, myStash) {
-
+  
 }
 
 export default HomePage;
