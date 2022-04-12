@@ -270,7 +270,7 @@ function comparePrice(a, b) {
 }
 
 function myStashSearch(recipes, myStash) {
-  console.log('test')
+  
 }
 
 export default HomePage;
