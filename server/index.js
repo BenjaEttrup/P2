@@ -16,7 +16,7 @@ const config = {
 };
 
 const userPath = '../user/user.json';
-const recipeDataPath = '../opskrifter_old/recipes.json';
+const recipeDataPath = '../opskrifter/recipes.json';
 const cachePath = '../cache/cache.json';
 
 const { stringify } = require('querystring');
@@ -81,7 +81,7 @@ app.post("/stash/add", (req, res) => {
                 // Gets already stored data and adds new product to it
                 let parsedJson = JSON.parse(fileData);
                 let duplicatedProduct = true;
-                for (element in parsedJson.myStash){
+                for (element in parsedJson.myStash) {
                     if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
                         parsedJson.myStash[element].amount += 1;
                         duplicatedProduct = false;
@@ -120,10 +120,11 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                 // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
                 if (jsonArray[i].prod_id == req.params.prod_id) {
                     if (jsonArray[i].amount > 1) {
-                        jsonArray[i].amount --;
+                        jsonArray[i].amount--;
                     }
                     else {
-                        jsonArray.splice(i, 1)}
+                        jsonArray.splice(i, 1)
+                    }
                     break;
                 }
             }
@@ -171,7 +172,7 @@ app.get('/findAllRecipes', async (req, res) => {
                 date: 0
             }
         }
-        
+
 
         if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
             console.log("Making new data");
@@ -275,25 +276,44 @@ app.get('/findRecipe/:ID', async (req, res) => {
     const recipeData = require(recipeDataPath);
 
     let recipeObject = {
-        recipe: {},
+        recipe: {
+            
+        },
         ingredients: []
     };
 
-    recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
+    let recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
     if (recipeIndex) {
-        let details;
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
+        // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
-            details = await callApi(encodeCharacters(ingredient));
-            recipeObject.ingredients[i] = details;
-            recipeObject.recipe = recipeData.recipes[recipeIndex];
-            totalPrice += details.price;
+            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0] //keys from JSON recipe file, inserted in ingredient.
+            //console.log(ingredient)//
+            let details = await callApi(encodeCharacters(ingredient)); //API call
+            //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
+            details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
+            recipeObject.ingredients[i] = details.suggestions[0] //Store cheapest ingredient in recipeObject
+            recipeObject.ingredients[i].title = ingredient
+            totalPrice += details.suggestions[0].price; //sum of recipe.
+            recipeObject.ingredients[i]["amount"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].amount;
+            recipeObject.ingredients[i]["unit"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].unit;
         }
-        // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
-        recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
+        // Rounds the price of the recipe to two decimals and converts it to a number in this case float. 
+        recipeObject.recipe["title"] = recipeData.recipes[recipeIndex].title
+        recipeObject.recipe["method"] = recipeData.recipes[recipeIndex].method
+        recipeObject.recipe["url"] = recipeData.recipes[recipeIndex].url
+        recipeObject.recipe["image"] = recipeData.recipes[recipeIndex].image
+        recipeObject.recipe["size"] = recipeData.recipes[recipeIndex].size
+        recipeObject.recipe["time"] = recipeData.recipes[recipeIndex].time
+        recipeObject.recipe["rating"] = recipeData.recipes[recipeIndex].rating
+        recipeObject.recipe["description"] = recipeData.recipes[recipeIndex].description
+        recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
+        recipeObject.recipe["totalPrice"] = totalPrice.toFixed(2);
+        recipeObject.recipe["recipeIndex"] = recipeIndex;
+
+        console.log(recipeObject)
     }
 
     res.json(recipeObject);
@@ -462,6 +482,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
  * @param option - member we want to acess in the file.
  * @returns The index of the recipe.
  */
+
 function findRecipeIndex(ID, data, option) {
     let numberID = Number.parseInt(ID)
     let returnValue = false;
@@ -600,16 +621,16 @@ function sleep(milliseconds) {
 var startTime, endTime;
 
 function startTimer() {
-  startTime = new Date();
+    startTime = new Date();
 };
 
 function logTime() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
+    endTime = new Date();
+    var timeDiff = endTime - startTime; //in ms
+    // strip the ms
+    timeDiff /= 1000;
 
-  // get seconds 
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
+    // get seconds 
+    var seconds = Math.round(timeDiff);
+    console.log(seconds + " seconds");
 }
