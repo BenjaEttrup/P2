@@ -339,11 +339,11 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
+            return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
         }
     } catch (e) {
         console.error(e);
-        return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
+        return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
     }
     return apiRes
 }
