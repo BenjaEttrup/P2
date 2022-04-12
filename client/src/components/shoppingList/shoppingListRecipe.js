@@ -43,6 +43,8 @@ class ShoppingListRecipe extends React.Component {
 
       this.updateRecipePrice(ingredient, true);
     }
+
+    // TODO Maybe pass the stashRowElement to shoppingList at this place
     return this.props.ingredientInStash(ingredient, ingredientIndex);
   }
 
@@ -83,11 +85,13 @@ class ShoppingListRecipe extends React.Component {
                   key={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
                   isHidden={this.initShoppingListIngredient(ingredient, ingredientIndex)}
+                  passToShoppingList={true}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
                   updateRecipePrice={(stashRowElement) => this.updateRecipePrice(stashRowElement)}
                   recipeIndex={this.props.recipeIndex}
+                  passStashRowElement={(stashRowElementInstance) => this.props.trackStashRowElement(stashRowElementInstance)}
                 />
               )
             })
