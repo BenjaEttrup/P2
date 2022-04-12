@@ -55,30 +55,29 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-
-          <Navbar active={this.state.activeNav} updateRecipes={() => {this.updateRecipes()}} recipes={this.state.recipes} />
+          <Navbar active={this.state.activeNav} updateRecipes={() => {this.updateRecipes()}} recipes={this.state.recipes}/>
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/shoppingList">
-              <ShoppingList updateNavFunction={(id) => { this.updateNav(id) }} />
+              <ShoppingList updateNavFunction={(id) => {this.updateNav(id)}}/>
             </Route>
             <Route path="/myStash">
-              <MyStash updateNavFunction={(id) => { this.updateNav(id) }} />
+              <MyStash updateNavFunction={(id) => {this.updateNav(id)}}/>
             </Route>
             <Route path="/spinTheMeal">
-              <SpinTheMeal updateNavFunction={(id) => { this.updateNav(id) }} />
+              <SpinTheMeal updateNavFunction={(id) => {this.updateNav(id)}}/>
             </Route>
             <Route path="/recipe/:id">
-              <Recipe />
+              <Recipe/>
             </Route>
             <Route path="/">
 
-              <HomePage updateNavFunction={(id) => {this.updateNav(id)}} updateShoppingList={() => this.updateRecipes()} />
+              <HomePage updateNavFunction={(id) => {this.updateNav(id)}} updateShoppingList={() => this.updateRecipes()}/>
             </Route>
           </Switch>
         </div>
-      </Router >
+      </Router>
     );
   }
 }
