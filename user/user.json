@@ -71,15 +71,5 @@
             ]
         }
     ],
-    "myStash": [
-        {
-            "id": "92343951",
-            "prod_id": 84536,
-            "title": "Kogt skinke i skiver2",
-            "description": "Kogt skinke i skiver2",
-            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-            "link": "https://www.bilkatogo.dk/p/84537",
-            "price": 8.95
-        }
-    ]
+    "myStash": []
 }

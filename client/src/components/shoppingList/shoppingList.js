@@ -71,7 +71,20 @@ class ShoppingList extends React.Component {
   }
 
   // TODO should map recipe ingredient to 
-  mapRecipeIngredientStashIngredient(stashComponent){
+  unHideStashElement(shoppingListElement){
+    let myStashComponents = this.state.myStashComponents;
+
+    myStashComponents.forEach(component => {
+      if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id){
+        component.setState({
+          hide: false
+        })
+        console.log("")
+        console.log("Changed hide to false")
+        console.log(component)
+        console.log("")
+      }
+    })
 
   }
 
@@ -79,34 +92,31 @@ class ShoppingList extends React.Component {
    * @function updates the state of myStashIngredients to add the new ingredient
    * @param {*} stashIngredient the stashIngredient
    */
-  updateMyStashIngredients(stashIngredient) {
-    let myStashComponents = this.state.myStashComponents;
+  updateMyStashIngredients(shoppingListElement) {
     let myStashIngredients = this.state.myStashIngredients;
     let isDuplicate = false;
+    console.log(shoppingListElement)
 
-    myStashComponents.forEach(stashComponent => {
-      if (stashIngredient.props.ingredient.prod_id == stashComponent.props.ingredient.prod_id) {
-        stashComponent.setState({
-          hide: false
-        })
+    myStashIngredients.forEach(stashIngredient => {
+      if (stashIngredient.prod_id == shoppingListElement.props.ingredient.prod_id) {
         isDuplicate = true;
-        console.log("IS DUPLICATE")
+        shoppingListElement.setState({
+          hide: true
+        })
       }
     })
+
+    this.unHideStashElement(shoppingListElement);
+
     console.log(this)
-
     if (isDuplicate){
-      stashIngredient.setState({
-        hide: true
-      })
       return;
-    } 
+    }
     
-    myStashComponents.push(stashIngredient);
-    myStashIngredients.push(stashIngredient.props.ingredient);
+    myStashIngredients.push(shoppingListElement.props.ingredient);
 
+    console.log(this)
     this.setState((prevState) => ({
-      myStashComponents: myStashComponents,
       myStashIngredients: myStashIngredients
     }))
   }

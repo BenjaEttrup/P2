@@ -76,7 +76,7 @@ class StashRowElement extends React.Component {
       console.log("")
       console.log("boxUnchecked")
       console.log("FETCHING")
-      // TODO fix bug when adding an ingredient to an empty stash
+      // TODO fix bug where adding to stash does not make it show up in stash
       let stashRowElement = this;
       fetch(`/stash/add`, {
         method: 'POST',
@@ -87,12 +87,15 @@ class StashRowElement extends React.Component {
         body: JSON.stringify(this.props.ingredient)
       }).then(() => {
         stashRowElement.props.updateMyStashIngredients(stashRowElement)
+        console.log(stashRowElement)
       });
-      this.props.matchIngredient(this.props.ingredient, true);
+
+      this.props.matchIngredient(stashRowElement, false);
+      
       console.log(this)
-      // this.setState({
-      //   movedToMyStash: true
-      // });
+      this.setState({
+        hide: false
+      })
     });
   }
 
