@@ -70,28 +70,44 @@ class ShoppingList extends React.Component {
     }));
   }
 
+  // TODO should map recipe ingredient to 
+  mapRecipeIngredientStashIngredient(stashComponent){
+
+  }
+
   /**
    * @function updates the state of myStashIngredients to add the new ingredient
    * @param {*} stashIngredient the stashIngredient
    */
   updateMyStashIngredients(stashIngredient) {
     let myStashComponents = this.state.myStashComponents;
+    let myStashIngredients = this.state.myStashIngredients;
     let isDuplicate = false;
 
     myStashComponents.forEach(stashComponent => {
-      if(stashIngredient.props.ingredient.prod_id == stashComponent.props.ingredient.prod_id){
-        console.log("Found duplicate");
-        console.log(this)
+      if (stashIngredient.props.ingredient.prod_id == stashComponent.props.ingredient.prod_id) {
+        stashComponent.setState({
+          hide: false
+        })
         isDuplicate = true;
+        console.log("IS DUPLICATE")
       }
     })
+    console.log(this)
 
-    if(isDuplicate) return;
-
-
+    if (isDuplicate){
+      stashIngredient.setState({
+        hide: true
+      })
+      return;
+    } 
+    
     myStashComponents.push(stashIngredient);
+    myStashIngredients.push(stashIngredient.props.ingredient);
+
     this.setState((prevState) => ({
-      myStashIngredients: myStashComponents
+      myStashComponents: myStashComponents,
+      myStashIngredients: myStashIngredients
     }))
   }
 
@@ -142,13 +158,13 @@ class ShoppingList extends React.Component {
     }
   }
 
-  matchIngredient(stashIngredient, subtract) {
+  matchIngredient(stashIngredient, subtract, matchIngredient=false) {
     let recipes = this.state.shoppingListRecipes;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
+    console.log(this);
     this.state.shoppingListElements.forEach(recipeIngredient => {
-      if(recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id){
-      console.log(recipeIngredient);
+      if (recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id) {
         recipeIngredient.setState({
           hide: !recipeIngredient.state.hide,
           // Figure out why it is always unchecked with boxChecked being true :')
@@ -157,29 +173,22 @@ class ShoppingList extends React.Component {
       }
     })
 
-    console.log(this)
-    
     // Updates the price of the recipes
     recipes.forEach((recipe, recipeIndex) => {
       recipe.ingredients.forEach((recipeIngredient, index) => {
-        if (recipeIngredient.prod_id == stashIngredient.prod_id){
-            if(subtract){
-              this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
-            }
-            else {
-              this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
-            }
-          	this.updateTotalRecipePrice(recipeIngredient, subtract);
-        }  
+        if (recipeIngredient.prod_id == stashIngredient.prod_id) {
+          if (subtract) {
+            this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
+          }
+          else {
+            this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
+          }
+          this.updateTotalRecipePrice(recipeIngredient, subtract);
+        }
       })
     });
   }
 
-
-  testRecipePrice(priceElement) {
-    console.log(priceElement);
-    this.updateTotalRecipePrice(priceElement, false);
-  }
 
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
     let isInStash = false;
@@ -217,8 +226,8 @@ class ShoppingList extends React.Component {
 
   trackShoppingListElement(stashRowElementInstance) {
     let shoppingListElements = this.state.shoppingListElements;
-    
-    shoppingListElements.push(stashRowElementInstance); 
+
+    shoppingListElements.push(stashRowElementInstance);
     this.setState({
       shoppingListElements: shoppingListElements
     })
@@ -226,27 +235,19 @@ class ShoppingList extends React.Component {
 
   trackStashElement(stashRowElementInstance) {
     let myStashComponents = this.state.myStashComponents;
-    let isDuplicate = false; 
+    let isDuplicate = false;
 
     myStashComponents.forEach(stashComponent => {
-      if(stashRowElementInstance.props.ingredient.prod_id == stashComponent.props.ingredient.prod_id){
-        console.log("Found duplicate");
-        console.log(this)
+      if (stashRowElementInstance.props.ingredient.prod_id == stashComponent.props.ingredient.prod_id) {
         isDuplicate = true;
       }
     })
+    if (isDuplicate) return;
 
-    if(isDuplicate) return;
-
-    console.log("pushing element")
-    myStashComponents.push(stashRowElementInstance); 
-
+    myStashComponents.push(stashRowElementInstance);
     this.setState({
       myStashComponents: myStashComponents
     })
-
-    console.log(this.state.myStashComponents);
-
   }
 
   //This is the render function. This is where the
@@ -264,7 +265,7 @@ class ShoppingList extends React.Component {
                 this.state.shoppingListRecipes.map((recipe, index) => {
                   return (
                     <ShoppingListRecipe
-                    matchIngredient={(stashIngredient, subtract) => this.matchIngredient(stashIngredient, subtract)}
+                      matchIngredient={(stashIngredient, subtract) => this.matchIngredient(stashIngredient, subtract)}
                       removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                       removeRecipe={(recipe) => this.removeRecipe(recipe)}
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
@@ -296,7 +297,7 @@ class ShoppingList extends React.Component {
                     this.state.myStashIngredients.map((ingredient) => {
                       return (
                         <StashRowElement
-                          matchIngredient={(stashIngredient, subtract) => this.matchIngredient(stashIngredient, subtract)}
+                          matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
                           key={this.state.myStashIngredients.indexOf(ingredient)}
                           ingredient={ingredient} myStash={true}
                           removeIngredient={this.removeIngredient}
