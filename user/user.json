@@ -34,23 +34,14 @@
     ],
     "myStash": [
         {
-            "id": "92343951",
-            "prod_id": 84536,
-            "title": "Kogt skinke i skiver2",
-            "description": "Kogt skinke i skiver2",
-            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-            "link": "https://www.bilkatogo.dk/p/84537",
-            "price": 8.95,
-            "amount": 1
-        },
-        {
-            "id": "92343951",
-            "prod_id": 84537,
-            "title": "Kogt skinke i skiver",
-            "description": "Kogt skinke i skiver",
-            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-            "link": "https://www.bilkatogo.dk/p/84537",
-            "price": 8.95
+            "id": "37918301",
+            "prod_id": 41685,
+            "title": "Mozzarella",
+            "description": "Mozzarella",
+            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=41685&imgType=jpeg",
+            "link": "https://www.bilkatogo.dk/p/41685",
+            "price": 6.95,
+            "amount": 8
         }
     ]
 }

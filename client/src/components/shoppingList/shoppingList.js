@@ -71,13 +71,14 @@ class ShoppingList extends React.Component {
   }
 
   // TODO should map recipe ingredient to 
-  unHideStashElement(shoppingListElement){
+  unHideStashElement(shoppingListElement) {
     let myStashComponents = this.state.myStashComponents;
 
     myStashComponents.forEach(component => {
-      if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id){
+      if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id) {
         component.setState({
-          hide: false
+          hide: false,
+          priceWasAdded: true
         })
         console.log("")
         console.log("Changed hide to false")
@@ -109,10 +110,10 @@ class ShoppingList extends React.Component {
     this.unHideStashElement(shoppingListElement);
 
     console.log(this)
-    if (isDuplicate){
+    if (isDuplicate) {
       return;
     }
-    
+
     myStashIngredients.push(shoppingListElement.props.ingredient);
 
     console.log(this)
@@ -168,21 +169,43 @@ class ShoppingList extends React.Component {
     }
   }
 
-  matchIngredient(stashIngredient, subtract, wasTrashed=false) {
+  // isPriceUpdateAllowed(shoppingListIngredientComponent) {
+  //   let stashComponents = this.state.myStashComponents;
+  //   console.log(stashComponents);
+
+  //   // A function could probably be used to do the same
+  //   // as this is done in many places
+  //   stashComponents.forEach(component => {
+  //     console.log(shoppingListIngredientComponent)
+  //     if (shoppingListIngredientComponent.props.ingredient.prod_id == component.props.ingredient.prod_id) {
+  //       console.log(`shoppingIngredient.state.boxChecked = ${shoppingListIngredientComponent.state.boxChecked}
+  //       stashIngredient.state.boxChecked = ${shoppingListIngredientComponent.state.boxChecked}`);
+  //     }
+  //   })
+
+  // }
+
+  matchIngredient(stashIngredient, subtract, wasTrashed = false) {
     let recipes = this.state.shoppingListRecipes;
     let isStashItem = false;
+    if (stashIngredient.hasOwnProperty('prod_id')) {
+      isStashItem = true;
+    }
+    else {
+
+    }
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListElements.forEach(recipeIngredient => {
       if (recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id) {
-        if(wasTrashed){
+        if (wasTrashed) {
           recipeIngredient.setState({
             hide: false,
             // Figure out why it is always unchecked with boxChecked being true :')
             boxChecked: true
           })
         }
-        else{
+        else {
           recipeIngredient.setState({
             hide: !recipeIngredient.state.hide,
             // Figure out why it is always unchecked with boxChecked being true :')
@@ -192,13 +215,19 @@ class ShoppingList extends React.Component {
       }
     })
 
-    if(stashIngredient.hasOwnProperty('prod_id')){
-      isStashItem = true;
-    }
+
+
     // Updates the price of the recipes
     recipes.forEach((recipe, recipeIndex) => {
       recipe.ingredients.forEach((recipeIngredient, index) => {
         if (recipeIngredient.prod_id == (isStashItem ? stashIngredient.prod_id : stashIngredient.props.ingredient.prod_id)) {
+          // Situations where the price should not be updated e.g. when 
+          // both are unchecked, the recipeIngredient is added/checked
+          // and the stashingredient is checked again.
+          if (!isStashItem) {
+            console.log(stashIngredient);
+            // this.isPriceUpdateAllowed()
+          }
           if (subtract) {
             console.log("SUBTRACTING")
             this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
@@ -207,6 +236,7 @@ class ShoppingList extends React.Component {
             console.log("ADDING")
             this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
           }
+          console.log(stashIngredient);
           this.updateTotalRecipePrice(recipeIngredient, subtract);
         }
       })
@@ -260,6 +290,7 @@ class ShoppingList extends React.Component {
   trackStashElement(stashRowElementInstance) {
     let myStashComponents = this.state.myStashComponents;
     let isDuplicate = false;
+
 
     myStashComponents.forEach(stashComponent => {
       if (stashRowElementInstance.props.ingredient.prod_id == stashComponent.props.ingredient.prod_id) {
