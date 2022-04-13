@@ -18,6 +18,7 @@ class StashRowElement extends React.Component {
       boxChecked: true,
       inited: false,
       movedToMyStash: false,
+      subtractedInitPrice: false
     };
   }
 
@@ -76,7 +77,7 @@ class StashRowElement extends React.Component {
       console.log("")
       console.log("boxUnchecked")
       console.log("FETCHING")
-      // TODO fix bug where adding to stash does not make it show up in stash
+      // TODO fix bug where price is subtracted twice, and fix bug where it keeps subtracting price
       let stashRowElement = this;
       fetch(`/stash/add`, {
         method: 'POST',
@@ -87,10 +88,10 @@ class StashRowElement extends React.Component {
         body: JSON.stringify(this.props.ingredient)
       }).then(() => {
         stashRowElement.props.updateMyStashIngredients(stashRowElement)
-        console.log(stashRowElement)
       });
 
-      this.props.matchIngredient(stashRowElement, false);
+      // TODO fix the recipe sums, so they can't add up infinitely
+      this.props.matchIngredient(stashRowElement, true, true);
       
       console.log(this)
       this.setState({
@@ -116,9 +117,6 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    if (this.props.ingredient.prod_id == 9234951) {
-      console.log(this);
-    }
     if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
       this.initShoppingListElement(this.props.isHidden);
     }

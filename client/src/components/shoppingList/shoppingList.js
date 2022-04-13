@@ -170,9 +170,9 @@ class ShoppingList extends React.Component {
 
   matchIngredient(stashIngredient, subtract, matchIngredient=false) {
     let recipes = this.state.shoppingListRecipes;
+    let isStashItem = false;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
-    console.log(this);
     this.state.shoppingListElements.forEach(recipeIngredient => {
       if (recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id) {
         recipeIngredient.setState({
@@ -183,14 +183,19 @@ class ShoppingList extends React.Component {
       }
     })
 
+    if(stashIngredient.hasOwnProperty('prod_id')){
+      isStashItem = true;
+    }
     // Updates the price of the recipes
     recipes.forEach((recipe, recipeIndex) => {
       recipe.ingredients.forEach((recipeIngredient, index) => {
-        if (recipeIngredient.prod_id == stashIngredient.prod_id) {
+        if (recipeIngredient.prod_id == (isStashItem ? stashIngredient.prod_id : stashIngredient.props.ingredient.prod_id)) {
           if (subtract) {
+            console.log("SUBTRACTING")
             this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
           }
           else {
+            console.log("ADDING")
             this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
           }
           this.updateTotalRecipePrice(recipeIngredient, subtract);
