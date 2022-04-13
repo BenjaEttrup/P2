@@ -17,8 +17,7 @@ class StashRowElement extends React.Component {
       hide: false,
       boxChecked: true,
       inited: false,
-      movedToMyStash: false,
-      subtractedInitPrice: false
+      avoidOverlap: true,
     };
   }
 
@@ -27,7 +26,7 @@ class StashRowElement extends React.Component {
     if (hide) {
       this.setState({
         inited: true,
-        hide: hide
+        hide: hide,
       });
 
       this.props.trackShoppingListElement(this)
@@ -37,7 +36,7 @@ class StashRowElement extends React.Component {
   initStashElement(hide) {
     this.setState({
       inited: true,
-      hide: hide
+      hide: hide,
     })
 
     this.props.trackStashElement(this)
@@ -58,7 +57,7 @@ class StashRowElement extends React.Component {
     console.log("pushed Trashcan")
     if (this.props.hasOwnProperty('recipeID')) {
       params['recipeID'] = this.props.recipeID;
-      this.props.updateRecipePrice(stashRowElement, true);
+      this.props.updateRecipePrice(stashRowElement, true, true);
     }
     else {
       params['recipeID'] = false;
@@ -72,6 +71,7 @@ class StashRowElement extends React.Component {
   addItemToStash(evt) {
     this.setState((prevState) => ({
       boxChecked: false,
+      hide: false
     }), () => {
       console.log("")
       console.log("")
@@ -91,12 +91,11 @@ class StashRowElement extends React.Component {
       });
 
       // TODO fix the recipe sums, so they can't add up infinitely
-      this.props.matchIngredient(stashRowElement, true, true);
+      console.log("Calling matchingredient with subtract")
+      this.props.matchIngredient(stashRowElement, true, false);
       
       console.log(this)
-      this.setState({
-        hide: false
-      })
+
     });
   }
 
@@ -105,10 +104,10 @@ class StashRowElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
-        this.props.matchIngredient(this.props.ingredient, true);
+        this.props.matchIngredient(this.props.ingredient, true, false);
       }
       else {
-        this.props.matchIngredient(this.props.ingredient, false);
+        this.props.matchIngredient(this.props.ingredient, false, false);
       }
     });
 

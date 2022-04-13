@@ -44,7 +44,6 @@ class ShoppingListRecipe extends React.Component {
       this.updateRecipePrice(ingredient, true);
     }
 
-    // TODO Maybe pass the stashRowElement to shoppingList at this place
     return this.props.ingredientInStash(ingredient, ingredientIndex);
   }
 
@@ -57,7 +56,6 @@ class ShoppingListRecipe extends React.Component {
       hide: true
     })
 
-    // TODO: set removeRecipe as a property in shoppingList
     this.props.removeRecipe(recipe)
   }
 

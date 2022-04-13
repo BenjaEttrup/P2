@@ -168,18 +168,27 @@ class ShoppingList extends React.Component {
     }
   }
 
-  matchIngredient(stashIngredient, subtract, matchIngredient=false) {
+  matchIngredient(stashIngredient, subtract, wasTrashed=false) {
     let recipes = this.state.shoppingListRecipes;
     let isStashItem = false;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListElements.forEach(recipeIngredient => {
       if (recipeIngredient.props.ingredient.prod_id == stashIngredient.prod_id) {
-        recipeIngredient.setState({
-          hide: !recipeIngredient.state.hide,
-          // Figure out why it is always unchecked with boxChecked being true :')
-          boxChecked: true
-        })
+        if(wasTrashed){
+          recipeIngredient.setState({
+            hide: false,
+            // Figure out why it is always unchecked with boxChecked being true :')
+            boxChecked: true
+          })
+        }
+        else{
+          recipeIngredient.setState({
+            hide: !recipeIngredient.state.hide,
+            // Figure out why it is always unchecked with boxChecked being true :')
+            boxChecked: true
+          })
+        }
       }
     })
 

@@ -30,45 +30,6 @@
                     "price": 6.95
                 }
             ]
-        },
-        {
-            "recipe": {
-                "recipeID": 8,
-                "title": "title",
-                "description": "description",
-                "size": "",
-                "ingredients": [
-                    "skinke",
-                    "ost",
-                    "mælk"
-                ],
-                "time": 0,
-                "method": "method",
-                "rating": "rating",
-                "image": "image",
-                "url": "url",
-                "price": 25.9
-            },
-            "ingredients": [
-                {
-                    "id": "92343951",
-                    "prod_id": 84537,
-                    "title": "Kogt skinke i skiver",
-                    "description": "Kogt skinke i skiver",
-                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-                    "link": "https://www.bilkatogo.dk/p/84537",
-                    "price": 8.95
-                },
-                {
-                    "id": "92343951",
-                    "prod_id": 84536,
-                    "title": "Kogt skinke i skiver2",
-                    "description": "Kogt skinke i skiver2",
-                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
-                    "link": "https://www.bilkatogo.dk/p/84537",
-                    "price": 8.95
-                }
-            ]
         }
     ],
     "myStash": [
@@ -77,6 +38,16 @@
             "prod_id": 84536,
             "title": "Kogt skinke i skiver2",
             "description": "Kogt skinke i skiver2",
+            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
+            "link": "https://www.bilkatogo.dk/p/84537",
+            "price": 8.95,
+            "amount": 1
+        },
+        {
+            "id": "92343951",
+            "prod_id": 84537,
+            "title": "Kogt skinke i skiver",
+            "description": "Kogt skinke i skiver",
             "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=84537&imgType=jpeg",
             "link": "https://www.bilkatogo.dk/p/84537",
             "price": 8.95
