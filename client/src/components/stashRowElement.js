@@ -44,6 +44,7 @@ class StashRowElement extends React.Component {
   }
 
 
+
   hideStashRowElement(stashRowElement, endPoint) {
     this.setState({
       hide: !this.state.hide,
@@ -53,11 +54,10 @@ class StashRowElement extends React.Component {
       endPoint: endPoint
     };
 
-
     console.log("pushed Trashcan")
     if (this.props.hasOwnProperty('recipeID')) {
       params['recipeID'] = this.props.recipeID;
-      this.props.updateRecipePrice(stashRowElement, true, true);
+      this.props.updateRecipePrice(stashRowElement, true);
     }
     else {
       params['recipeID'] = false;
@@ -95,7 +95,7 @@ class StashRowElement extends React.Component {
       // and the stashingredient is checked again.
       console.log("Calling matchingredient with subtract")
       this.props.matchIngredient(stashRowElement, true, false);
-      
+
       console.log(this)
 
     });
@@ -127,10 +127,15 @@ class StashRowElement extends React.Component {
       this.initStashElement(false);
     }
 
-    if (this.state.hide) return null;
+    if (this.state.hide) {
+      return null;
+    }
     // if (this.props.isHidden) return null;
 
     if (this.props.hasOwnProperty('shoppingList')) {
+      if(!this.state.priceWasAdded){
+        this.initShoppingListElement(this.state.hide);
+      }
       return (
         <tr>
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>

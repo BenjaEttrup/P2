@@ -17,18 +17,42 @@ class ShoppingListRecipe extends React.Component {
 
     this.state = {
       hide: false,
-      sucInit: false
+      sucInit: false,
+      price: 0,
+      recipeIngredientComponent: [],
+      inited: false,
     };
 
   }
 
+  initShoppingListRecipe(){
+    this.setState({
+      inited: true,
+    });
+
+    this.props.trackShoppingListRecipeComponent(this);
+  }
+
+  trackShoppingListElement(stashRowElementInstance) {
+    let recipeIngredientComponent = this.state.recipeIngredientComponent;
+
+    recipeIngredientComponent.push(stashRowElementInstance);
+    this.setState({
+      recipeIngredientComponent: recipeIngredientComponent
+    })
+  }
+
   updateRecipePrice(stashRowElement, subtract) {
     if (subtract) {
-      this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price - stashRowElement.price).toFixed(2);
+      this.setState((prevState) => ({
+        price: Number(prevState.price - stashRowElement.price).toFixed(2)
+      }));
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }
     else {
-      this.props.recipe.recipe.price = Number(this.props.recipe.recipe.price + stashRowElement.price).toFixed(2);
+      this.setState((prevState) => ({
+        price: Number(prevState.price + stashRowElement.price).toFixed(2)
+      }));
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }
   }
@@ -48,6 +72,9 @@ class ShoppingListRecipe extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({
+      price: this.props.recipe.recipe.price
+    })
     this.props.calculateTotalRecipePrice(this.props.recipe.recipe.price);
   }
 
@@ -62,13 +89,16 @@ class ShoppingListRecipe extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
+    if (!this.state.inited) {
+      this.initShoppingListRecipe();
+    }
     if (this.state.hide) return null;
     return (
       <table className="table table-striped">
         <thead>
           <tr>
             <th className='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
-            <th className="col-4 text-success">Pris på opskrift: {this.props.recipe.recipe.price} kr.</th>
+            <th className="col-4 text-success">Pris på opskrift: {this.state.price} kr.</th>
             <th>
               <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
                 <i className="fa fa-trash"></i></button>
@@ -90,7 +120,7 @@ class ShoppingListRecipe extends React.Component {
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
                   updateRecipePrice={(stashRowElement, subtract) => this.updateRecipePrice(stashRowElement, subtract)}
                   recipeIndex={this.props.recipeIndex}
-                  trackShoppingListElement={(stashRowElementInstance) => this.props.trackShoppingListElement(stashRowElementInstance)}
+                  trackShoppingListElement={(stashRowElementInstance) => this.trackShoppingListElement(stashRowElementInstance)}
                   matchIngredient={(stashIngredient, subtract) => this.props.matchIngredient(stashIngredient, subtract)}
                   updateMyStashIngredients={(stashIngredient) => this.props.updateMyStashIngredients(stashIngredient)}
                 />

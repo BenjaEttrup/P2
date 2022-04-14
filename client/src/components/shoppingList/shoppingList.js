@@ -21,6 +21,7 @@ class ShoppingList extends React.Component {
       recipeSum: 0,
       shoppingListElements: [],
       myStashComponents: [],
+      shoppingListRecipeComponents: [],
     };
   }
 
@@ -77,8 +78,7 @@ class ShoppingList extends React.Component {
     myStashComponents.forEach(component => {
       if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id) {
         component.setState({
-          hide: false,
-          priceWasAdded: true
+          hide: false
         })
         console.log("")
         console.log("Changed hide to false")
@@ -169,31 +169,14 @@ class ShoppingList extends React.Component {
     }
   }
 
-  // isPriceUpdateAllowed(shoppingListIngredientComponent) {
-  //   let stashComponents = this.state.myStashComponents;
-  //   console.log(stashComponents);
-
-  //   // A function could probably be used to do the same
-  //   // as this is done in many places
-  //   stashComponents.forEach(component => {
-  //     console.log(shoppingListIngredientComponent)
-  //     if (shoppingListIngredientComponent.props.ingredient.prod_id == component.props.ingredient.prod_id) {
-  //       console.log(`shoppingIngredient.state.boxChecked = ${shoppingListIngredientComponent.state.boxChecked}
-  //       stashIngredient.state.boxChecked = ${shoppingListIngredientComponent.state.boxChecked}`);
-  //     }
-  //   })
-
-  // }
-
   matchIngredient(stashIngredient, subtract, wasTrashed = false) {
     let recipes = this.state.shoppingListRecipes;
     let isStashItem = false;
     if (stashIngredient.hasOwnProperty('prod_id')) {
       isStashItem = true;
     }
-    else {
 
-    }
+    console.log(this);
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListElements.forEach(recipeIngredient => {
@@ -230,11 +213,11 @@ class ShoppingList extends React.Component {
           }
           if (subtract) {
             console.log("SUBTRACTING")
-            this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
+            // this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
           }
           else {
             console.log("ADDING")
-            this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
+            // this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
           }
           console.log(stashIngredient);
           this.updateTotalRecipePrice(recipeIngredient, subtract);
@@ -278,14 +261,24 @@ class ShoppingList extends React.Component {
     this.updateTotalRecipePrice(recipe, true)
   }
 
-  trackShoppingListElement(stashRowElementInstance) {
-    let shoppingListElements = this.state.shoppingListElements;
+  trackShoppingListRecipeComponent(shoppingListRecipeInstance) {
+    let shoppingListComponents = this.state.shoppingListRecipeComponents;
 
-    shoppingListElements.push(stashRowElementInstance);
+    shoppingListComponents.push(shoppingListRecipeInstance);
+    
     this.setState({
-      shoppingListElements: shoppingListElements
+      shoppingListRecipeComponents: shoppingListComponents
     })
   }
+
+  // trackShoppingListElement(stashRowElementInstance) {
+  //   let shoppingListElements = this.state.shoppingListElements;
+
+  //   shoppingListElements.push(stashRowElementInstance);
+  //   this.setState({
+  //     shoppingListElements: shoppingListElements
+  //   })
+  // }
 
   trackStashElement(stashRowElementInstance) {
     let myStashComponents = this.state.myStashComponents;
@@ -320,6 +313,7 @@ class ShoppingList extends React.Component {
                 this.state.shoppingListRecipes.map((recipe, index) => {
                   return (
                     <ShoppingListRecipe
+                      trackShoppingListRecipeComponent={(shoppingListRecipeInstance) => this.trackShoppingListRecipeComponent(shoppingListRecipeInstance)}
                       matchIngredient={(stashIngredient, subtract) => this.matchIngredient(stashIngredient, subtract)}
                       removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                       removeRecipe={(recipe) => this.removeRecipe(recipe)}
@@ -329,7 +323,6 @@ class ShoppingList extends React.Component {
                       ingredientInStash={(ingredient, ingredientIndex) => this.ingredientInStash(ingredient, ingredientIndex)}
                       recipeIndex={index}
                       updateTotalRecipePrice={(priceElement, remove) => this.updateTotalRecipePrice(priceElement, remove)}
-                      trackShoppingListElement={(stashRowElementInstance) => this.trackShoppingListElement(stashRowElementInstance)}
                       updateMyStashIngredients={(stashIngredient) => this.updateMyStashIngredients(stashIngredient)}
                     />
                   )
