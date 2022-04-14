@@ -177,6 +177,7 @@ class ShoppingList extends React.Component {
 
     console.log("")
     console.log("New matchIngredient call")
+    console.log(stashIngredient);
     console.log(this);
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
@@ -191,13 +192,27 @@ class ShoppingList extends React.Component {
               hide: false,
               boxChecked: true,
             })
+
+            console.log("ADDING")
+            console.log(ingredientComponent.props.ingredient.price);
+            console.log(recipeComponent.state.price)
+            console.log(Number(+recipeComponent.state.price + +ingredientComponent.props.ingredient.price).toFixed(2))
+            recipeComponent.setState((prevState) => ({
+              price: Number(+prevState.price + +ingredientComponent.props.ingredient.price).toFixed(2)
+            }))
           }
           else {
+            console.log(``)
             console.log(`Changing state of ingredient to ${!ingredientComponent.state.hide} `)
             ingredientComponent.setState({
               hide: !ingredientComponent.state.hide,
               boxChecked: true,
             })
+
+            console.log("SUBTRACTING")
+            recipeComponent.setState((prevState) => ({
+              price: Number(prevState.price - ingredientComponent.props.ingredient.price).toFixed(2)
+            }))
           }
 
         }
@@ -211,32 +226,6 @@ class ShoppingList extends React.Component {
         }
       })
     })
-
-
-
-    // Updates the price of the recipes
-    recipes.forEach((recipe, recipeIndex) => {
-      recipe.ingredients.forEach((recipeIngredient, index) => {
-        if (recipeIngredient.prod_id == (isStashItem ? stashIngredient.prod_id : stashIngredient.props.ingredient.prod_id)) {
-          // Situations where the price should not be updated e.g. when 
-          // both are unchecked, the recipeIngredient is added/checked
-          // and the stashingredient is checked again.
-          if (!isStashItem) {
-            console.log(stashIngredient);
-            // this.isPriceUpdateAllowed()
-          }
-          if (subtract) {
-            console.log("SUBTRACTING")
-            // this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(this.state.shoppingListRecipes[recipeIndex].recipe.price - recipeIngredient.price).toFixed(2);
-          }
-          else {
-            console.log("ADDING")
-            // this.state.shoppingListRecipes[recipeIndex].recipe.price = Number(+this.state.shoppingListRecipes[recipeIndex].recipe.price + +recipeIngredient.price).toFixed(2);
-          }
-          console.log(stashIngredient);
-        }
-      })
-    });
   }
 
 

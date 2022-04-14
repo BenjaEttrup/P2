@@ -93,10 +93,10 @@ class StashRowElement extends React.Component {
       // TODO fix the recipe sums, maybe use whether or not the boxes are unchecked
       // The bug happens when both are unchecked, the recipeIngredient is added/checked
       // and the stashingredient is checked again.
-      console.log("Calling matchingredient with subtract")
+      // console.log("Calling matchingredient with subtract")
       this.props.matchIngredient(stashRowElement, true, false);
 
-      console.log(this)
+      // console.log(this)
 
     });
   }
