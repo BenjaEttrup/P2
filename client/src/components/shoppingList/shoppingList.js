@@ -77,7 +77,7 @@ class ShoppingList extends React.Component {
     myStashComponents.forEach(component => {
       if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id) {
         component.setState({
-          hide: false
+          hide: false,
         })
         console.log("")
         console.log("Changed hide to false")
@@ -93,6 +93,8 @@ class ShoppingList extends React.Component {
    * @param {*} stashIngredient the stashIngredient
    */
   updateMyStashIngredients(shoppingListElement) {
+    console.log("")
+    console.log("UpdatingMystashingredients")
     let myStashIngredients = this.state.myStashIngredients;
     let isDuplicate = false;
     console.log(shoppingListElement)
@@ -109,7 +111,13 @@ class ShoppingList extends React.Component {
     this.unHideStashElement(shoppingListElement);
 
     console.log(this)
+    console.log(isDuplicate);
     if (isDuplicate) {
+      // this.state.myStashComponents.forEach(component => {
+      //   if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id){
+
+      //   }
+      // })
       return;
     }
 
@@ -169,14 +177,13 @@ class ShoppingList extends React.Component {
   }
 
   matchIngredient(stashIngredient, subtract, wasTrashed = false) {
-    let recipes = this.state.shoppingListRecipes;
     let isStashItem = false;
     if (stashIngredient.hasOwnProperty('prod_id')) {
       isStashItem = true;
     }
 
     console.log("")
-    console.log("New matchIngredient call")
+    console.log(`New matchIngredient call subtract = ${subtract}, wasTrashed = ${wasTrashed}`)
     console.log(stashIngredient);
     console.log(this);
 
@@ -193,13 +200,28 @@ class ShoppingList extends React.Component {
               boxChecked: true,
             })
 
-            console.log("ADDING")
-            console.log(ingredientComponent.props.ingredient.price);
-            console.log(recipeComponent.state.price)
-            console.log(Number(+recipeComponent.state.price + +ingredientComponent.props.ingredient.price).toFixed(2))
+            console.log(`ingredientComponet.boxChecked = ${ingredientComponent.state.boxChecked}`)
+            
+            let shouldReturn = false;
+            this.state.myStashComponents.forEach(component => {
+              if(component.props.ingredient.prod_id == ingredientComponent.props.ingredient.prod_id){
+                if(!component.state.boxChecked){
+                  shouldReturn = true;
+                }
+              }
+            })
+
+            if(shouldReturn) return;
+
+            let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
+              +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
+
+            console.log(`SUBTRACTING = ${subtract}`);
             recipeComponent.setState((prevState) => ({
-              price: Number(+prevState.price + +ingredientComponent.props.ingredient.price).toFixed(2)
+              price: Number(price).toFixed(2)
             }))
+
+            this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
           }
           else {
             console.log(``)
@@ -209,23 +231,44 @@ class ShoppingList extends React.Component {
               boxChecked: true,
             })
 
-            console.log("SUBTRACTING")
-            recipeComponent.setState((prevState) => ({
-              price: Number(prevState.price - ingredientComponent.props.ingredient.price).toFixed(2)
-            }))
-          }
+            let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
+              +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
 
+            console.log(`SUBTRACTING = ${subtract}`);
+            recipeComponent.setState((prevState) => ({
+              price: Number(price).toFixed(2)
+            }))
+            this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
+          }
         }
         else {
           console.log(`Outside else`)
           console.log(`Changing state of ingredient to ${!ingredientComponent.state.hide} `)
+
+          this.state.myStashComponents.forEach(component => {
+            if (component.props.ingredient.prod_id == ingredientComponent.props.ingredient.prod_id) {
+              component.setState({
+                boxChecked: true
+              })
+              let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
+                +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
+
+              console.log(`SUBTRACTING = ${subtract}`);
+              recipeComponent.setState((prevState) => ({
+                price: Number(price).toFixed(2)
+              }))
+              this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
+            }
+          })
+          console.log(ingredientComponent);
           ingredientComponent.setState({
-            hide: !ingredientComponent.state.hide,
+            hide: true,
             boxChecked: true,
           })
         }
       })
     })
+
   }
 
 

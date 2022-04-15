@@ -43,6 +43,10 @@ class ShoppingListRecipe extends React.Component {
   }
 
   updateRecipePrice(stashRowElement, subtract) {
+    console.log(`Updating recipePrice with subtract = ${subtract}`)
+    console.log(this)
+    console.log("______________")
+
     if (subtract) {
       this.setState((prevState) => ({
         price: Number(prevState.price - stashRowElement.price).toFixed(2)
@@ -65,6 +69,7 @@ class ShoppingListRecipe extends React.Component {
         sucInit: true
       });
 
+      console.log("Updating recipePrice on init")
       this.updateRecipePrice(ingredient, true);
     }
 

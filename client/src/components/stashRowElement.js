@@ -88,13 +88,14 @@ class StashRowElement extends React.Component {
         body: JSON.stringify(this.props.ingredient)
       }).then(() => {
         stashRowElement.props.updateMyStashIngredients(stashRowElement)
+        this.props.matchIngredient(stashRowElement, true, false);
+
       });
 
       // TODO fix the recipe sums, maybe use whether or not the boxes are unchecked
       // The bug happens when both are unchecked, the recipeIngredient is added/checked
       // and the stashingredient is checked again.
       // console.log("Calling matchingredient with subtract")
-      this.props.matchIngredient(stashRowElement, true, false);
 
       // console.log(this)
 
@@ -106,10 +107,14 @@ class StashRowElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
+        console.log("")
+        console.log("BoxChecked")
         // TODO the state of boxChecked should be checked in the matching stashRowElem recipeComponent
         this.props.matchIngredient(this.props.ingredient, true, false);
       }
       else {
+        console.log("")
+        console.log("boxUnchecked")
         this.props.matchIngredient(this.props.ingredient, false, false);
       }
     });
