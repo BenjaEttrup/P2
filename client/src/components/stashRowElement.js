@@ -18,6 +18,7 @@ class StashRowElement extends React.Component {
       boxChecked: true,
       inited: false,
       priceWasAdded: false,
+      wasTrashed: false,
     };
   }
 
@@ -57,7 +58,12 @@ class StashRowElement extends React.Component {
     console.log("pushed Trashcan")
     if (this.props.hasOwnProperty('recipeID')) {
       params['recipeID'] = this.props.recipeID;
+      this.props.removeIngredient(stashRowElement, params)
       this.props.updateRecipePrice(stashRowElement, true);
+
+      this.setState({
+        wasTrashed: true
+      })
     }
     else {
       params['recipeID'] = false;
@@ -65,6 +71,10 @@ class StashRowElement extends React.Component {
       // TODO removeIngredient should fetch delete.
       this.props.matchIngredient(stashRowElement, false, true);
       this.props.removeIngredient(stashRowElement, params);
+
+      this.setState({
+        wasTrashed: true
+      })
     }
   }
 
@@ -132,13 +142,13 @@ class StashRowElement extends React.Component {
       this.initStashElement(false);
     }
 
-    if (this.state.hide) {
+    if (this.state.hide || this.state.wasTrashed) {
       return null;
     }
     // if (this.props.isHidden) return null;
 
     if (this.props.hasOwnProperty('shoppingList')) {
-      if(!this.state.priceWasAdded){
+      if (!this.state.priceWasAdded) {
         this.initShoppingListElement(this.state.hide);
       }
       return (
@@ -146,7 +156,7 @@ class StashRowElement extends React.Component {
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
           <td className="right-align">
-            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '') }}>
+            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, 'removeIngredientFromShoppingList/') }}>
               <i className="fa fa-trash"></i></button>
           </td>
           <td className="right-align center" width="2%">

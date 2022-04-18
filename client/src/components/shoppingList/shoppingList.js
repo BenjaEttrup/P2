@@ -78,6 +78,7 @@ class ShoppingList extends React.Component {
       if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id) {
         component.setState({
           hide: false,
+          boxChecked: true
         })
         console.log("")
         console.log("Changed hide to false")
@@ -109,15 +110,7 @@ class ShoppingList extends React.Component {
     })
 
     this.unHideStashElement(shoppingListElement);
-
-    console.log(this)
-    console.log(isDuplicate);
     if (isDuplicate) {
-      // this.state.myStashComponents.forEach(component => {
-      //   if (component.props.ingredient.prod_id == shoppingListElement.props.ingredient.prod_id){
-
-      //   }
-      // })
       return;
     }
 
@@ -169,12 +162,40 @@ class ShoppingList extends React.Component {
       },
     }).catch(err => {
       console.error(err);
-    });
+    }).then(fetch(`/stash/get`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then((res) => {
+        let data = {
+          myStashIngredients: res
+        };
+        this.setState(data);
+      })
+    )
 
-    if (Number.isInteger(params.recipeID)) {
-      this.updateTotalRecipePrice(stashRowElement, true);
-    }
+    // if (Number.isInteger(params.recipeID)) {
+    //   this.updateTotalRecipePrice(stashRowElement, true);
+    // }
   }
+
+
+  matchIngredientTwo(stashIngredient, subtract, wasTrashed = false){
+    // Loop through shoppingListRecipeComponents to see if there is a match (FUNC)
+      // Loop through myStashComponents to see if there is a match (FUNC)
+
+    
+
+    
+
+
+  }
+
+
+
 
   matchIngredient(stashIngredient, subtract, wasTrashed = false) {
     let isStashItem = false;
@@ -185,7 +206,6 @@ class ShoppingList extends React.Component {
     console.log("")
     console.log(`New matchIngredient call subtract = ${subtract}, wasTrashed = ${wasTrashed}`)
     console.log(stashIngredient);
-    console.log(this);
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
@@ -193,14 +213,13 @@ class ShoppingList extends React.Component {
       recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
         if (ingredientComponent.props.ingredient.prod_id == stashIngredient.prod_id) {
           if (wasTrashed) {
-            console.log("showing ingredient");
             console.log(ingredientComponent);
+            console.log(`ingredientComponent.boxChecked = true`)
             ingredientComponent.setState({
               hide: false,
               boxChecked: true,
             })
 
-            console.log(`ingredientComponet.boxChecked = ${ingredientComponent.state.boxChecked}`)
             
             let shouldReturn = false;
             this.state.myStashComponents.forEach(component => {
@@ -224,12 +243,15 @@ class ShoppingList extends React.Component {
             this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
           }
           else {
-            console.log(``)
-            console.log(`Changing state of ingredient to ${!ingredientComponent.state.hide} `)
+            console.log(`IE changing boxChecked to true`)
             ingredientComponent.setState({
               hide: !ingredientComponent.state.hide,
               boxChecked: true,
             })
+
+            if(ingredientComponent.state.wasTrashed){
+              return;
+            }
 
             let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
               +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
@@ -243,15 +265,19 @@ class ShoppingList extends React.Component {
         }
         else {
           console.log(`Outside else`)
-          console.log(`Changing state of ingredient to ${!ingredientComponent.state.hide} `)
-
+          console.log(`myStashComponents`)
+          console.log(this.state.myStashComponents);
           this.state.myStashComponents.forEach(component => {
+            console.log("MYSTASHINGREDIENT")
+            console.log(component.props.ingredient)
+            console.log("RECIPEINGREDIENT")
+            console.log(ingredientComponent.props.ingredient)
             if (component.props.ingredient.prod_id == ingredientComponent.props.ingredient.prod_id) {
-              component.setState({
-                boxChecked: true
-              })
+              console.log("mystashIng and recipeIng match")
               let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
                 +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
+
+              console.log(`price = ${price}`)
 
               console.log(`SUBTRACTING = ${subtract}`);
               recipeComponent.setState((prevState) => ({
@@ -259,11 +285,6 @@ class ShoppingList extends React.Component {
               }))
               this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
             }
-          })
-          console.log(ingredientComponent);
-          ingredientComponent.setState({
-            hide: true,
-            boxChecked: true,
           })
         }
       })
@@ -384,7 +405,7 @@ class ShoppingList extends React.Component {
                           matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
                           key={this.state.myStashIngredients.indexOf(ingredient)}
                           ingredient={ingredient} myStash={true}
-                          removeIngredient={this.removeIngredient}
+                          removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                           testRecipePrice={(priceElement) => this.testRecipePrice(priceElement)}
                           trackStashElement={(stashRowElementInstance) => this.trackStashElement(stashRowElementInstance)}
                           passToStashComponents={true}

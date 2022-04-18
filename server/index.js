@@ -414,7 +414,6 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
  */
 function findRecipeIndex(ID, filePath, option) {
     let file = require(filePath);
-    // TODO reevaluate this function design
 
     if (option === "shoppingList") {
         for (object in file[option]) {
@@ -446,6 +445,7 @@ function findRecipeIndex(ID, filePath, option) {
  */
 function findIngredientIndex(recipeIndex, productID, filePath, option) {
     let userData = require(userPath);
+    productID = Number(productID);
 
     // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
     for (ingredient in userData[option][recipeIndex].ingredients) {
