@@ -1,5 +1,6 @@
 cache/cache.json
 user/user.json
+server/config.json
 
 # Logs
 logs
