@@ -57,14 +57,13 @@ class StashRowElement extends React.Component {
 
     console.log("pushed Trashcan")
     if (this.props.hasOwnProperty('recipeID')) {
-      params['recipeID'] = this.props.recipeID;
-      this.props.removeIngredient(stashRowElement, params)
-      this.props.updateRecipePrice(stashRowElement, true)
-
       this.setState({
         hide: !this.state.hide,
         wasTrashed: true
       })
+      params['recipeID'] = this.props.recipeID;
+      this.props.removeIngredient(stashRowElement, params)
+      this.props.updateRecipePrice(this, true)
     }
     else {
       params['recipeID'] = false;

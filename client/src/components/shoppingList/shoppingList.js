@@ -125,8 +125,8 @@ class ShoppingList extends React.Component {
     }))
 
     console.log(`myStashIngredients.length = ${myStashIngredients.length}`)
-    
-    if (myStashIngredients.length >= 2){
+
+    if (myStashIngredients.length >= 2) {
       console.log("Updating recipe price")
       this.updateTotalRecipePrice(shoppingListElement.props.ingredient, undefined);
       return
@@ -143,49 +143,56 @@ class ShoppingList extends React.Component {
    */
   updateTotalRecipePrice(priceElement, subtract) {
     // If we want to subtract the price of an element
-
     let sum = 0;
-
     console.log(this)
-
+    if(priceElement.hasOwnProperty("price")){
+      console.log(`${priceElement.hasOwnProperty("price")}`)
+    }
+    else {
+      console.log(priceElement.props.ingredient.price);
+    }
 
     this.state.shoppingListRecipeComponents.forEach(recipeComponent => {
       let price = 0;
-      console.log(recipeComponent);
-      if (!recipeComponent.state.hide){
-        console.log("recipeComponent was not hidden")
-        if(subtract === undefined){
+      console.log(`____________`);
+      console.log(`updateTotalRecipePrice`);
+      console.log(`hide = ${recipeComponent.state.hide}`);
+
+      // TODO HANDLE WHEN HAVING UNHIDDEN A STASHINGREDIENT AND THEN REMOVING THE SHOPPINGLIST INGREDIENT
+      if (!recipeComponent.state.hide) {
+        console.log(`recipeComponent price = ${recipeComponent.state.price}`)
+        if (subtract === undefined) {
           price = recipeComponent.state.price
         }
-        else{
-          price = subtract ? recipeComponent.state.price - priceElement.price :
-          +recipeComponent.state.price + +priceElement.price;
+        else {
+          if(!priceElement.hasOwnProperty("price")){
+            console.log(priceElement)
+            console.log(recipeComponent)
+
+            if(Number(priceElement.props.recipeID) === Number(recipeComponent.props.recipe.recipe.recipeID)){
+              price = subtract ? recipeComponent.state.price - priceElement.props.ingredient.price :
+              +recipeComponent.state.price + +priceElement.props.ingredient.price;
+              console.log("found match")
+            }
+            else {
+              price = recipeComponent.state.price;
+            }
+          }
+          else{
+            price = subtract ? recipeComponent.state.price - priceElement.price :
+            +recipeComponent.state.price + +priceElement.price;
+          }
+          console.log(`changed price to = ${Number(price).toFixed(2)}`)
         }
-        console.log(Number(+sum + +price).toFixed(2))
+        console.log(`sum = ${sum} price = ${Number(price).toFixed(2)}`)
         sum = Number(+sum + +price).toFixed(2)
       }
     })
-
-
-    // this.state.shoppingListRecipeComponents.forEach(recipeComponent => {
-    //   if (!recipe)
-    // })
 
     this.setState({
       recipeSum: sum
     });
 
-    // if (subtract === true) {
-    //   this.setState((prevState) => ({
-    //     recipeSum: Number(prevState.recipeSum - priceElement.price).toFixed(2)
-    //   }));
-    // }
-    // // If we want to add the price of an element
-    // else if (subtract === false) {
-    //   this.setState((prevState) => ({
-    //     recipeSum: Number(+prevState.recipeSum + +priceElement.price).toFixed(2)
-    //   }));
-    // }
   }
 
   /**
@@ -233,7 +240,7 @@ class ShoppingList extends React.Component {
     return ingredientMatch;
   }
 
-  
+
 
 
 
@@ -305,21 +312,21 @@ class ShoppingList extends React.Component {
           +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
 
         // To stop the case where a removed ingredient will also reduce the recipe sum further
-        if(ingredientComponent.state.wasTrashed){
+        if (ingredientComponent.state.wasTrashed) {
           price = recipeComponent.state.price;
           console.log("IngredientComponent was trashed")
           stopPriceUpdate = true
-        } 
+        }
 
         console.log(`Updating recipe price to ${Number(price).toFixed(2)}`)
         recipeComponent.setState({
           price: Number(price).toFixed(2)
         })
 
-        if(stopPriceUpdate){
+        if (stopPriceUpdate) {
           console.log("Price shouldnt update")
         }
-        else{
+        else {
           console.log("UPDATING TOTALRECIPEPRICE")
           this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract);
         }
@@ -327,7 +334,7 @@ class ShoppingList extends React.Component {
       else {
         console.log("didnt find match")
         let price = subtract ? recipeComponent.state.price - stashIngredient.props.ingredient.price :
-        +recipeComponent.state.price + +stashIngredient.props.ingredient.price;
+          +recipeComponent.state.price + +stashIngredient.props.ingredient.price;
 
         // if(addedToStash)
         console.log(stashIngredient)
@@ -335,10 +342,10 @@ class ShoppingList extends React.Component {
         console.log(`stashIngredient.state.hide = ${stashIngredient.state.hide}`)
         console.log(`stashIngredient.state.wasTrasheed = ${stashIngredient.state.wasTrashed}`)
         console.log(`recipeComponent.state.inited = ${recipeComponent.state.inited}`)
-        if(!stashIngredient.state.inited && this.state.myStashComponents.length >= 1){
+        if (!stashIngredient.state.inited && this.state.myStashComponents.length >= 1) {
           console.log("updating price")
           recipeComponent.setState({
-          price: Number(price).toFixed(2)
+            price: Number(price).toFixed(2)
           })
 
 
@@ -352,8 +359,8 @@ class ShoppingList extends React.Component {
 
         // this.updateTotalRecipePrice(stashIngredient.props.ingredient, subtract);
       }
-    
-    
+
+
     })
   }
 
@@ -375,7 +382,6 @@ class ShoppingList extends React.Component {
   }
 
   removeRecipe(recipe) {
-    console.log(`Deleting ingredient in stash with recipeID = ${recipe.recipeID}`);
     console.log(recipe);
     console.log(`fetching endpoint = /removeRecipeFromShoppingList/${recipe.recipeID}`)
 
@@ -444,7 +450,7 @@ class ShoppingList extends React.Component {
                       recipe={recipe}
                       ingredientInStash={(ingredient, ingredientIndex) => this.ingredientInStash(ingredient, ingredientIndex)}
                       recipeIndex={index}
-                      updateTotalRecipePrice={(priceElement, remove) => this.updateTotalRecipePrice(priceElement, remove)}
+                      updateTotalRecipePrice={(stashRowElement, subtract) => this.updateTotalRecipePrice(stashRowElement, subtract)}
                       updateMyStashIngredients={(stashIngredient) => this.updateMyStashIngredients(stashIngredient)}
                     />
                   )

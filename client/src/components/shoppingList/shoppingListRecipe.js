@@ -46,16 +46,23 @@ class ShoppingListRecipe extends React.Component {
     // console.log(`Updating recipePrice with subtract = ${subtract}`)
     // console.log(this)
     // console.log("______________")
+    let ingredientPrice;
+    if(stashRowElement.hasOwnProperty("props")){
+      ingredientPrice = stashRowElement.props.ingredient.price
+    }
+    else {
+      ingredientPrice = stashRowElement.price;
+    }
 
     if (subtract) {
       this.setState((prevState) => ({
-        price: Number(prevState.price - stashRowElement.price).toFixed(2)
+        price: Number(prevState.price - ingredientPrice).toFixed(2)
       }));
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }
     else {
       this.setState((prevState) => ({
-        price: Number(prevState.price + stashRowElement.price).toFixed(2)
+        price: Number(prevState.price + ingredientPrice).toFixed(2)
       }));
       this.props.updateTotalRecipePrice(stashRowElement, true);
     }
