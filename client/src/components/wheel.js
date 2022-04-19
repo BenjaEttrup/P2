@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import PopupRecipe from './recipePopup';
 
 import '../stylesheets/wheel.css';
 import '../stylesheets/popupRecipe.css';
@@ -24,19 +25,19 @@ export default class Wheel extends React.Component {
       },
       body: JSON.stringify(recipe),
     })
-    .catch((err) => {
-      console.error(err);
-    })
-    .then(() => {
-      console.log('Success');
-    });
+      .catch((err) => {
+        console.error(err);
+      })
+      .then(() => {
+        console.log('Success');
+      });
   }
 
   selectItem() {
     if (this.state.selectedItem === null) {
-      if(this.props.isSpinning === false){
+      if (this.props.isSpinning === false) {
         const selectedItem = Math.floor(Math.random() * this.props.items.length);
-        
+
         if (this.props.onSelectItem) {
           this.props.onSelectItem(selectedItem, this.props.items);
         }
@@ -48,15 +49,15 @@ export default class Wheel extends React.Component {
       setTimeout(this.selectItem, 500);
     }
   }
-  
+
   resetIndex() {
     this.index = 0;
   }
 
   addToIndex() {
-    this.index ++
+    this.index++
   }
-  
+
 
   render() {
     const { selectedItem } = this.state;
@@ -67,6 +68,8 @@ export default class Wheel extends React.Component {
       '--selected-item': selectedItem,
     };
     const spinning = selectedItem !== null ? 'spinning' : '';
+    console.log(items)
+    console.log(selectedItem)
     return (
       <div className="wheel-container">
         <div className={`wheel ${spinning}`} style={wheelVars} onClick={this.selectItem} data-toggle="modal">
@@ -77,6 +80,11 @@ export default class Wheel extends React.Component {
           ))}
         </div>
         <div show={this.state.showModal} class="modal fade" id="popupRecipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        {items && selectedItem ? < PopupRecipe items={items} selectedItem={selectedItem}/> : ""}
+        </div>
+      </div>
+    );
+    {/* <div show={this.state.showModal} class="modal fade" id="popupRecipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -100,7 +108,7 @@ export default class Wheel extends React.Component {
                     <h5>Directions</h5>
                     {selectedItem ? this.props.items[selectedItem].recipe.method : ''} DKK
                   </div>
-                <div class="col-md-6"> */}
+                <div class="col-md-6"> <----- COMMENT STOP HER
                 <h5>Ingredients</h5> 
                 
                 <ul class="ingrediens-list">
@@ -152,8 +160,10 @@ export default class Wheel extends React.Component {
           </div>
         </div>
       </div>
-    </div>
-    );
+    </div> 
+  );
+  */}
+
   }
 }
 
