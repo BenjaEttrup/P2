@@ -9,7 +9,7 @@ const token = require('./config.json').token;
 
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
-const { json } = require('express');
+const { json, response } = require('express');
 
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
@@ -281,8 +281,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
         },
         ingredients: []
     };
-
-    let recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
+    let recipeIndex = findRecipeIndex(req.params.ID, recipeData, "recipes");
     if (recipeIndex) {
         let totalPrice = 0;
 
@@ -310,7 +309,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
         recipeObject.recipe["rating"] = recipeData.recipes[recipeIndex].rating
         recipeObject.recipe["description"] = recipeData.recipes[recipeIndex].description
         recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
-        recipeObject.recipe["totalPrice"] = totalPrice.toFixed(2);
+        recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
         recipeObject.recipe["recipeIndex"] = recipeIndex;
 
         console.log(recipeObject)
