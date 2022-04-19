@@ -183,19 +183,13 @@ class ShoppingList extends React.Component {
   }
 
 
-  matchIngredientTwo(stashIngredient, subtract, wasTrashed = false){
-    // Loop through shoppingListRecipeComponents to see if there is a match (FUNC)
-      // Loop through myStashComponents to see if there is a match (FUNC)
+  matchComponent(recipeComponent, stashIngredient){
+    let foundMatch = false;
+
 
     
-
-    
-
-
+    return foundMatch
   }
-
-
-
 
   matchIngredient(stashIngredient, subtract, wasTrashed = false) {
     let isStashItem = false;
