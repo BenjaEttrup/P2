@@ -122,6 +122,7 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                     break;
                 }
             }
+
             res.status(200).send(parsedJson)
 
             fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
@@ -358,7 +359,6 @@ app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
             }
 
             let json = JSON.stringify(userData, null, 4);
-
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
                     res.status(500).send();

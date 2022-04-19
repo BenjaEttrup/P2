@@ -47,9 +47,9 @@ class StashRowElement extends React.Component {
 
 
   hideStashRowElement(stashRowElement, endPoint) {
-    this.setState({
-      hide: !this.state.hide,
-    })
+    // this.setState({
+    //   hide: !this.state.hide,
+    // })
 
     let params = {
       endPoint: endPoint
@@ -59,21 +59,24 @@ class StashRowElement extends React.Component {
     if (this.props.hasOwnProperty('recipeID')) {
       params['recipeID'] = this.props.recipeID;
       this.props.removeIngredient(stashRowElement, params)
-      this.props.updateRecipePrice(stashRowElement, true);
+      this.props.updateRecipePrice(stashRowElement, true)
 
       this.setState({
+        hide: !this.state.hide,
         wasTrashed: true
       })
     }
     else {
       params['recipeID'] = false;
       console.log("removing stash")
-      // TODO removeIngredient should fetch delete.
+      // TODO SHOULD UPDATE RECIPE PRICES.
       this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
 
+
       this.setState({
-        wasTrashed: true
+        wasTrashed: true,
+        hide: !this.state.hide
       })
     }
   }
@@ -87,7 +90,6 @@ class StashRowElement extends React.Component {
       console.log("")
       console.log("boxUnchecked")
       console.log("FETCHING")
-      // TODO fix bug where price is subtracted twice, and fix bug where it keeps subtracting price
       let stashRowElement = this;
       fetch(`/stash/add`, {
         method: 'POST',
@@ -97,18 +99,9 @@ class StashRowElement extends React.Component {
         },
         body: JSON.stringify(this.props.ingredient)
       }).then(() => {
+        // TODO SHOULD ALWAYS UPDATE RECIPEPRICE.
         stashRowElement.props.updateMyStashIngredients(stashRowElement)
-      });
-      this.props.matchIngredient(this, true, false);
-
-
-      // TODO fix the recipe sums, maybe use whether or not the boxes are unchecked
-      // The bug happens when both are unchecked, the recipeIngredient is added/checked
-      // and the stashingredient is checked again.
-      // console.log("Calling matchingredient with subtract")
-
-      // console.log(this)
-
+      }).then(this.props.matchIngredient(this, true, false, true))
     });
   }
 
@@ -119,7 +112,6 @@ class StashRowElement extends React.Component {
       if (this.state.boxChecked) {
         console.log("")
         console.log("BoxChecked")
-        // TODO the state of boxChecked should be checked in the matching stashRowElem recipeComponent
         this.props.matchIngredient(this, true, false);
       }
       else {

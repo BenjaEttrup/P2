@@ -126,7 +126,7 @@ class ShoppingListRecipe extends React.Component {
                   updateRecipePrice={(stashRowElement, subtract) => this.updateRecipePrice(stashRowElement, subtract)}
                   recipeIndex={this.props.recipeIndex}
                   trackShoppingListElement={(stashRowElementInstance) => this.trackShoppingListElement(stashRowElementInstance)}
-                  matchIngredient={(stashIngredient, subtract) => this.props.matchIngredient(stashIngredient, subtract)}
+                  matchIngredient={(stashIngredient, subtract, wasTrashed, addedToStash) => this.props.matchIngredient(stashIngredient, subtract, wasTrashed, addedToStash)}
                   updateMyStashIngredients={(stashIngredient) => this.props.updateMyStashIngredients(stashIngredient)}
                 />
               )
