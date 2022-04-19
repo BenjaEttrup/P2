@@ -1,6 +1,7 @@
-import React from 'react';
-import '../stylesheets/spinTheMeal.css'
+import React from 'react'
+import Spin from './spinner';
 
+import '../stylesheets/spinTheMeal.css'
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
@@ -15,51 +16,87 @@ class SpinTheMeal extends React.Component {
 
     this.props.updateNavFunction(3);
     
-    //Your code here
+    this.state ={
+      allRecipes: [],
+      recipes: [],
+      minPrice: 0,
+      maxPrice: 0
+    }
   }
 
-  //Functions go here
-  spin_the_wheel() {
-    var x = 1024;
-    var y = 9999;
-
-    var deg = Math.floor(Math.random() * (x -y)) + y;
-
-    document.getElementById('box').style.transform = "rotate(" + deg + "deg)";
-
-    var element = document.getElementById('mainbox');
-    element.classList.remove('animate');
-    setTimeout(function(){
-      element.classList.add('animate');
-
-      var inputVal = document.getElementById("span2").name;
-      alert(inputVal);
-    }, 5000);
+  componentDidMount() {
+    fetch(`/findAllRecipes`, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((json) => {
+      console.log(json)
+      let data = {
+        recipes: json.recipes,
+        allRecipes: json.recipes
+      }
+      this.setState(data, () => {
+      /*  this.refreshSearch(); */
+      });
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
-  //This is the render function. This is where the
-  //html is.
+  updateRecipes(){
+    let updatedRecipes = betweenPricesSearch(this.state.minPrice === '' ? '0' : this.state.minPrice, this.state.maxPrice === '' ? '1000' : this.state.maxPrice, this.state.allRecipes)
+    this.setState({
+      recipes: updatedRecipes
+    })
+  }
+
+  setMinPriceValue(evt) {
+    this.setState({
+      minPrice: evt.target.value
+    }, () => {
+      console.log(this.state)
+      this.updateRecipes();
+    })
+  }
+
+  setMaxPriceValue(evt) {
+    this.setState({
+      maxPrice: evt.target.value
+    }, () => {
+      console.log(this.state)
+      this.updateRecipes();
+    })
+  }
+
   render() {
     return (
-      <div className="SpinTheMeal">
-        <div class="spinTheMeal">
-          <h1><center>What's for dinner?</center></h1><br />
-          <div id="mainbox" class="mainbox">
-            <div id="box" class="box">
-              <div class="box1">
-                <span class="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Test</b></span>
-                <span class="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Pasta med ketchup</b></span>
-                <span class="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Fisk med ris</b></span>
-                <span class="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>burger</b></span>
+      <div class="container">
+        <div className="SpinTheMeal">
+          <div class="spinTheMeal">
+            <h1><center>What's for dinner?</center></h1><br />
+          </div>
+          <div class="row">
+            <div class="col-lg-4 mb-2">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Price</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Min" id="min_price" 
+                onChange={(evt) => {this.setMinPriceValue(evt)}} />
+                <input type="number" class="form-control" placeholder="Max" id="max_price"
+                onChange={(evt) => {this.setMaxPriceValue(evt)}} />
               </div>
-              <div class="box2">
-                <span class="span1 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Shoplifters</b></span>
-                <span class="span2 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Inception</b></span>
-                <span class="span3 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Deadpool</b></span>
-                <span class="span4 spinTheMeal-span" id="span2" name="Pasta med ketchup"><b>Terminator</b></span>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                <label class="form-check-label" for="defaultCheck1">My stash</label>
               </div>
             </div>
-            <button class="spin" onClick={() => this.spin_the_wheel()}>SPIN</button>
+            <div class="col-lg-8 bg-light border pt-5 pb-5">
+              <Spin recipes={this.state.recipes} />
+            </div>
           </div>
         </div>
       </div>
@@ -68,3 +105,29 @@ class SpinTheMeal extends React.Component {
 }
 
 export default SpinTheMeal;
+
+/**
+ * Given a list of recipes, return a list of recipes that fall between a min and max price
+ * @param minPrice - The minimum price you want to pay for your recipe.
+ * @param maxPrice - The maximum price you want to pay for your recipe.
+ * @param recipes - an array of recipes
+ * @returns An array of recipes.
+ */
+
+ function betweenPricesSearch(minPrice, maxPrice, recipes) {
+  let returnRecipes = [];
+  recipes.forEach((recipe) => {
+    let price = 0;
+
+    recipe.ingredients.forEach((ingredient) => {
+        price += ingredient.price;
+    })
+
+    if(price >= minPrice && price <= maxPrice){
+        returnRecipes.push(recipe);
+    }
+    console.log(minPrice, maxPrice);
+  })
+  return returnRecipes;
+}
+
