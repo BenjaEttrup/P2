@@ -25,7 +25,7 @@ class RecipePage extends React.Component {
                     rating: "",
                     image: "",
                     url: "",
-                    totalPrice: "",
+                    price: "",
                     recipeIndex: ""
                 },
                 ingredients: []
@@ -38,8 +38,6 @@ class RecipePage extends React.Component {
         fetch(`/findRecipe/${this.props.id}`)
             .then((response) => response.json())
             .then((response) => {
-                console.log(response)
-                console.log("linje 38")
                 this.setState({ recipeData: {recipe: response.recipe, ingredients: response.ingredients }},()=>{
                     console.log(this.state.recipeData.recipe.totalPrice);
                     console.log(this.state.recipeData.recipe);
@@ -73,8 +71,8 @@ class RecipePage extends React.Component {
     render() {
         return (
             <div>
-                <div class="card shadow bgcolor">
-                    <div class="card-body shadow-rounded">
+                <div class="card-recipe shadow bgcolor">
+                    <div class="card-body-recipe shadow-rounded">
                         <img src={this.state.recipeData.recipe.image} alt={this.state.recipeData.recipe.title} class="card-popup-image" />
                         <div class="card-popup-content">
                             <div class="info-row">
@@ -139,12 +137,23 @@ class RecipePage extends React.Component {
                                                     </tr>
                                                 );
                                             })}
+                                            <tr >
+                                                        <td>
+                                                            <p class="ingredientsTabelCol capitalize">Total price</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="ingredientsTabelCol"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="ingredientsTabelCol">{this.state.recipeData.recipe.price + " kr."}</p>
+                                                        </td>
+                                                    </tr>
                                     </tbody>
                                     </table>
                                 
-                                    <div class="card-buttons g-0 ">
+                                    <div class="card-buttons-recipe g-0 ">
                                 <div class="recipe-button" >
-                                    <button type="button" class="btn card-button" onClick={() => {this.addRecipe(this.state.recipeData);}}>
+                                    <button type="button" class="btn card-button-recipe" onClick={() => {this.addRecipe(this.state.recipeData);}}>
                                         Add to shopping list
                                     </button>
                                 </div>

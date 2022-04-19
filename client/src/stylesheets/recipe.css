@@ -56,7 +56,6 @@ body {
     font-weight: 600;
     font-size: 1em;
     margin-left: 0.75em;
-
 }
 
 .info-display {
@@ -104,7 +103,7 @@ body {
     width: 48%;
 }
 
-.card-buttons {
+.card-buttons-recipe {
     padding-top: 1.5em;
     width: 100%;
     justify-content: flex;
@@ -112,7 +111,7 @@ body {
     padding-right: 0em !important;
 }
 
-.card-button {
+.card-button-recipe {
     box-shadow: none !important;
     color: #ffffff !important;
     background-color: #0d6efd !important;
@@ -120,13 +119,13 @@ body {
     float: left;
 }
 
-.card-button-secondary {
+.card-button-recipe-secondary {
     float: right !important;
     color: #ffffff !important;
     background-color: #646464 !important;
 }
 
-.card-button:hover {
+.card-button-recipe:hover {
     background-color: #1860cc;
 }
 
@@ -167,7 +166,7 @@ body {
     color: #454e55;
 }
 
-.card-body {
+.card-body-recipe {
     width: 65rem;
     border-radius: 10px;
     margin-top: 7rem;
@@ -178,7 +177,7 @@ body {
     background-color: #ffffff;
 }
 
-.card {
+.card-recipe {
     background-color: #f3f3f3 !important;
 }
 
