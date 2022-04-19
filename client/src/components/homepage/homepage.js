@@ -1,6 +1,7 @@
 import React from 'react';
 import RecipeCard from './recipeCard';
 import Carousel from './carousel';
+import { compareTwoStrings } from 'string-similarity';
 
 import '../../stylesheets/homepage.css';
 
@@ -26,30 +27,46 @@ class HomePage extends React.Component {
       minPrice: 0,
       maxPrice: 0,
       searchValue: '',
-      categoryID: '1'
+      categoryID: '1',
+      myStashChecked: false
     }
   }
 
   //Functions go here
   componentDidMount() {
-	fetch(`/findAllRecipes`, {
-		headers : { 
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		}
-	})
-	.then(res => res.json())
-	.then((json) => {
-		let data = {
-      allRecipes: json.recipes,
-			recipes: json.recipes
-		}
-		this.setState(data, () => {
-      this.refreshSearch();
+    fetch(`/stash/get`, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((res) => {
+      let data = {
+        myStash: res
+      }
+      this.setState(data, () => {
+        fetch(`/findAllRecipes`, {
+          headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then((json) => {
+          let data = {
+            allRecipes: json.recipes
+          }
+          this.setState(data, () => {
+            this.refreshSearch();
+          });
+        }).catch(err => {
+          console.error(err);
+        });
+      });
+    }).catch(err => {
+      console.error(err);
     });
-	}).catch(err => {
-		console.error(err);
-	});
   }
 
   setSearchValue(evt) {
@@ -90,9 +107,13 @@ class HomePage extends React.Component {
     stringIngredientSearch(this.state.searchValue, notAlreadyChosen).forEach((recipe) => {
       searchedRecipes.push(recipe)
     })
-
+    
     if(searchedRecipes === []){
       searchedRecipes = this.state.allRecipes;
+    }
+
+    if(this.state.myStashChecked){
+      searchedRecipes = myStashSearch(searchedRecipes, this.state.myStash)
     }
 
     if(this.state.maxPrice !== 0 && this.state.maxPrice !== '') {
@@ -102,7 +123,7 @@ class HomePage extends React.Component {
     if(this.state.categoryID === '1') {
       searchedRecipes.sort(comparePrice)
     } else if(this.state.categoryID === '2'){
-      //MAKE STUFF HERE
+      searchedRecipes.sort(compareRating)
     }
 
     let data = {
@@ -115,6 +136,14 @@ class HomePage extends React.Component {
   changeCategory(evt) {
     this.setState({
       categoryID: evt.target.value
+    }, () => {
+      this.refreshSearch()
+    })
+  }
+
+  onStashChange() {
+    this.setState({
+      myStashChecked: !this.state.myStashChecked
     }, () => {
       this.refreshSearch()
     })
@@ -143,7 +172,7 @@ class HomePage extends React.Component {
                 <div class="form-check-group">
                   <label class="form-check-label"  for="flexCheckDefault" >
                     My Stash
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={this.state.myStashChecked} onChange={() => {this.onStashChange()}} />
                   </label>
                 </div>
                 <button type="button" id="filterButton" class="btn dropdown-toggle" data-bs-toggle="dropdown"
@@ -269,8 +298,52 @@ function comparePrice(a, b) {
   return a.recipe.price - b.recipe.price;
 }
 
+/**
+ * The function takes two objects, compares their rating properties, and returns the difference between
+ * the two.
+ * @param a - The first object to be compared.
+ * @param b - the second object to compare
+ * @returns the difference between the two values.
+ */
+function compareRating(a, b) {
+  return a.recipe.rating - b.recipe.rating;
+}
+
 function myStashSearch(recipes, myStash) {
-  
+  let tempRecipes = JSON.parse(JSON.stringify(recipes))
+  let updatedRecipes = []
+  tempRecipes.forEach((recipe) => {
+    let tempRecipe = recipe;
+    let updatedIngredients = [];
+
+    tempRecipe.ingredients.forEach((ingredient) => {
+      let isSimilar = false;
+      myStash.forEach((stashIngredient) => {
+        let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
+
+        if(similarity >= 0.5 && isSimilar === false){
+          isSimilar = true;
+        } else if(similarity <= 0.5 && isSimilar === false) {
+          isSimilar = false;
+        }
+      })
+      if(!isSimilar) {
+        updatedIngredients.push(ingredient);
+      }
+    })
+    let newPrice = 0;
+
+    updatedIngredients.forEach((ingredient) => {
+      newPrice += ingredient.price;
+    })
+
+    tempRecipe.ingredients = updatedIngredients;
+    tempRecipe.recipe.price = Number(newPrice.toFixed(2));
+
+    updatedRecipes.push(tempRecipe)
+  })
+
+  return updatedRecipes;
 }
 
 export default HomePage;
