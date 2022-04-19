@@ -183,16 +183,25 @@ class ShoppingList extends React.Component {
   }
 
 
-  matchComponent(recipeComponent, stashIngredient){
-    let foundMatch = false;
-
-
-    
-    return foundMatch
+  componentDidMatch(recipeComponent, stashIngredient) {
+    let ingredientMatch = undefined
+    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
+      if (Number(ingredientComponent.props.ingredient.prod_id) === Number(stashIngredient.props.ingredient.prod_id)) {
+        ingredientMatch = ingredientComponent
+        console.log(`__________________`);
+        console.log(`ComponentDidMatch`);
+        console.log(ingredientMatch);
+        console.log(`__________________`);
+        return ingredientComponent;
+      }
+    })
+    return ingredientMatch;
   }
+
 
   matchIngredient(stashIngredient, subtract, wasTrashed = false) {
     let isStashItem = false;
+    let ingredientComponent = undefined;
     if (stashIngredient.hasOwnProperty('prod_id')) {
       isStashItem = true;
     }
@@ -204,86 +213,30 @@ class ShoppingList extends React.Component {
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       console.log(recipeComponent);
-      recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
-        if (ingredientComponent.props.ingredient.prod_id == stashIngredient.prod_id) {
-          if (wasTrashed) {
-            console.log(ingredientComponent);
-            console.log(`ingredientComponent.boxChecked = true`)
-            ingredientComponent.setState({
-              hide: false,
-              boxChecked: true,
-            })
-
-            
-            let shouldReturn = false;
-            this.state.myStashComponents.forEach(component => {
-              if(component.props.ingredient.prod_id == ingredientComponent.props.ingredient.prod_id){
-                if(!component.state.boxChecked){
-                  shouldReturn = true;
-                }
-              }
-            })
-
-            if(shouldReturn) return;
-
-            let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
-              +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
-
-            console.log(`SUBTRACTING = ${subtract}`);
-            recipeComponent.setState((prevState) => ({
-              price: Number(price).toFixed(2)
-            }))
-
-            this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
-          }
-          else {
-            console.log(`IE changing boxChecked to true`)
-            ingredientComponent.setState({
-              hide: !ingredientComponent.state.hide,
-              boxChecked: true,
-            })
-
-            if(ingredientComponent.state.wasTrashed){
-              return;
-            }
-
-            let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
-              +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
-
-            console.log(`SUBTRACTING = ${subtract}`);
-            recipeComponent.setState((prevState) => ({
-              price: Number(price).toFixed(2)
-            }))
-            this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
-          }
-        }
-        else {
-          console.log(`Outside else`)
-          console.log(`myStashComponents`)
-          console.log(this.state.myStashComponents);
-          this.state.myStashComponents.forEach(component => {
-            console.log("MYSTASHINGREDIENT")
-            console.log(component.props.ingredient)
-            console.log("RECIPEINGREDIENT")
-            console.log(ingredientComponent.props.ingredient)
-            if (component.props.ingredient.prod_id == ingredientComponent.props.ingredient.prod_id) {
-              console.log("mystashIng and recipeIng match")
-              let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
-                +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
-
-              console.log(`price = ${price}`)
-
-              console.log(`SUBTRACTING = ${subtract}`);
-              recipeComponent.setState((prevState) => ({
-                price: Number(price).toFixed(2)
-              }))
-              this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract)
-            }
+      ingredientComponent = this.componentDidMatch(recipeComponent, stashIngredient);
+      console.log(ingredientComponent);
+      if (ingredientComponent) {
+        // The case where the trash can on the stashRowElement was pushed
+        if (wasTrashed) {
+          ingredientComponent.setState({
+            hide: false,
+            boxChecked: true,
           })
+          return;
         }
-      })
-    })
 
+        // Two cases: the component in my stash is checked or unchecked  
+        ingredientComponent.setState({
+          hide: stashIngredient.state.boxChecked,
+          boxChecked: true
+        })
+
+
+
+
+
+      }
+    })
   }
 
 

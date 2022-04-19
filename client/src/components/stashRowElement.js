@@ -69,7 +69,7 @@ class StashRowElement extends React.Component {
       params['recipeID'] = false;
       console.log("removing stash")
       // TODO removeIngredient should fetch delete.
-      this.props.matchIngredient(stashRowElement, false, true);
+      this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
 
       this.setState({
@@ -99,7 +99,7 @@ class StashRowElement extends React.Component {
       }).then(() => {
         stashRowElement.props.updateMyStashIngredients(stashRowElement)
       });
-      this.props.matchIngredient(stashRowElement, true, false);
+      this.props.matchIngredient(this, true, false);
 
 
       // TODO fix the recipe sums, maybe use whether or not the boxes are unchecked
@@ -120,12 +120,12 @@ class StashRowElement extends React.Component {
         console.log("")
         console.log("BoxChecked")
         // TODO the state of boxChecked should be checked in the matching stashRowElem recipeComponent
-        this.props.matchIngredient(this.props.ingredient, true, false);
+        this.props.matchIngredient(this, true, false);
       }
       else {
         console.log("")
         console.log("boxUnchecked")
-        this.props.matchIngredient(this.props.ingredient, false, false);
+        this.props.matchIngredient(this, false, false);
       }
     });
 
