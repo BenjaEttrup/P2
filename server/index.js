@@ -9,7 +9,7 @@ const token = require('./config.json').token;
 
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
-const { json } = require('express');
+const { json, response } = require('express');
 
 const config = {
     headers: { 'Authorization': `Bearer ${token}` }
@@ -59,7 +59,6 @@ app.get("/stash/get", (req, res) => {
 app.post("/stash/add", (req, res) => {
     // Product json given via body
     let newProductJson = req.body
-    //console.log(newProductJson)
     // If file can't be read, create new one with {myStash:[]} structure
     fs.access(userPath, fs.F_OK, (err) => {
         if (err) {
@@ -271,6 +270,7 @@ app.get('/findAllRecipes', async (req, res) => {
 });
 
 
+
 // Retrieves a single recipe from an ID
 app.get('/findRecipe/:ID', async (req, res) => {
     const recipeData = require(recipeDataPath);
@@ -281,8 +281,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
         },
         ingredients: []
     };
-
-    let recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
+    let recipeIndex = findRecipeIndex(req.params.ID, recipeData, "recipes");
     if (recipeIndex) {
         let totalPrice = 0;
 
@@ -310,7 +309,7 @@ app.get('/findRecipe/:ID', async (req, res) => {
         recipeObject.recipe["rating"] = recipeData.recipes[recipeIndex].rating
         recipeObject.recipe["description"] = recipeData.recipes[recipeIndex].description
         recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
-        recipeObject.recipe["totalPrice"] = totalPrice.toFixed(2);
+        recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
         recipeObject.recipe["recipeIndex"] = recipeIndex;
 
         console.log(recipeObject)
@@ -339,11 +338,11 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
+            return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
         }
     } catch (e) {
         console.error(e);
-        return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
+        return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
     }
     return apiRes
 }
@@ -462,6 +461,37 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
                     console.error(err)
+                    res.status(500).send();
+                }
+                res.status(202).send();
+            });
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+});
+
+/** Removes a recipe from the shoppinglist* */
+app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
+    try {
+        fs.readFile(userPath, function readFileCallback(err, data) {
+            let userData = JSON.parse(data);
+            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            console.log(recipeIndex);
+            if (recipeIndex) {
+                userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
+            }
+            else {
+                console.log("Failed to get recipe ID index");
+                res.status(500).send();
+            }
+
+            let json = JSON.stringify(userData, null, 4);
+
+            fs.writeFile(userPath, json, function readFileCallback(err, data) {
+                if (err) {
                     res.status(500).send();
                 }
                 res.status(202).send();
