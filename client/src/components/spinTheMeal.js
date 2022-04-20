@@ -1,5 +1,6 @@
 import React from 'react'
 import Spin from './spinner';
+import { compareTwoStrings } from 'string-similarity';
 
 import '../stylesheets/spinTheMeal.css'
 //This is a React class it extends a React component which 
@@ -20,26 +21,42 @@ class SpinTheMeal extends React.Component {
       allRecipes: [],
       recipes: [],
       minPrice: 0,
-      maxPrice: 0
+      maxPrice: 0,
+      myStashChecked: false,
+      myStash: []
     }
   }
 
   componentDidMount() {
-    fetch(`/findAllRecipes`, {
+    fetch(`/stash/get`, {
       headers : { 
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     })
     .then(res => res.json())
-    .then((json) => {
-      console.log(json)
+    .then((res) => {
       let data = {
-        recipes: json.recipes,
-        allRecipes: json.recipes
+        myStash: res
       }
       this.setState(data, () => {
-      /*  this.refreshSearch(); */
+        fetch(`/findAllRecipes`, {
+          headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then((json) => {
+          let data = {
+            allRecipes: json.recipes
+          }
+          this.setState(data, () => {
+            this.updateRecipes();
+          });
+        }).catch(err => {
+          console.error(err);
+        });
       });
     }).catch(err => {
       console.error(err);
@@ -47,7 +64,13 @@ class SpinTheMeal extends React.Component {
   }
 
   updateRecipes(){
-    let updatedRecipes = betweenPricesSearch(this.state.minPrice === '' ? '0' : this.state.minPrice, this.state.maxPrice === '' ? '1000' : this.state.maxPrice, this.state.allRecipes)
+    let updatedRecipes = this.state.allRecipes
+    if(this.state.myStashChecked) {
+      updatedRecipes = myStashSearch(this.state.allRecipes, this.state.myStash);
+    }
+
+    updatedRecipes = betweenPricesSearch(this.state.minPrice === '' ? 0 : this.state.minPrice, this.state.maxPrice === '' || this.state.maxPrice ===  0 ? 1000 : this.state.maxPrice, updatedRecipes)
+  
     this.setState({
       recipes: updatedRecipes
     })
@@ -71,6 +94,15 @@ class SpinTheMeal extends React.Component {
     })
   }
 
+  myStashChanged() {
+    this.setState(prevState => ({
+      myStashChecked: !prevState.myStashChecked
+    }), () => {
+      this.updateRecipes();
+    });
+
+  }
+
   render() {
     return (
       <div class="container">
@@ -90,7 +122,7 @@ class SpinTheMeal extends React.Component {
                 onChange={(evt) => {this.setMaxPriceValue(evt)}} />
               </div>
               <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={() => {this.myStashChanged()}} />
                 <label class="form-check-label" for="defaultCheck1">My stash</label>
               </div>
             </div>
@@ -126,8 +158,48 @@ export default SpinTheMeal;
     if(price >= minPrice && price <= maxPrice){
         returnRecipes.push(recipe);
     }
-    console.log(minPrice, maxPrice);
   })
   return returnRecipes;
+}
+
+function myStashSearch(recipes, myStash) {
+  let tempRecipes = JSON.parse(JSON.stringify(recipes))
+  let updatedRecipes = []
+  let containsIngredientFromStash = false;
+  tempRecipes.forEach((recipe) => {
+    let tempRecipe = recipe;
+    let updatedIngredients = [];
+
+    tempRecipe.ingredients.forEach((ingredient) => {
+      let isSimilar = false;
+      myStash.forEach((stashIngredient) => {
+        let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
+
+        if(similarity >= 0.5 && isSimilar === false){
+          isSimilar = true;
+          containsIngredientFromStash = true;
+        } else if(similarity <= 0.5 && isSimilar === false) {
+          isSimilar = false;
+        }
+      })
+      if(!isSimilar) {
+        updatedIngredients.push(ingredient);
+      }
+    })
+    let newPrice = 0;
+
+    updatedIngredients.forEach((ingredient) => {
+      newPrice += ingredient.price;
+    })
+
+    tempRecipe.ingredients = updatedIngredients;
+    tempRecipe.recipe.price = Number(newPrice.toFixed(2));
+
+    if(containsIngredientFromStash){
+      updatedRecipes.push(tempRecipe)
+    }
+  })
+
+  return updatedRecipes;
 }
 
