@@ -72,12 +72,8 @@ class App extends React.Component {
               <Recipe/>
             </Route>
             <Route path="/">
-<<<<<<< HEAD
-              <HomePage updateNavFunction={(id) => {this.updateNav(id)}} updateShoppingList={() => this.updateRecipes()} />
-=======
 
               <HomePage updateNavFunction={(id) => {this.updateNav(id)}} updateShoppingList={() => this.updateRecipes()}/>
->>>>>>> main
             </Route>
           </Switch>
         </div>
