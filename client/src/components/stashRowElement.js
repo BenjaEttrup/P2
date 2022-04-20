@@ -47,9 +47,10 @@ class StashRowElement extends React.Component {
 
 
   hideStashRowElement(stashRowElement, endPoint) {
-    // this.setState({
-    //   hide: !this.state.hide,
-    // })
+    this.setState({
+      wasTrashed: true,
+      hide: !this.state.hide
+    })
 
     let params = {
       endPoint: endPoint
@@ -62,21 +63,19 @@ class StashRowElement extends React.Component {
         wasTrashed: true
       })
       params['recipeID'] = this.props.recipeID;
+      console.log("removing recipeIngredient")
       this.props.removeIngredient(stashRowElement, params)
       this.props.updateRecipePrice(this, true)
     }
     else {
       params['recipeID'] = false;
-      console.log("removing stash")
+      console.log("removing stashIngredient")
       // TODO SHOULD UPDATE RECIPE PRICES.
       this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
 
 
-      this.setState({
-        wasTrashed: true,
-        hide: !this.state.hide
-      })
+
     }
   }
 
@@ -86,9 +85,7 @@ class StashRowElement extends React.Component {
       hide: false,
     }), () => {
       console.log("")
-      console.log("")
-      console.log("boxUnchecked")
-      console.log("FETCHING")
+      console.log("Adding recipeIngredient to Stash")
       let stashRowElement = this;
       fetch(`/stash/add`, {
         method: 'POST',
