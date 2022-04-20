@@ -56,6 +56,7 @@ class StashRowElement extends React.Component {
       endPoint: endPoint
     };
 
+    console.log("")
     console.log("pushed Trashcan")
     if (this.props.hasOwnProperty('recipeID')) {
       this.setState({
