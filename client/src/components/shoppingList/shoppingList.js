@@ -191,17 +191,11 @@ class ShoppingList extends React.Component {
   updateTotalRecipePrice(priceElement, subtract, ingredientWasTrashed) {
     // If we want to subtract the price of an element
     let sum = 0;
-    console.log(this)
-    if (priceElement.hasOwnProperty("price")) {
-      console.log(`${priceElement.hasOwnProperty("price")}`)
-    }
-    else {
-      console.log(priceElement.props.ingredient.price);
-    }
+    console.log("")
+    console.log(priceElement)
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       let price = 0;
-      console.log(``);
       console.log(`________updateTotalRecipePrice forEach ${rcIndex}________`);
       console.log(recipeComponent)
       console.log(`hide = ${recipeComponent.state.hide} ingredientWasTrashed ${ingredientWasTrashed}`);
@@ -234,9 +228,25 @@ class ShoppingList extends React.Component {
           }
           else {
             price = subtract ? recipeComponent.state.price - priceElement.price :
-              +recipeComponent.state.price + +priceElement.price;
+            +recipeComponent.state.price + +priceElement.price;
           }
           console.log(`changed price to = ${Number(price).toFixed(2)}`)
+        }
+        if (ingredientWasTrashed && Number(price) !== 0) {
+          console.log("ingredientWasTRASHED TRUE")
+          console.log(`!priceElement.hasOwnProperty("price") = ${!priceElement.hasOwnProperty("price")}`)
+          if(!priceElement.hasOwnProperty("price")){
+            console.log(`priceElement.props.recipeID = ${priceElement.props.recipeID} recipeComponent.props.recipe.recipe.recipeID = ${recipeComponent.props.recipe.recipe.recipeID}`)
+            if (Number(priceElement.props.recipeID) === Number(recipeComponent.props.recipe.recipe.recipeID)) {
+              console.log("FOUNDMATCH WITH INGREDIENTWASTRASHED")
+              console.log(`changing price to ${recipeComponent.state.price}`)
+              price = recipeComponent.state.price
+            }
+            // else{
+            //   price = subtract ? recipeComponent.state.price - priceElement.price :
+            //   +recipeComponent.state.price + +priceElement.price;
+            // }
+          }
         }
         console.log(`sum = ${sum} price = ${Number(price).toFixed(2)}`)
         sum = Number(+sum + +price).toFixed(2)
@@ -334,7 +344,7 @@ class ShoppingList extends React.Component {
         // }
         // else {
         console.log("UPDATING TOTALRECIPEPRICE")
-        this.updateTotalRecipePrice(ingredientComponent.props.ingredient, subtract, ingredientComponent.state.wasTrashed);
+        this.updateTotalRecipePrice(ingredientComponent, subtract, ingredientComponent.state.wasTrashed);
         // }
       }
       else {
