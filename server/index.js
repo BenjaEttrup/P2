@@ -172,7 +172,6 @@ app.get('/findAllRecipes', async (req, res) => {
             }
         }
 
-
         if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
             console.log("Making new data");
             //Builds recipeObjects object from a recipe file and then searches 
@@ -447,7 +446,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
         fs.readFile(userPath, function readFileCallback(err, data) {
             let userData = JSON.parse(data);
             let recipeIndex = findRecipeIndex(req.params.ID, userData, "shoppingList");
-            console.log(recipeIndex);
+            //console.log(recipeIndex);
             if (recipeIndex !== false) {
                 userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
             }
@@ -480,7 +479,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
             let userData = JSON.parse(data);
             let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
             console.log(recipeIndex);
-            if (recipeIndex) {
+            if (recipeIndex !== false) {
                 userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
             }
             else {
@@ -492,6 +491,7 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
 
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
+                    console.error(err)
                     res.status(500).send();
                 }
                 res.status(202).send();
@@ -512,7 +512,6 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
  * @param option - member we want to acess in the file.
  * @returns The index of the recipe.
  */
-
 function findRecipeIndex(ID, data, option) {
     let numberID = Number.parseInt(ID)
     let returnValue = false;
