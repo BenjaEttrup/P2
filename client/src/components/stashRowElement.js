@@ -24,9 +24,7 @@ class StashRowElement extends React.Component {
 
   componentDidMount(){
     if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
-      console.log(this.props.isHidden)
-      console.log(this)
-      // TODO FIX ISSUE WHERE THIS.PROPS.ISHIDDEN IS NOT UPDATED
+
       this.initShoppingListElement(this.props.isHidden);
     }
 

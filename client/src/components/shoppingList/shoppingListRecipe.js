@@ -38,7 +38,6 @@ class ShoppingListRecipe extends React.Component {
     let recipeIngredientComponent = this.state.recipeIngredientComponent;
     let tempRICLength = this.state.recipeIngredientComponent.length;
 
-    console.log(isHidden)
     if(tempRICLength < this.props.recipe.ingredients.length){
     // if((this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length) && !this.state.isTrackingAllIngredientComponents){
       recipeIngredientComponent.push(stashRowElementInstance);
@@ -62,7 +61,8 @@ class ShoppingListRecipe extends React.Component {
     // this value should tell whether the value of the ingredient should be added to the price of
     // the recipe or deducted.
     let recipeSum = 0;
-
+    let lastIngredientAdded = false;
+    
     this.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
       let isHidden =  this.props.ingredientInStash(recipeIngredientComponent.props.ingredient, recipeIngredientComponent.props.ingredientIndex);
       if(isHidden){
@@ -83,7 +83,8 @@ class ShoppingListRecipe extends React.Component {
       price: recipeSum,
     })
 
-    this.props.updateRecipePrices();
+
+    this.props.updateRecipePrices(true);
 
   }
 
@@ -91,14 +92,12 @@ class ShoppingListRecipe extends React.Component {
     let isInStash = this.props.ingredientInStash(ingredient, ingredientIndex)
     
     if(isInStash && !this.state.initedIsHiddenValues){
-      console.log(`recipeIngredientComponent.length = ${this.state.recipeIngredientComponent.length} recipe.ingredients.length = ${this.props.recipe.ingredients.length}`)
       if(this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length){
         this.setState({
           initedIsHiddenValues: true
         });
-        console.log("setting initedIsHiddenValues to true")
-        this.updateRecipePrice();
 
+        this.updateRecipePrice();
       }
     }
 
@@ -143,12 +142,13 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
+              let isHidden = this.initShoppingListIngredient(ingredient,ingredientIndex);
               return (
                 <StashRowElement
                   key={ingredientIndex}
                   ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
-                  isHidden={this.initShoppingListIngredient(ingredient, ingredientIndex)}
+                  isHidden={isHidden}
                   passToShoppingList={true}
                   ingredient={ingredient}
                   shoppingList={true}
