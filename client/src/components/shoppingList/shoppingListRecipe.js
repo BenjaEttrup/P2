@@ -34,12 +34,21 @@ class ShoppingListRecipe extends React.Component {
   }
 
   trackShoppingListElement(stashRowElementInstance) {
+    console.log("TRACKSHOPPINGLISTELEMENT")
     let recipeIngredientComponent = this.state.recipeIngredientComponent;
 
+    console.log(`this.state.recipeIngredientComponent.length = ${this.state.recipeIngredientComponent.length} this.props.recipe.ingredients.length = ${this.props.recipe.ingredients.length}`)
+    if(this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length && !this.state.sucInit){
+      this.setState({
+        sucInit: true,
+      })
+      return;
+    }
     recipeIngredientComponent.push(stashRowElementInstance);
     this.setState({
       recipeIngredientComponent: recipeIngredientComponent
     })
+    console.log(recipeIngredientComponent)
   }
 
   updateRecipePrice(stashRowElement, subtract) {
@@ -72,12 +81,16 @@ class ShoppingListRecipe extends React.Component {
     let isInStash = this.props.ingredientInStash(ingredient, ingredientIndex)
     
     if(isInStash && !this.state.sucInit){
-      this.setState({
-        sucInit: true
-      });
+      console.log(`recipeIngredientComponent.length = ${this.state.recipeIngredientComponent.length} recipe.ingredients.length = ${this.props.recipe.ingredients.length}`)
+      if(this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length){
+        console.log("should set state sucinit")
+        this.setState({
+          sucInit: true
+        });
+        this.updateRecipePrice(ingredient, true);
+      }
 
       // console.log("Updating recipePrice on init")
-      this.updateRecipePrice(ingredient, true);
     }
 
     return this.props.ingredientInStash(ingredient, ingredientIndex);

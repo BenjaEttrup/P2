@@ -22,6 +22,18 @@ class StashRowElement extends React.Component {
     };
   }
 
+  componentDidMount(){
+    if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
+      console.log("inittingShoppingListElement")
+      console.log(this.props.isHidden)
+      this.initShoppingListElement(this.props.isHidden);
+    }
+
+    if (this.props.hasOwnProperty('passToStashComponents') && !this.state.inited) {
+      this.initStashElement(false);
+    }
+  }
+
   //Functions go here
   initShoppingListElement(hide) {
     if (hide) {
@@ -30,7 +42,20 @@ class StashRowElement extends React.Component {
         hide: hide,
       });
 
+      console.log("calling trackShoppingList")
       this.props.trackShoppingListElement(this)
+    }
+    else {
+      if(!this.state.inited){
+        this.setState({
+          inited: true,
+          hide: hide,
+        });
+  
+        console.log("calling trackShoppingList")
+        this.props.trackShoppingListElement(this)
+      }
+
     }
   }
 
@@ -123,21 +148,16 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
-      this.initShoppingListElement(this.props.isHidden);
-    }
-
-    if (this.props.hasOwnProperty('passToStashComponents') && !this.state.inited) {
-      this.initStashElement(false);
-    }
-
     if (this.state.hide || this.state.wasTrashed) {
       return null;
     }
-    // if (this.props.isHidden) return null;
+    if (this.props.isHidden) return null;
 
     if (this.props.hasOwnProperty('shoppingList')) {
       if (!this.state.priceWasAdded) {
+        this.setState({
+          priceWasAdded: true
+        })
         this.initShoppingListElement(this.state.hide);
       }
       return (
