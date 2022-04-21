@@ -34,16 +34,15 @@ class ShoppingListRecipe extends React.Component {
   }
 
   trackShoppingListElement(stashRowElementInstance) {
-    console.log("TRACKSHOPPINGLISTELEMENT")
     let recipeIngredientComponent = this.state.recipeIngredientComponent;
 
-    console.log(`this.state.recipeIngredientComponent.length = ${this.state.recipeIngredientComponent.length} this.props.recipe.ingredients.length = ${this.props.recipe.ingredients.length}`)
     if(this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length && !this.state.sucInit){
       this.setState({
         sucInit: true,
       })
       return;
     }
+    console.log(`this.state.recipeIngredientComponent.length = ${this.state.recipeIngredientComponent.length} this.props.recipe.ingredients.length = ${this.props.recipe.ingredients.length}`)
     recipeIngredientComponent.push(stashRowElementInstance);
     this.setState({
       recipeIngredientComponent: recipeIngredientComponent
@@ -52,9 +51,9 @@ class ShoppingListRecipe extends React.Component {
   }
 
   updateRecipePrice(stashRowElement, subtract) {
-    // console.log(`Updating recipePrice with subtract = ${subtract}`)
-    // console.log(this)
-    // console.log("______________")
+    // TODO SHOULD LOOP THROUGH THE recipeIngredientComponents.forEach then check if props.isHidden
+    // this value should tell whether the value of the ingredient should be added to the price of
+    // the recipe or deducted.
     let ingredientPrice;
     if(stashRowElement.hasOwnProperty("props")){
       ingredientPrice = stashRowElement.props.ingredient.price
