@@ -24,6 +24,9 @@ class StashRowElement extends React.Component {
 
   componentDidMount(){
     if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
+      console.log(this.props.isHidden)
+      console.log(this)
+      // TODO FIX ISSUE WHERE THIS.PROPS.ISHIDDEN IS NOT UPDATED
       this.initShoppingListElement(this.props.isHidden);
     }
 
@@ -39,8 +42,7 @@ class StashRowElement extends React.Component {
         inited: true,
         hide: hide,
       });
-
-      this.props.trackShoppingListElement(this)
+      this.props.trackShoppingListElement(this, hide)
     }
     else {
       if(!this.state.inited){
@@ -49,7 +51,7 @@ class StashRowElement extends React.Component {
           hide: hide,
         });
   
-        this.props.trackShoppingListElement(this)
+        this.props.trackShoppingListElement(this, hide)
       }
 
     }
@@ -61,7 +63,7 @@ class StashRowElement extends React.Component {
       hide: hide,
     })
 
-    this.props.trackStashElement(this)
+    this.props.trackStashElement(this, hide)
 
   }
 
@@ -87,7 +89,7 @@ class StashRowElement extends React.Component {
       params['recipeID'] = this.props.recipeID;
       console.log("removing recipeIngredient")
       this.props.removeIngredient(stashRowElement, params)
-      this.props.updateRecipePrice(this, true)
+      this.props.updateRecipePrice()
     }
     else {
       params['recipeID'] = false;
@@ -153,7 +155,6 @@ class StashRowElement extends React.Component {
         this.setState({
           priceWasAdded: true
         })
-        this.initShoppingListElement(this.props.isHidden);
       }
       return (
         <tr>
