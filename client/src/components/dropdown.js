@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../stylesheets/dropdown.css'
+import '../stylesheets/myStash.css'
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -56,7 +57,9 @@ class Dropdown extends React.Component {
                       {recipe.recipe.price + ' DKK'}
                       </td>
                       <td class="right-align-text">
+                        <button class="deleteButton">
                         <i class="fa fa-trash" onClick={() => this.removeRecipe(recipe.recipe.recipeID)}></i>
+                        </button>
                       </td>
                     </tr>
                   )
