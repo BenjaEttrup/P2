@@ -447,6 +447,10 @@ class ShoppingList extends React.Component {
 
   trackShoppingListRecipeComponent(shoppingListRecipeInstance) {
     let shoppingListComponents = this.state.shoppingListRecipeComponents;
+  
+    if(this.state.shoppingListRecipeComponents.length === this.state.shoppingListRecipes.length){
+      return;
+    }
 
     shoppingListComponents.push(shoppingListRecipeInstance);
 
