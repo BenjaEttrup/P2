@@ -40,14 +40,36 @@ class App extends React.Component {
     })
     .then(res => res.json())
     .then((res) => {
-      console.log(res)
       this.setState({
         recipes: res
-      }, () => {
-        console.log(this.state.recipes)
       })
     }).catch(err => {
       console.error(err);
+    });
+  }
+
+  removeRecipe(recipeID) {
+    fetch(`/removeRecipeFromShoppingList/${recipeID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).catch((err) => {
+      console.error(err);
+    });
+
+    let tempRecipes = this.state.recipes;
+    let newRecipes = [];
+
+    tempRecipes.forEach(recipe => {
+      if(recipe.recipe.recipeID !== recipeID) {
+        newRecipes.push(recipe)
+      }
+    });
+
+    this.setState({
+      recipes: newRecipes
     });
   }
 
@@ -55,7 +77,7 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <Navbar active={this.state.activeNav} updateRecipes={() => {this.updateRecipes()}} recipes={this.state.recipes}/>
+          <Navbar active={this.state.activeNav} updateRecipes={() => {this.updateRecipes()}} removeRecipe={(recipeID) => {this.removeRecipe(recipeID)}} recipes={this.state.recipes}/>
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>

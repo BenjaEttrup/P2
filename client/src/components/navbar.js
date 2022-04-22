@@ -16,6 +16,7 @@ class Navbar extends React.Component {
     super(props);
     
     //Your code here
+    this.shown = false;
   }
 
   //Functions go here
@@ -47,12 +48,15 @@ class Navbar extends React.Component {
                 <ul class="navbar-nav" id="user-and-recipe">
                   <li class="nav-item">
                     <div class="btn-group">
-                      <button class='hidden-btn icon' type='button' data-bs-auto-close="false" data-bs-toggle="dropdown" onClick={() => {this.props.updateRecipes()}}>
+                      <button class='hidden-btn icon' type='button' data-bs-auto-close="false" data-bs-toggle="dropdown" onClick={() => {
+                        this.props.updateRecipes()
+                        this.shown = !this.shown
+                      }}>
                         <i class="fa fa-book"></i>
                       </button>
-                      <ul class="dropdown-menu dropdown-card dropdown-menu-end">
-                        <li id='dropdown-recipes' class="">
-                          <Dropdown recipes={this.props.recipes} updateRecipes={this.props.updateRecipes} />
+                      <ul class={this.shown ? "show dropdown-menu dropdown-card dropdown-menu-end" : "dropdown-menu dropdown-card dropdown-menu-end"}>
+                        <li id='dropdown-recipes'>
+                          <Dropdown recipes={this.props.recipes} updateRecipes={this.props.updateRecipes} removeRecipe={this.props.removeRecipe} />
                         </li>
                       </ul>
                     </div>

@@ -2,6 +2,7 @@
 background-color: #FFFFFF;
 width: 20rem;
 height: 30rem;
+
 }
 
 #dropdownrecipes {
@@ -32,6 +33,7 @@ align-content: left;
 
 .dropdown-card {
     width: 10rem;
+    right: -50px;
 }
 
 .btn-row {
