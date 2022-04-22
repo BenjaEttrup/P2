@@ -81,10 +81,11 @@ class ShoppingListRecipe extends React.Component {
 
     this.setState({
       price: recipeSum,
+    }, () => {
+      this.props.updateRecipePrices(true);
     })
 
 
-    this.props.updateRecipePrices(true);
 
   }
 

@@ -39,19 +39,20 @@ class StashRowElement extends React.Component {
       this.setState({
         inited: true,
         hide: hide,
+      }, () => {
+        this.props.trackShoppingListElement(this, hide)
+
       });
-      this.props.trackShoppingListElement(this, hide)
     }
     else {
       if(!this.state.inited){
         this.setState({
           inited: true,
           hide: hide,
+        }, () => {
+          this.props.trackShoppingListElement(this, hide)
         });
-  
-        this.props.trackShoppingListElement(this, hide)
       }
-
     }
   }
 
@@ -59,10 +60,9 @@ class StashRowElement extends React.Component {
     this.setState({
       inited: true,
       hide: hide,
+    }, () => {
+      this.props.trackStashElement(this, hide)
     })
-
-    this.props.trackStashElement(this, hide)
-
   }
 
 
@@ -70,7 +70,10 @@ class StashRowElement extends React.Component {
   hideStashRowElement(stashRowElement, endPoint) {
     this.setState({
       wasTrashed: true,
-      hide: !this.state.hide
+      // hide: !this.state.hide
+      hide: true,
+    }, () => {
+      
     })
 
     let params = {
@@ -83,11 +86,12 @@ class StashRowElement extends React.Component {
       this.setState({
         hide: !this.state.hide,
         wasTrashed: true
+      }, () => {
+        params['recipeID'] = this.props.recipeID;
+        console.log("removing recipeIngredient")
+        this.props.removeIngredient(stashRowElement, params)
+        this.props.updateRecipePrice()
       })
-      params['recipeID'] = this.props.recipeID;
-      console.log("removing recipeIngredient")
-      this.props.removeIngredient(stashRowElement, params)
-      this.props.updateRecipePrice()
     }
     else {
       params['recipeID'] = false;
@@ -95,9 +99,6 @@ class StashRowElement extends React.Component {
       // TODO SHOULD UPDATE RECIPE PRICES.
       this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
-
-
-
     }
   }
 
