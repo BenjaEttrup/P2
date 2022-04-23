@@ -99,14 +99,5 @@
         }
     ],
     "myStash": [
-        {
-            "id": "37918301",
-            "prod_id": 41687,
-            "title": "Pepperoni",
-            "description": "Pepperoni",
-            "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=41685&imgType=jpeg",
-            "link": "https://www.bilkatogo.dk/p/41685",
-            "price": 7.9
-        }
     ]
 }

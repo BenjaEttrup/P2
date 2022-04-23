@@ -24,7 +24,6 @@ class StashRowElement extends React.Component {
 
   componentDidMount(){
     if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
-
       this.initShoppingListElement(this.props.isHidden);
     }
 
@@ -41,7 +40,6 @@ class StashRowElement extends React.Component {
         hide: hide,
       }, () => {
         this.props.trackShoppingListElement(this, hide)
-
       });
     }
     else {
