@@ -238,6 +238,10 @@ class ShoppingList extends React.Component {
               if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
                 console.log(`stashComponent.state.hide || !stashComponent.state.boxChecked was true`)
                 tempIngredientPrice = 0;
+                //TODO This probably shouldnt be the place as, this should be figured out when initializing the shoppinglistRecipes and stashRowElements
+                recipeIngredientComponent.setState({
+                  hide: true,
+                })
                 console.log(`tempIngredientPrice = ${tempIngredientPrice}`)
               }
             }
