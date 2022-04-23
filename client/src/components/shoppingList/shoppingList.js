@@ -126,12 +126,6 @@ class ShoppingList extends React.Component {
 
     console.log(`myStashIngredients.length = ${myStashIngredients.length}`)
 
-    // if (myStashIngredients.length >= 2) {
-    //   console.log("Updating recipe price")
-    //   this.updateTotalRecipePrice(shoppingListElement.props.ingredient, undefined);
-    //   return
-    // }
-
 
   }
 
@@ -314,6 +308,10 @@ class ShoppingList extends React.Component {
           })
         }
         else {
+          console.log(``)
+          console.log(`Item was not added to stash`)
+          console.log(stashIngredient.state.boxChecked)
+          console.log(stashIngredient.state.boxChecked);
           ingredientComponent.setState({
             hide: stashIngredient.state.boxChecked,
             boxChecked: true
@@ -366,7 +364,6 @@ class ShoppingList extends React.Component {
       }
     })
     console.log("reached matchIngredient end")
-    console.log(this.state.shoppingListRecipeComponents)
     this.updateRecipePrices();
   }
 

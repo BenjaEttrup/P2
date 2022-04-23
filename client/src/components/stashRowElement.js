@@ -105,7 +105,7 @@ class StashRowElement extends React.Component {
   addItemToStash(evt) {
     this.setState((prevState) => ({
       boxChecked: false,
-      hide: false,
+      hide: true,
     }), () => {
       console.log("")
       console.log("Adding recipeIngredient to Stash")
@@ -117,10 +117,8 @@ class StashRowElement extends React.Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(this.props.ingredient)
-      }).then(() => {
-        // TODO SHOULD ALWAYS UPDATE RECIPEPRICE.
-        stashRowElement.props.updateMyStashIngredients(stashRowElement)
-      }).then(this.props.matchIngredient(this, true, false, true))
+      }).then(stashRowElement.props.updateMyStashIngredients(stashRowElement))
+      .then(this.props.matchIngredient(this, true, false, true))
     });
   }
 
@@ -145,7 +143,7 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    if (this.state.hide || this.state.wasTrashed || this.props.isHidden) {
+    if (this.state.hide || this.state.wasTrashed) {
       return null;
     }
 
