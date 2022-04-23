@@ -68,7 +68,7 @@ class StashRowElement extends React.Component {
   hideStashRowElement(stashRowElement, endPoint) {
     this.setState({
       wasTrashed: true,
-      // hide: !this.state.hide
+      boxChecked: false,
       hide: true,
     }, () => {
       
@@ -94,7 +94,6 @@ class StashRowElement extends React.Component {
     else {
       params['recipeID'] = false;
       console.log("removing stashIngredient")
-      // TODO SHOULD UPDATE RECIPE PRICES.
       this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
     }
@@ -141,6 +140,7 @@ class StashRowElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
+    // TODO FIX BUG WHERE LOADING THE SHOPPING LIST WITH INGREDIENTS IN MY STASH DOES NOT HIDE THE INGREDIENTS IN THE RECIPES.
     if (this.state.hide || this.state.wasTrashed) {
       return null;
     }

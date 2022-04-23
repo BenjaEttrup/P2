@@ -208,8 +208,7 @@ class ShoppingList extends React.Component {
     })
   }
 
-  // TODO fix bug where when all shoppinglist elements are hidden, then the recipe price does not equate to 0
-  updateRecipePrices(lastIngredientPassedToShoppingLists = false) {
+  updateRecipePrices() {
     let totalRecipeSum = 0;
     // console.log(this.state.shoppingListRecipeComponents)
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
@@ -223,16 +222,23 @@ class ShoppingList extends React.Component {
         console.log(`________recipeIngredientComponent forEach ${ricIndex}________`);
         console.log(`recipeIngredientComponent.state.hide = ${recipeIngredientComponent.state.hide} recipeIngredientComponent.state.wasTrashed = ${recipeIngredientComponent.state.wasTrashed}`);
         let tempIngredientPrice = recipeIngredientComponent.props.ingredient.price;
+        console.log(`recipeIngredientComponent.props.ingredient.price = ${recipeIngredientComponent.props.ingredient.price}`);
+
 
         if (recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed) {
+          console.log(`recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed was true`)
           tempIngredientPrice = 0;
+          console.log(`tempIngredientPrice = ${tempIngredientPrice}`)
         }
         else {
           this.state.myStashComponents.forEach((stashComponent, scIndex) => {
-            console.log(stashComponent);
+            console.log(`________myStashComponents forEach ${scIndex}________`);
+            console.log(`stashComponent.state.hide = ${stashComponent.state.hide} stashComponent.state.wasTrashed = ${stashComponent.state.wasTrashed} stashComponent.state.boxChecked = ${stashComponent.state.boxChecked}`);
             if (Number(stashComponent.props.ingredient.prod_id) === recipeIngredientComponent.props.ingredient.prod_id) {
-              if (stashComponent.state.hide || !stashComponent.state.boxChecked) {
+              if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
+                console.log(`stashComponent.state.hide || !stashComponent.state.boxChecked was true`)
                 tempIngredientPrice = 0;
+                console.log(`tempIngredientPrice = ${tempIngredientPrice}`)
               }
             }
           })
@@ -240,6 +246,7 @@ class ShoppingList extends React.Component {
 
         console.log(`Before changing recipe sum`)
         console.log(`recipeSum = ${recipeSum} adding ${recipeIngredientComponent.props.ingredient.price} to recipeSum`);
+        console.log(`recipeSum = ${recipeSum} adding ${tempIngredientPrice} to recipeSum`);
         recipeSum = Number(+recipeSum + +tempIngredientPrice).toFixed(2)
         recipeComponent.setState({
           price: recipeSum
@@ -298,11 +305,11 @@ class ShoppingList extends React.Component {
           ingredientComponent.setState({
             hide: false,
             boxChecked: true,
-            wasTrashed: true,
+            wasTrashed: false,
           }, () => {
             this.updateRecipePrices();
           })
-          // return;
+          return;
         }
 
         // Two cases: the recipeIngredient was added to stash or it wasn't
@@ -314,6 +321,7 @@ class ShoppingList extends React.Component {
             this.updateRecipePrices();
             console.log("if addedToStash callback")
           })
+          return;
         }
         else {
           ingredientComponent.setState({
@@ -323,6 +331,7 @@ class ShoppingList extends React.Component {
             console.log("else callback")
             this.updateRecipePrices();
           })
+          return;
         }
 
         // this.updateRecipePrices();
