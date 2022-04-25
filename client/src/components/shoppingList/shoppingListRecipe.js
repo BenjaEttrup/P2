@@ -61,19 +61,9 @@ class ShoppingListRecipe extends React.Component {
     let recipeSum = 0;
 
     this.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
-      // let isHidden =  this.props.ingredientInStash(recipeIngredientComponent, recipeIngredientComponent.props.ingredientIndex);
-      // console.log(``)
-      // console.log(`UPDATERECIPEPRICE isHidden = ${isHidden}`)
       console.log(recipeIngredientComponent)
-      // if(isHidden){
-      //   recipeIngredientComponent.setState({
-      //     hide: true,
-      //   }, () => {
       if (recipeIngredientComponent.state.hide) {
         return;
-        //   }
-
-        // })
       }
       else {
         recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price).toFixed(2)
@@ -87,22 +77,6 @@ class ShoppingListRecipe extends React.Component {
       this.props.updateRecipePrices(true);
     })
   }
-
-  // initShoppingListIngredient(ingredient, ingredientIndex) {
-  //   // let isInStash = this.props.ingredientInStash(ingredient, ingredientIndex)
-
-  //   if (isInStash && !this.state.initedIsHiddenValues) {
-  //     if (this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length) {
-  //       this.setState({
-  //         initedIsHiddenValues: true
-  //       }, () => {
-  //         this.updateRecipePrice();
-  //       });
-  //     }
-  //   }
-
-  //   return isInStash;
-  // }
 
   componentDidMount() {
     this.setState({

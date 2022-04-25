@@ -80,7 +80,7 @@ export default class Wheel extends React.Component {
           ))}
         </div>
         <div class="modal fade" id="popupRecipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        {items && selectedItem ? < PopupRecipe items={items} selectedItem={selectedItem}/> : ""}
+          {items && selectedItem ? < PopupRecipe items={items} selectedItem={selectedItem} /> : ""}
         </div>
       </div>
     );

@@ -57,21 +57,21 @@ class MyStash extends React.Component {
   render() {
     return (
       <div className="MyStash">
-        <div id="myStash" className="card shadow">
-          <div className="card-body myStash-card-body">
-            <h2 className="card-title">My Stash</h2>
+        <div id="myStash" class="card shadow">
+          <div class="card-body myStash-card-body">
+            <h2 class="card-title">My Stash</h2>
             <div id="search-bar">
               <SearchStashProduct
                 updateFunction={() => this.componentDidMount()}
               />
             </div>
             <table
-              className="table table-striped table-borderless"
+              class="table table-striped table-borderless"
               id="stash-table"
             >
               <thead>
                 <tr>
-                  <th className="col-11" scope="col">
+                  <th class="col-11" scope="col">
                     Product
                   </th>
                   <th scope="col">Amount</th>

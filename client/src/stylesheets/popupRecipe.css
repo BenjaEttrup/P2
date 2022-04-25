@@ -1,46 +1,46 @@
-.modal-recipe-header{
-    height: 200px;
-    width:100%;
-    object-fit: cover;
-}
-.modal-body{
-    margin-top: 12rem;
+.modal-recipe-header {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
 }
 
-.modal-header{
-    display: block;
-    padding: 0;
+.modal-body {
+  margin-top: 12rem;
+}
+
+.modal-header {
+  display: block;
+  padding: 0;
 
 }
 
-.modal-recipe-footer{
-    display: block !important;
+.modal-recipe-footer {
+  display: block !important;
 }
 
-.top-description p{
-    display: inline-block;
-    padding: 5px;
+.top-description p {
+  display: inline-block;
+  padding: 5px;
 }
 
 .exit-btn {
-    position: absolute;
-    line-height: 12px;
-    width: 18px;
-    font-size: 8pt;
-    font-family: tahoma;
-    margin-top: .5rem !important;
-    margin-right: 0px;
-    margin-left: auto;
-    right: 10px
+  position: absolute;
+  line-height: 12px;
+  width: 18px;
+  font-size: 8pt;
+  font-family: tahoma;
+  margin-top: .5rem !important;
+  margin-right: 0px;
+  margin-left: auto;
+  right: 10px
 }
 
 .btn-spacing {
-    width: 100%;
+  width: 100%;
 }
 
-  .picture-perfect {
-    position: absolute;
-    border-top-left-radius: .3rem;
-    border-top-right-radius: .3rem;
-
-  }
+.picture-perfect {
+  position: absolute;
+  border-top-left-radius: .3rem;
+  border-top-right-radius: .3rem;
+}

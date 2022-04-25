@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal } from 'bootstrap';
-import PopupRecipe from "./recipePopup.js";
 
 import Wheel from "./wheel.js";
 

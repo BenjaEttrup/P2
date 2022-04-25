@@ -66,11 +66,14 @@
 .searchResults {
   position: absolute;
   width: inherit;
-  /* overflow-y: auto; */ /* Brug den her hvis der ikke skal være scroll til dropdown */
+  /* overflow-y: auto; */
+  /* Brug den her hvis der ikke skal være scroll til dropdown */
   overflow-y: scroll;
   height: 20em;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
   text-indent: 33px;
 }
 
@@ -120,11 +123,10 @@
 }
 
 .searchResults::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
 
 .deleteButton {
-    border: none;
-    background: none;
-  }
-
+  border: none;
+  background: none;
+}

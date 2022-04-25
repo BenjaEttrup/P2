@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 
 //This is a React class it extends a React component which
 //means that you can use all the code from the React component and it runs the
@@ -11,7 +11,7 @@ class SearchStashProduct extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super();
-  
+
     this.state = {
       products: [],
       showDropdown: true,
@@ -118,11 +118,11 @@ class SearchStashProduct extends React.Component {
             this.setState({ showDropdown: true });
           }}
         >
-          <div className="form rounded">
-            <i className="fa fa-search"></i>
+          <div class="form rounded">
+            <i class="fa fa-search"></i>
             <input
               type="search"
-              className="form-control rounded search-bar"
+              class="form-control rounded search-bar"
               value={this.state.searchValue}
               placeholder="Add item to my stash..."
               aria-label="Search"
@@ -133,25 +133,25 @@ class SearchStashProduct extends React.Component {
               }}
             />
           </div>
-          <div className="searchResults">
+          <div class="searchResults">
             <ul className="list-group">
               {this.state.showDropdown
                 ? this.state.products !== undefined
                   ? this.state.products.map((product) => {
-                      return (
-                        <button
-                          type="button"
-                          className="list-group-item list-group-item-action"
-                          onClick={() => {
-                            this.addIngredient(product);
-                            this.resetSearch();
-                          }}
-                        >
-                          <i className="fa fa-plus-circle searchResult"></i>
-                          {product.title}
-                        </button>
-                      );
-                    })
+                    return (
+                      <button
+                        type="button"
+                        className="list-group-item list-group-item-action"
+                        onClick={() => {
+                          this.addIngredient(product);
+                          this.resetSearch();
+                        }}
+                      >
+                        <i class="fa fa-plus-circle searchResult"></i>
+                        {product.title}
+                      </button>
+                    );
+                  })
                   : ""
                 : ""}
             </ul>

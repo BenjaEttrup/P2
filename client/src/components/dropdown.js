@@ -14,7 +14,7 @@ class Dropdown extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super(props);
-    
+
     //Your code here
     this.state = {
       newRecipes: []
@@ -30,34 +30,34 @@ class Dropdown extends React.Component {
       <div className="Dropdown">
         <h5 class="dropdown-title">Recipes</h5>
         <div>
-        <table class="table table-striped table-borderless">
-          <thead>
-            <tr>
-              <th class="col-6" scope="col"></th>
-              <th class="col-4" scope="col"></th>
-              <th class="col-1" scope="col"></th>
-            </tr>
-          </thead>
-              <tbody>
-                {this.props.recipes.map((recipe) => {
-                  return (
-                    <tr class="table-content  table-rounded">
-                      <td>{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</td>
-                      <td class="table-content-secondary">
+          <table class="table table-striped table-borderless">
+            <thead>
+              <tr>
+                <th class="col-6" scope="col"></th>
+                <th class="col-4" scope="col"></th>
+                <th class="col-1" scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.recipes.map((recipe) => {
+                return (
+                  <tr class="table-content  table-rounded">
+                    <td>{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</td>
+                    <td class="table-content-secondary">
                       {recipe.recipe.price + ' DKK'}
-                      </td>
-                      <td class="right-align-text">
-                        <button class="deleteButton">
-                          <i class="fa fa-trash" onClick={() => this.props.removeRecipe(recipe.recipe.recipeID)}></i>
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+                    </td>
+                    <td class="right-align-text">
+                      <button class="deleteButton">
+                        <i class="fa fa-trash" onClick={() => this.props.removeRecipe(recipe.recipe.recipeID)}></i>
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
-        <div className="btn-row">
+        <div class="btn-row">
           <Link to="/shoppingList">
             <button class="btn btn-primary add-recipe-btn">
               Shopping List
