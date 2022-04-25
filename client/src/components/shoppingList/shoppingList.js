@@ -212,9 +212,12 @@ class ShoppingList extends React.Component {
     let totalRecipeSum = 0;
     // console.log(this.state.shoppingListRecipeComponents)
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      let recipeSum = 0;
+      let recipeSum = 0;  
       console.log(``);
       console.log(`________updateRecipePrices forEach ${rcIndex}________`);
+      if(recipeComponent.state.hide) {
+        return;
+      }
       console.log(recipeComponent.state.recipeIngredientComponent)
 
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
@@ -419,6 +422,7 @@ class ShoppingList extends React.Component {
     }).catch(err => {
       console.error(err);
     });
+    this.updateRecipePrices();
   }
 
   trackShoppingListRecipeComponent(shoppingListRecipeInstance) {

@@ -111,9 +111,10 @@ class ShoppingListRecipe extends React.Component {
   hideRecipe(recipe) {
     this.setState({
       hide: true
+    }, () => {
+      this.props.removeRecipe(recipe)
     })
 
-    this.props.removeRecipe(recipe)
   }
 
   //This is the render function. This is where the
