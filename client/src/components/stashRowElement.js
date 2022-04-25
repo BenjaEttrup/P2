@@ -22,7 +22,7 @@ class StashRowElement extends React.Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     if (this.props.hasOwnProperty('shoppingList') && !this.state.inited) {
       // TODO PROBABLY CALL THIS function with ()
       // this.props.ingredientInStash(recipeIngredientComponent, recipeIngredientComponent.props.ingredientIndex);
@@ -46,7 +46,7 @@ class StashRowElement extends React.Component {
       });
     }
     else {
-      if(!this.state.inited){
+      if (!this.state.inited) {
         this.setState({
           inited: true,
           hide: hide,
@@ -74,7 +74,7 @@ class StashRowElement extends React.Component {
       boxChecked: false,
       hide: true,
     }, () => {
-      
+
     })
 
     let params = {
@@ -118,7 +118,7 @@ class StashRowElement extends React.Component {
         },
         body: JSON.stringify(this.props.ingredient)
       }).then(stashRowElement.props.updateMyStashIngredients(stashRowElement))
-      .then(this.props.matchIngredient(this, true, false, true))
+        .then(this.props.matchIngredient(this, true, false, true))
     });
   }
 

@@ -49,7 +49,7 @@ class RecipeCard extends React.Component {
         <div className="RecipeCard">
           <div class="col mb-4 outer-item-card hover-shadow" >
             <div class="card card-item h-100">
-              <button class="cardButtonBorder" type="button" onClick={() => { this.props.onSelectCard(this.props.recipe.recipe.recipeID)}}>
+              <button class="cardButtonBorder" type="button" onClick={() => { this.props.onSelectCard(this.props.recipe.recipe.recipeID) }}>
                 <div class="img-gradient img-gradient-black card-img-border">
                   <img src={this.props.recipe.recipe.image} class="card-img" alt="..." height="175" />
                 </div>
@@ -57,13 +57,13 @@ class RecipeCard extends React.Component {
                   <div class="row card-info-row">
                     <h5 class="card-title col-7">{this.props.recipe ? this.props.recipe.recipe.title : ''}</h5>
                     <div class="card-info col-5">
-                      <button type="button col" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
-                        <h4 class="button-plus">+</h4>
-                      </button>
                       <p class="card-text card-price col">{this.props.recipe ? this.props.recipe.recipe.price + ' DKK' : ''}</p>
                     </div>
                   </div>
                 </div>
+              </button>
+              <button type="button col" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
+                <h4 class="button-plus">+</h4>
               </button>
             </div>
           </div>
