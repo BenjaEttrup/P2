@@ -23,14 +23,8 @@ class IngredientElement extends React.Component {
   }
 
   componentDidMount() {
-    console.log(`this.props.hasOwnProperty('shoppingList') = ${this.props.hasOwnProperty('shoppingList')}`)
-    console.log(`this.state.inited = ${this.state.inited}`)
-
     if (this.props.hasOwnProperty('shoppingList') && !this.state.inited) {
-      console.log("")
-      console.log("ingredientElement componentDidMount")
       let isHiddenOnInit = this.props.ingredientInStash(this, this.props.ingredientIndex);
-      console.log(`index = ${this.props.ingredientIndex} isHidden = ${isHiddenOnInit}`);
       this.initShoppingListElement(isHiddenOnInit);
     }
 

@@ -26,23 +26,6 @@ class ShoppingList extends React.Component {
 
   // Base function in react, called immediately after a component is mounted. Triggered after re-rendering
   componentDidMount() {
-    // Retrieves shoppinglist information
-    fetch(`/shoppingList`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then((res) => {
-        let data = {
-          shoppingListRecipes: res,
-        };
-        this.setState(data);
-      }).catch(err => {
-        console.error(err);
-      });
-
     // Retrieves mystash information
     fetch(`/stash/get`, {
       headers: {
@@ -54,6 +37,28 @@ class ShoppingList extends React.Component {
       .then((res) => {
         let data = {
           myStashIngredients: res
+        };
+        this.setState(data);
+      }).catch(err => {
+        console.error(err);
+      }).then(() => {
+        // Retrieves shoppinglist information
+        this.fetchShoppingList();
+      });
+
+  }
+
+  fetchShoppingList() {
+    fetch(`/shoppingList`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then((res) => {
+        let data = {
+          shoppingListRecipes: res,
         };
         this.setState(data);
       }).catch(err => {
@@ -355,17 +360,28 @@ class ShoppingList extends React.Component {
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
     let isInStash = false;
     let myStashIngredients = this.state.myStashIngredients;
+    console.log(myStashIngredients)
     if (ingredientIndex === undefined) {
       return isInStash
     }
 
+    console.log(`ingredientInStash call with ingredientIndex ${ingredientIndex}`)
     myStashIngredients.forEach((ingredient, i) => {
-      if (Number(ingredient.prod_id) === Number(shoppingListIngredient.prod_id)) {
+      console.log(`___________myStashIngredients forEach ${i}____________`)
+      console.log(ingredient)
+      if (Number(ingredient.prod_id) === Number(shoppingListIngredient.props.ingredient.prod_id)) {
         isInStash = true
+        shoppingListIngredient.setState({
+          hide: true,
+        }, () => {
+          console.log("found ingredient in my stash")
+          this.updateRecipePrices();
+          return isInStash
+        })
       }
     });
-
     return isInStash
+
   }
 
   removeRecipe(recipe) {
@@ -413,7 +429,13 @@ class ShoppingList extends React.Component {
     myStashComponents.push(stashRowElementInstance);
     this.setState({
       myStashComponents: myStashComponents
-    })
+    }
+      // , () => {
+      // if (this.state.myStashComponents.length)
+      // }
+    )
+
+
   }
 
   //This is the render function. This is where the
