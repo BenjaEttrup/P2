@@ -57,7 +57,7 @@ class Dropdown extends React.Component {
               </tbody>
             </table>
         </div>
-        <div class="btn-row">
+        <div className="btn-row">
           <Link to="/shoppingList">
             <button class="btn btn-primary add-recipe-btn">
               Shopping List
