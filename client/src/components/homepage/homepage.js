@@ -163,27 +163,26 @@ class HomePage extends React.Component {
 
   activePopup(id) {
     console.log("Kører active popup: " + id)
-    this.setState({ selectedRecipeID: id })
-    
-    
-    try {
-      var popup = document.getElementById("popupRecipeModal1");
-    
-      var myModal = new Modal(popup, {});
-      myModal.show()
-    } catch(e) {
-      console.error(e);
-      console.log("Test")
-    }
-    
-    
+    this.setState({ selectedRecipeID: id }, () => {
+      try {
+        var popup = document.getElementById("popupRecipeModal1")
+        console.log(popup)
+  
+        var myModal2 = new Modal(popup, {});
+        console.log(myModal2);
+  
+        myModal2.show()
+      } catch(e) {
+        console.log(e);
+        console.log("Test")
+      }
+    })
   }
 
 
   //This is the render function. This is where the
   //html is.
   render() {
-    let { items } = this.state.allRecipes
     return (
       <div className="HomePage">
         <Carousel recipes={this.state.allRecipes} />
@@ -248,7 +247,7 @@ class HomePage extends React.Component {
               }
             </div>
             <div class="modal fade" id="popupRecipeModal1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              {items && this.state.selectedRecipeID ? < PopupRecipe items={items} selectedItem={this.state.selectedRecipeID} /> : ""}
+              {this.state.allRecipes !== [] && this.state.selectedRecipeID ? <PopupRecipe items={this.state.allRecipes} selectedItem={this.state.selectedRecipeID} /> : ""}
             </div>
           </div>
         </div>
