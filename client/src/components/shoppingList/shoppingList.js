@@ -365,16 +365,12 @@ class ShoppingList extends React.Component {
       return isInStash
     }
 
-    console.log(`ingredientInStash call with ingredientIndex ${ingredientIndex}`)
     myStashIngredients.forEach((ingredient, i) => {
-      console.log(`___________myStashIngredients forEach ${i}____________`)
-      console.log(ingredient)
       if (Number(ingredient.prod_id) === Number(shoppingListIngredient.props.ingredient.prod_id)) {
         isInStash = true
         shoppingListIngredient.setState({
           hide: true,
         }, () => {
-          console.log("found ingredient in my stash")
           this.updateRecipePrices();
           return isInStash
         })
