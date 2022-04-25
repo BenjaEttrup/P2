@@ -334,7 +334,7 @@ app.listen(port, () => {
 async function callApi(product) {
     let apiRes;
     try {
-        sleep(150);
+        sleep(200);
         apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
             return res.data;
         });
