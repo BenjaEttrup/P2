@@ -1,48 +1,48 @@
 #totalPrice p {
-	font-weight: bold;
-	text-align: right;
-	color: rgb(18, 212, 154);
+  font-weight: bold;
+  text-align: right;
+  color: rgb(18, 212, 154);
 
 }
 
 .shadow {
-	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 h5.title {
-	margin: 0;
-	margin-top: 15px;
+  margin: 0;
+  margin-top: 15px;
 }
 
 .text-success {
-	padding: 0;
-	margin: 0;
-	text-align: right;
+  padding: 0;
+  margin: 0;
+  text-align: right;
 }
 
 .priceTag {
-	padding: 0;
-	margin: 0;
-	text-align: right;
+  padding: 0;
+  margin: 0;
+  text-align: right;
 }
 
 .shoppingList {
-	width: 65rem;
-	border-radius: 10px;
-	margin-top: 7rem;
-	margin-left: auto;
-	margin-right: auto;
+  width: 65rem;
+  border-radius: 10px;
+  margin-top: 7rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .shoppingList-card-body {
-	margin-bottom: 10rem;
-	padding: 3rem;
+  margin-bottom: 10rem;
+  padding: 3rem;
 }
 
 .right-align {
-	text-align: right;
+  text-align: right;
 }
 
 .shoppingList-check {
-	margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }

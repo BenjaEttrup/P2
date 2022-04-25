@@ -7,133 +7,133 @@ import '../stylesheets/spinTheMeal.css'
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
 class SpinTheMeal extends React.Component {
-	//This is a contructor this function gets called when a object gets created 
-	//from the App class. It is often used to set the values in the object
-	constructor(props) {
-		//Super has to be called as the first thing 
-		//this says that the code from the React component
-		//runs before our code in the contructor
-		super(props);
+  //This is a contructor this function gets called when a object gets created 
+  //from the App class. It is often used to set the values in the object
+  constructor(props) {
+    //Super has to be called as the first thing 
+    //this says that the code from the React component
+    //runs before our code in the contructor
+    super(props);
 
-		this.props.updateNavFunction(3);
+    this.props.updateNavFunction(3);
 
-		this.state = {
-			allRecipes: [],
-			recipes: [],
-			minPrice: 0,
-			maxPrice: 0,
-			myStashChecked: false,
-			myStash: []
-		}
-	}
+    this.state = {
+      allRecipes: [],
+      recipes: [],
+      minPrice: 0,
+      maxPrice: 0,
+      myStashChecked: false,
+      myStash: []
+    }
+  }
 
-	componentDidMount() {
-		fetch(`/stash/get`, {
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			}
-		})
-			.then(res => res.json())
-			.then((res) => {
-				let data = {
-					myStash: res
-				}
-				this.setState(data, () => {
-					fetch(`/findAllRecipes`, {
-						headers: {
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						}
-					})
-						.then(res => res.json())
-						.then((json) => {
-							let data = {
-								allRecipes: json.recipes
-							}
-							this.setState(data, () => {
-								this.updateRecipes();
-							});
-						}).catch(err => {
-							console.error(err);
-						});
-				});
-			}).catch(err => {
-				console.error(err);
-			});
-	}
+  componentDidMount() {
+    fetch(`/stash/get`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then((res) => {
+        let data = {
+          myStash: res
+        }
+        this.setState(data, () => {
+          fetch(`/findAllRecipes`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          })
+            .then(res => res.json())
+            .then((json) => {
+              let data = {
+                allRecipes: json.recipes
+              }
+              this.setState(data, () => {
+                this.updateRecipes();
+              });
+            }).catch(err => {
+              console.error(err);
+            });
+        });
+      }).catch(err => {
+        console.error(err);
+      });
+  }
 
-	updateRecipes() {
-		let updatedRecipes = this.state.allRecipes
-		if (this.state.myStashChecked) {
-			updatedRecipes = myStashSearch(this.state.allRecipes, this.state.myStash);
-		}
+  updateRecipes() {
+    let updatedRecipes = this.state.allRecipes
+    if (this.state.myStashChecked) {
+      updatedRecipes = myStashSearch(this.state.allRecipes, this.state.myStash);
+    }
 
-		updatedRecipes = betweenPricesSearch(this.state.minPrice === '' ? 0 : this.state.minPrice, this.state.maxPrice === '' || this.state.maxPrice === 0 ? 1000 : this.state.maxPrice, updatedRecipes)
+    updatedRecipes = betweenPricesSearch(this.state.minPrice === '' ? 0 : this.state.minPrice, this.state.maxPrice === '' || this.state.maxPrice === 0 ? 1000 : this.state.maxPrice, updatedRecipes)
 
-		this.setState({
-			recipes: updatedRecipes
-		})
-	}
+    this.setState({
+      recipes: updatedRecipes
+    })
+  }
 
-	setMinPriceValue(evt) {
-		this.setState({
-			minPrice: evt.target.value
-		}, () => {
-			console.log(this.state)
-			this.updateRecipes();
-		})
-	}
+  setMinPriceValue(evt) {
+    this.setState({
+      minPrice: evt.target.value
+    }, () => {
+      console.log(this.state)
+      this.updateRecipes();
+    })
+  }
 
-	setMaxPriceValue(evt) {
-		this.setState({
-			maxPrice: evt.target.value
-		}, () => {
-			console.log(this.state)
-			this.updateRecipes();
-		})
-	}
+  setMaxPriceValue(evt) {
+    this.setState({
+      maxPrice: evt.target.value
+    }, () => {
+      console.log(this.state)
+      this.updateRecipes();
+    })
+  }
 
-	myStashChanged() {
-		this.setState(prevState => ({
-			myStashChecked: !prevState.myStashChecked
-		}), () => {
-			this.updateRecipes();
-		});
+  myStashChanged() {
+    this.setState(prevState => ({
+      myStashChecked: !prevState.myStashChecked
+    }), () => {
+      this.updateRecipes();
+    });
 
-	}
+  }
 
-	render() {
-		return (
-			<div class="container">
-				<div className="SpinTheMeal">
-					<div class="spinTheMeal">
-						<h1><center>What's for dinner?</center></h1><br />
-					</div>
-					<div class="row">
-						<div class="col-lg-4 mb-2">
-							<div class="input-group mb-2">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="">Price</span>
-								</div>
-								<input type="number" class="form-control" placeholder="Min" id="min_price"
-									onChange={(evt) => { this.setMinPriceValue(evt) }} />
-								<input type="number" class="form-control" placeholder="Max" id="max_price"
-									onChange={(evt) => { this.setMaxPriceValue(evt) }} />
-							</div>
-							<div class="form-check mb-2">
-								<input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={() => { this.myStashChanged() }} />
-								<label class="form-check-label" for="defaultCheck1">My stash</label>
-							</div>
-						</div>
-						<div class="col-lg-8 bg-light border pt-5 pb-5">
-							<Spin recipes={this.state.recipes} />
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div class="container">
+        <div className="SpinTheMeal">
+          <div class="spinTheMeal">
+            <h1><center>What's for dinner?</center></h1><br />
+          </div>
+          <div class="row">
+            <div class="col-lg-4 mb-2">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Price</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Min" id="min_price"
+                  onChange={(evt) => { this.setMinPriceValue(evt) }} />
+                <input type="number" class="form-control" placeholder="Max" id="max_price"
+                  onChange={(evt) => { this.setMaxPriceValue(evt) }} />
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={() => { this.myStashChanged() }} />
+                <label class="form-check-label" for="defaultCheck1">My stash</label>
+              </div>
+            </div>
+            <div class="col-lg-8 bg-light border pt-5 pb-5">
+              <Spin recipes={this.state.recipes} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default SpinTheMeal;
@@ -147,59 +147,59 @@ export default SpinTheMeal;
  */
 
 function betweenPricesSearch(minPrice, maxPrice, recipes) {
-	let returnRecipes = [];
-	recipes.forEach((recipe) => {
-		let price = 0;
+  let returnRecipes = [];
+  recipes.forEach((recipe) => {
+    let price = 0;
 
-		recipe.ingredients.forEach((ingredient) => {
-			price += ingredient.price;
-		})
+    recipe.ingredients.forEach((ingredient) => {
+      price += ingredient.price;
+    })
 
-		if (price >= minPrice && price <= maxPrice) {
-			returnRecipes.push(recipe);
-		}
-	})
-	return returnRecipes;
+    if (price >= minPrice && price <= maxPrice) {
+      returnRecipes.push(recipe);
+    }
+  })
+  return returnRecipes;
 }
 
 function myStashSearch(recipes, myStash) {
-	let tempRecipes = JSON.parse(JSON.stringify(recipes))
-	let updatedRecipes = []
-	let containsIngredientFromStash = false;
-	tempRecipes.forEach((recipe) => {
-		let tempRecipe = recipe;
-		let updatedIngredients = [];
+  let tempRecipes = JSON.parse(JSON.stringify(recipes))
+  let updatedRecipes = []
+  let containsIngredientFromStash = false;
+  tempRecipes.forEach((recipe) => {
+    let tempRecipe = recipe;
+    let updatedIngredients = [];
 
-		tempRecipe.ingredients.forEach((ingredient) => {
-			let isSimilar = false;
-			myStash.forEach((stashIngredient) => {
-				let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
+    tempRecipe.ingredients.forEach((ingredient) => {
+      let isSimilar = false;
+      myStash.forEach((stashIngredient) => {
+        let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
 
-				if (similarity >= 0.5 && isSimilar === false) {
-					isSimilar = true;
-					containsIngredientFromStash = true;
-				} else if (similarity <= 0.5 && isSimilar === false) {
-					isSimilar = false;
-				}
-			})
-			if (!isSimilar) {
-				updatedIngredients.push(ingredient);
-			}
-		})
-		let newPrice = 0;
+        if (similarity >= 0.5 && isSimilar === false) {
+          isSimilar = true;
+          containsIngredientFromStash = true;
+        } else if (similarity <= 0.5 && isSimilar === false) {
+          isSimilar = false;
+        }
+      })
+      if (!isSimilar) {
+        updatedIngredients.push(ingredient);
+      }
+    })
+    let newPrice = 0;
 
-		updatedIngredients.forEach((ingredient) => {
-			newPrice += ingredient.price;
-		})
+    updatedIngredients.forEach((ingredient) => {
+      newPrice += ingredient.price;
+    })
 
-		tempRecipe.ingredients = updatedIngredients;
-		tempRecipe.recipe.price = Number(newPrice.toFixed(2));
+    tempRecipe.ingredients = updatedIngredients;
+    tempRecipe.recipe.price = Number(newPrice.toFixed(2));
 
-		if (containsIngredientFromStash) {
-			updatedRecipes.push(tempRecipe)
-		}
-	})
+    if (containsIngredientFromStash) {
+      updatedRecipes.push(tempRecipe)
+    }
+  })
 
-	return updatedRecipes;
+  return updatedRecipes;
 }
 

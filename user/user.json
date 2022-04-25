@@ -1,60 +1,60 @@
 {
-	"userID": "",
-	"shoppingList": [],
-	"myStash": [
-		{
-			"id": "91225291",
-			"prod_id": "81992",
-			"title": "Sukker",
-			"description": "Sukker",
-			"img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81992&imgType=jpeg",
-			"link": "https://www.bilkatogo.dk/p/81992",
-			"price": 8.15
-		},
-		{
-			"id": "62129701",
-			"prod_id": "64006",
-			"title": "Hakkede tomater",
-			"description": "Hakkede tomater",
-			"img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=64006&imgType=jpeg",
-			"link": "https://www.bilkatogo.dk/p/64006",
-			"price": 4.5
-		},
-		{
-			"id": "81247700120",
-			"prod_id": "15611",
-			"title": "Fusilli",
-			"description": "Fusilli",
-			"img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=15611&imgType=jpeg",
-			"link": "https://www.bilkatogo.dk/p/15611",
-			"price": 9.25
-		},
-		{
-			"id": "81752300020",
-			"prod_id": "16867",
-			"title": "Groft salt m. jod",
-			"description": "Groft salt m. jod",
-			"img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=16867&imgType=jpeg",
-			"link": "https://www.bilkatogo.dk/p/16867",
-			"price": 2.6
-		},
-		{
-			"id": "83099201",
-			"prod_id": "63866",
-			"title": "Stødt sort peber",
-			"description": "Stødt sort peber",
-			"img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=63866&imgType=jpeg",
-			"link": "https://www.bilkatogo.dk/p/63866",
-			"price": 4
-		},
-		{
-			"id": "89972261",
-			"prod_id": "81994",
-			"title": "Solsikkeolie",
-			"description": "Solsikkeolie",
-			"img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81994&imgType=jpeg",
-			"link": "https://www.bilkatogo.dk/p/81994",
-			"price": 17.3
-		}
-	]
+  "userID": "",
+  "shoppingList": [],
+  "myStash": [
+    {
+      "id": "91225291",
+      "prod_id": "81992",
+      "title": "Sukker",
+      "description": "Sukker",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81992&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/81992",
+      "price": 8.15
+    },
+    {
+      "id": "62129701",
+      "prod_id": "64006",
+      "title": "Hakkede tomater",
+      "description": "Hakkede tomater",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=64006&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/64006",
+      "price": 4.5
+    },
+    {
+      "id": "81247700120",
+      "prod_id": "15611",
+      "title": "Fusilli",
+      "description": "Fusilli",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=15611&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/15611",
+      "price": 9.25
+    },
+    {
+      "id": "81752300020",
+      "prod_id": "16867",
+      "title": "Groft salt m. jod",
+      "description": "Groft salt m. jod",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=16867&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/16867",
+      "price": 2.6
+    },
+    {
+      "id": "83099201",
+      "prod_id": "63866",
+      "title": "Stødt sort peber",
+      "description": "Stødt sort peber",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=63866&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/63866",
+      "price": 4
+    },
+    {
+      "id": "89972261",
+      "prod_id": "81994",
+      "title": "Solsikkeolie",
+      "description": "Solsikkeolie",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81994&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/81994",
+      "price": 17.3
+    }
+  ]
 }

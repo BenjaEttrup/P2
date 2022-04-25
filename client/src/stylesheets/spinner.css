@@ -1,25 +1,25 @@
 :root {
-	--app-font: 'Quicksand', 'Lato', sans-serif;
-	--neutral-color: white;
+  --app-font: 'Quicksand', 'Lato', sans-serif;
+  --neutral-color: white;
 }
 
 .card-price {
-	text-align: right;
+  text-align: right;
 }
 
 .App {
-	font-family: var(--app-font);
-	text-align: center;
-	background: var(--neutral-color);
-	user-select: none;
+  font-family: var(--app-font);
+  text-align: center;
+  background: var(--neutral-color);
+  user-select: none;
 }
 
 .max-min-price {
-	width: 10rem;
+  width: 10rem;
 }
 
 .input-price {
-	color: #888888;
-	background-color: #fff;
-	width: 60px;
+  color: #888888;
+  background-color: #fff;
+  width: 60px;
 }

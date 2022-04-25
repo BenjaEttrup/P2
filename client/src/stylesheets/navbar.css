@@ -1,72 +1,72 @@
 body {
-	background-color: #f3f3f3 !important;
+  background-color: #f3f3f3 !important;
 }
 
 .shadow {
-	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .shadow-rounded {
-	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-	border-radius: 10px;
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
 }
 
 #user-and-recipe li {
-	margin-left: 1rem;
-	margin-right: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 #logo {
-	margin-right: 2rem;
-	margin-left: 1rem;
+  margin-right: 2rem;
+  margin-left: 1rem;
 }
 
 #center {
-	margin-left: 10rem;
-	margin-right: 10rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
 }
 
 #menubar {
-	position: fixed;
+  position: fixed;
 }
 
 #navigationbar li {
-	margin-left: 1rem !important;
-	margin-right: 1rem !important;
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
 }
 
 .hidden-btn {
-	border: 0;
-	background-color: inherit;
+  border: 0;
+  background-color: inherit;
 }
 
 .recipe-row {
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 #dropdown-recipes:hover {
-	background-color: inherit;
+  background-color: inherit;
 }
 
 #dropdown-recipes {
-	margin-right: 0 !important;
-	margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }
 
 .dropdown-card {
-	width: 21rem !important;
+  width: 21rem !important;
 }
 
 .dropdown-menu-end {
-	right: -50px;
-	top: 50px
+  right: -50px;
+  top: 50px
 }
 
 .icon {
-	font-size: 1.5rem !important;
+  font-size: 1.5rem !important;
 }
 
 .add-recipe-btn {
-	width: 95%;
-	margin-left: .5rem;
+  width: 95%;
+  margin-left: .5rem;
 }

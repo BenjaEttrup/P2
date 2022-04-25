@@ -1,107 +1,107 @@
 #recipedropdown {
-	background-color: #ffffff;
-	width: 20rem;
-	height: 30rem;
+  background-color: #ffffff;
+  width: 20rem;
+  height: 30rem;
 }
 
 .shadow {
-	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .shadow-rounded {
-	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-	border-radius: 10px;
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
 }
 
 .horizontal-list li {
-	display: inline;
-	list-style-position: inside;
+  display: inline;
+  list-style-position: inside;
 }
 
 .right-align {
-	text-align: right;
+  text-align: right;
 }
 
 .left-align {
-	align-content: left;
+  align-content: left;
 }
 
 #myStash {
-	width: 65rem;
-	border-radius: 10px;
-	margin-top: 7rem;
-	margin-left: auto;
-	margin-right: auto;
+  width: 65rem;
+  border-radius: 10px;
+  margin-top: 7rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .myStash-card-body {
-	min-height: 30rem;
-	padding: 3rem;
+  min-height: 30rem;
+  padding: 3rem;
 }
 
 #stash-table {
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 #search-bar {
-	margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .myStash-filter-icon {
-	font-size: 1.75rem;
+  font-size: 1.75rem;
 }
 
 .product-text {
-	margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .amount-text {
-	margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .searchWidth {
-	width: 30rem;
+  width: 30rem;
 }
 
 .searchResults {
-	position: absolute;
-	width: inherit;
-	/* overflow-y: auto; */
-	/* Brug den her hvis der ikke skal være scroll til dropdown */
-	overflow-y: scroll;
-	height: 20em;
-	-ms-overflow-style: none;
-	/* IE and Edge */
-	scrollbar-width: none;
-	/* Firefox */
-	text-indent: 33px;
+  position: absolute;
+  width: inherit;
+  /* overflow-y: auto; */
+  /* Brug den her hvis der ikke skal være scroll til dropdown */
+  overflow-y: scroll;
+  height: 20em;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  text-indent: 33px;
 }
 
 .searchResult {
-	color: #9ca3af;
-	margin-left: 5px;
-	margin-right: 10px;
+  color: #9ca3af;
+  margin-left: 5px;
+  margin-right: 10px;
 }
 
 .deleteButton {
-	border: none;
-	background: none;
+  border: none;
+  background: none;
 }
 
 .center-text {
-	text-align: center;
+  text-align: center;
 }
 
 .right-align-text {
-	text-align: right;
+  text-align: right;
 }
 
 .table-content {
-	font-weight: 500;
+  font-weight: 500;
 }
 
 .table-content-secondary {
-	font-weight: 400;
+  font-weight: 400;
 }
 
 /* .table-rounded {
@@ -111,22 +111,22 @@
 } */
 
 .search-bar {
-	height: 45px;
-	text-indent: 33px;
-	border: 1px solid;
-	border-color: rgb(170, 170, 170);
-	border-radius: 10px;
+  height: 45px;
+  text-indent: 33px;
+  border: 1px solid;
+  border-color: rgb(170, 170, 170);
+  border-radius: 10px;
 }
 
 .search-bar:focus {
-	box-shadow: none;
+  box-shadow: none;
 }
 
 .searchResults::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 .deleteButton {
-	border: none;
-	background: none;
+  border: none;
+  background: none;
 }
