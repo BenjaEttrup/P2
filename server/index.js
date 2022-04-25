@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 app.get('/findProduct/:productName', async (req, res) => {
     try {
-        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, getToken()).then((res) => {
+        let apiResponse = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + req.params.productName, config).then((res) => {
             return res.data;
         })
         res.send(apiResponse);
@@ -335,7 +335,7 @@ async function callApi(product) {
     let apiRes;
     try {
         sleep(150);
-        apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, getToken()).then((res) => {
+        apiRes = await axios.get('https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=' + product, config).then((res) => {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
@@ -649,16 +649,6 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 
-
-function getToken() {
-    token = apiTokens[tokenIndex]
-    tokenIndex++
-    if (tokenIndex >= apiTokens.length) tokenIndex = 0;
-    //console.log(`token: ${token}`)
-    return  {
-        headers: { 'Authorization': `Bearer ${token}` }
-    }
-}
 
 var startTime, endTime;
 
