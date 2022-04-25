@@ -16,22 +16,12 @@ class Dropdown extends React.Component {
     super(props);
     
     //Your code here
+    this.state = {
+      newRecipes: []
+    }
   }
 
   //Functions go here
-  removeRecipe(recipeID) {
-    fetch(`/removeRecipeFromShoppingList/${recipeID}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }).catch((err) => {
-      console.error(err);
-    });
-    this.props.updateRecipes();
-  }
-
 
   //This is the render function. This is where the
   //html is.
@@ -58,7 +48,7 @@ class Dropdown extends React.Component {
                       </td>
                       <td class="right-align-text">
                         <button class="deleteButton">
-                        <i class="fa fa-trash" onClick={() => this.removeRecipe(recipe.recipe.recipeID)}></i>
+                          <i class="fa fa-trash" onClick={() => this.props.removeRecipe(recipe.recipe.recipeID)}></i>
                         </button>
                       </td>
                     </tr>
