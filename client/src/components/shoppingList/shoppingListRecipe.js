@@ -1,5 +1,5 @@
 import React from 'react';
-import StashRowElement from '../stashRowElement';
+import IngredientElement from './ingredientElement';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -38,6 +38,12 @@ class ShoppingListRecipe extends React.Component {
     let recipeIngredientComponent = this.state.recipeIngredientComponent;
     let tempRICLength = this.state.recipeIngredientComponent.length;
 
+    if(isHidden){
+      stashRowElementInstance.setState({
+        hide: true,
+      })
+    }
+
     if(tempRICLength < this.props.recipe.ingredients.length){
       recipeIngredientComponent.push(stashRowElementInstance);
       tempRICLength++;
@@ -73,7 +79,7 @@ class ShoppingListRecipe extends React.Component {
         })
       }
       else {
-        recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price)
+        recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price).toFixed(2)
       }
 
     })
@@ -140,13 +146,13 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
-              let isHidden = this.initShoppingListIngredient(ingredient, ingredientIndex);
+              // let isHidden = this.initShoppingListIngredient(ingredient, ingredientIndex);
               return (
-                <StashRowElement
+                <IngredientElement
                   key={ingredientIndex}
                   ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
-                  isHidden={isHidden}
+                  // isHidden={isHidden}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../stylesheets/shoppingList.css'
 import ShoppingListRecipe from './shoppingListRecipe';
-import StashRowElement from '../stashRowElement';
+import IngredientElement from './ingredientElement';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -463,7 +463,7 @@ class ShoppingList extends React.Component {
                   {
                     this.state.myStashIngredients.map((ingredient) => {
                       return (
-                        <StashRowElement
+                        <IngredientElement
                           matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
                           key={this.state.myStashIngredients.indexOf(ingredient)}
                           ingredient={ingredient} myStash={true}
