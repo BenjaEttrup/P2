@@ -172,7 +172,7 @@ app.get('/findAllRecipes', async (req, res) => {
             }
         }
 
-        if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
+        if(Date.now() - Date.parse(parsedData.date) > 24*60*60*1000){
             console.log("Making new data");
             //Builds recipeObjects object from a recipe file and then searches 
             //the salling API for the recipes ingredients.

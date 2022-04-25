@@ -351,3 +351,11 @@
 .RecipeCard {
     color: white;
 }
+
+.cardButtonBorder {
+    border: none;
+    background-color: none;
+    padding: 0px;
+    color: #fff;
+    text-align: left;
+}
