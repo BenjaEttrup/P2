@@ -1,3 +1,9 @@
+cache/cache.json
+user/user.json
+server/config.json
+
+.vscode/*
+
 # Logs
 logs
 *.log

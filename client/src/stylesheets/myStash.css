@@ -66,6 +66,7 @@
 .searchResults {
   position: absolute;
   width: inherit;
+  /* overflow-y: auto; */ /* Brug den her hvis der ikke skal være scroll til dropdown */
   overflow-y: scroll;
   height: 20em;
   -ms-overflow-style: none;  /* IE and Edge */
@@ -122,8 +123,8 @@
     display: none;
   }
 
-  .deleteButton {
+.deleteButton {
     border: none;
     background: none;
   }
-  
+

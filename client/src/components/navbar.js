@@ -9,13 +9,14 @@ import Dropdown from './dropdown';
 class Navbar extends React.Component {
   //This is a contructor this function gets called when a object gets created 
   //from the App class. It is often used to set the values in the object
-  constructor(recipe) {
+  constructor(props) {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
     
     //Your code here
+    this.shown = false;
   }
 
   //Functions go here
@@ -29,30 +30,33 @@ class Navbar extends React.Component {
           <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
             <div className="container-fluid" id="center">
               <img id="logo" src="./pictures/logo.png" alt="logo" width="50" height="50" margin="0.5rem" />
-              <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0" id="navigationbar">
-                  <li className="nav-item">
-                    <Link className="nav-link active" to={"/"}>Inspiration</Link>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navigationbar">
+                  <li class="nav-item">
+                    <Link class={this.props.active === 1 ? "nav-link active" : "nav-link"} to={"/"}>Inspiration</Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to={"/shoppingList"}>Shopping List</Link>
+                  <li class="nav-item">
+                    <Link class={this.props.active === 2 ? "nav-link active" : "nav-link"} to={"/shoppingList"}>Shopping List</Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to={"/spinTheMeal"}>Spin The Meal</Link>
+                  <li class="nav-item">
+                    <Link class={this.props.active === 3 ? "nav-link active" : "nav-link"} to={"/spinTheMeal"}>Spin The Meal</Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to={"/myStash"}>My Stash</Link>
+                  <li class="nav-item">
+                    <Link class={this.props.active === 4 ? "nav-link active" : "nav-link"} to={"/myStash"}>My Stash</Link>
                   </li>
                 </ul>
-                <ul className="navbar-nav" id="user-and-recipe">
-                  <li className="nav-item">
-                    <div className="btn-group">
-                      <button className='hidden-btn icon' type='button' data-bs-toggle="dropdown">
-                        <i className="fa fa-book"></i>
+                <ul class="navbar-nav" id="user-and-recipe">
+                  <li class="nav-item">
+                    <div class="btn-group">
+                      <button class='hidden-btn icon' type='button' data-bs-auto-close="false" data-bs-toggle="dropdown" onClick={() => {
+                        this.props.updateRecipes()
+                        this.shown = !this.shown
+                      }}>
+                        <i class="fa fa-book"></i>
                       </button>
-                      <ul className="dropdown-menu dropdown-card">
-                        <li id='dropdown-recipes' className="">
-                          <Dropdown />
+                      <ul class={this.shown ? "show dropdown-menu dropdown-card dropdown-menu-end" : "dropdown-menu dropdown-card dropdown-menu-end"}>
+                        <li id='dropdown-recipes'>
+                          <Dropdown recipes={this.props.recipes} updateRecipes={this.props.updateRecipes} removeRecipe={this.props.removeRecipe} />
                         </li>
                       </ul>
                     </div>

@@ -112,8 +112,8 @@
     display: block;
 }
 
-a,
-a:hover {
+.card-link,
+.card-link:hover {
     color: white;
     text-decoration: none;
 }
@@ -346,4 +346,8 @@ a:hover {
 .carousel-add-button:active {
 	color: #222222;
 	background-color: rgb(231, 231, 231);
+}
+
+.RecipeCard {
+    color: white;
 }

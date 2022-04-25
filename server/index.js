@@ -2,19 +2,25 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const axios = require('axios');
-// const token = '80ddad90-954d-4440-b54c-8f3a8a403cb2' //Benjamin
-// const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
-// const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //
-const apiTokens = require('./config.json').token;
-let tokenIndex = 0
+
+const token = require('./config.json').token;
+//const token = 'cbb2cbdb-9fd3-4e2a-9f97-ae6125a8ef43' //Ass
+//const token = '1b04ee97-264e-4f04-9dde-6a5e397c5a49' //Mads
+
 const fs = require('fs');
 const { resolveNaptr } = require('dns');
-const { json } = require('express');
+const { json, response } = require('express');
 
+const config = {
+    headers: { 'Authorization': `Bearer ${token}` }
+};
 
 const userPath = '../user/user.json';
 const recipeDataPath = '../opskrifter/recipes.json';
+const cachePath = '../cache/cache.json';
+
 const { stringify } = require('querystring');
+const { Console } = require('console');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -53,7 +59,6 @@ app.get("/stash/get", (req, res) => {
 app.post("/stash/add", (req, res) => {
     // Product json given via body
     let newProductJson = req.body
-    //console.log(newProductJson)
     // If file can't be read, create new one with {myStash:[]} structure
     fs.access(userPath, fs.F_OK, (err) => {
         if (err) {
@@ -75,7 +80,7 @@ app.post("/stash/add", (req, res) => {
                 // Gets already stored data and adds new product to it
                 let parsedJson = JSON.parse(fileData);
                 let duplicatedProduct = true;
-                for (element in parsedJson.myStash){
+                for (element in parsedJson.myStash) {
                     if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
                         // This line causes trouble because it concatenates strings instead of treating them as numbers
                         parsedJson.myStash[element].amount += 1;
@@ -115,10 +120,11 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                 // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
                 if (jsonArray[i].prod_id == req.params.prod_id) {
                     if (jsonArray[i].amount > 1) {
-                        jsonArray[i].amount --;
+                        jsonArray[i].amount--;
                     }
                     else {
-                        jsonArray.splice(i, 1)}
+                        jsonArray.splice(i, 1)
+                    }
                     break;
                 }
             }
@@ -148,93 +154,122 @@ app.get("/stash/search/:productName", async (req, res) => {
 app.get('/findAllRecipes', async (req, res) => {
     const recipeData = require('../opskrifter/recipes.json');
 
-    var recipeObjects = {
+    let recipeObjects = {
         recipes: []
     };
 
-		
-    //Builds recipeObjects object from a recipe file and then searches 
-    //the salling API for the recipes ingredients.
-    for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
-        const tempRecipe = recipeData.recipes[index1];
-        let totalPrice = 0;
+	fs.readFile(cachePath, async (err, data) => {
+        if(err) {
+            console.log(err);
+            return
+        } 
 
-        var recipeObject = {
-            recipe: {},
-            ingredients: []
-        };
+        let parsedData;
 
-        recipeObject.recipe = tempRecipe;
-
-        console.log(`Getting ingredients for ${tempRecipe.title}`);
-				startTimer();
-
-        for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
-            const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
-
-            try {
-                let apiResponse = await callApi(encodeCharacters(tempIngredient));
-                if(apiResponse === false){
-                    console.log(`Something went wrong with ${tempIngredient}`);
-                    console.log(apiResponse);
-                } else {
-                    if(apiResponse.suggestions[0] === undefined) {
-                        console.log(`Failed to get ${tempIngredient}`);
-                    } else {
-                        apiResponse.suggestions.sort(comparePrice);
-                        recipeObject.ingredients.push(apiResponse.suggestions[0])
-                        totalPrice += apiResponse.suggestions[0].price;
-                    }
-                }
-            } catch(e) {
-                console.error(e);
-
-                //Dis breka da thing 
-                //res.status(500).send();
+        try{
+            parsedData = JSON.parse(data);
+        } catch(err) {
+            parsedData = {
+                date: 0
             }
         }
-        
-        recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
 
-				logTime()
+        if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
+            console.log("Making new data");
+            //Builds recipeObjects object from a recipe file and then searches 
+            //the salling API for the recipes ingredients.
+            for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
+                const tempRecipe = recipeData.recipes[index1];
+                let totalPrice = 0;
 
-        recipeObjects.recipes.push(recipeObject);
-    }
-    console.log('Done getting recipes');
+                var recipeObject = {
+                    recipe: {},
+                    ingredients: []
+                };
 
-    //Filters the recipes given some search params. This can be a string for 
-    //title or two number for max and min price
-    if (Object.keys(req.query).length !== 0) {
-        if (req.query.search !== undefined) {
-            let searchedRecipes = [];
+                recipeObject.recipe = tempRecipe;
 
-            stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach((recipe) => {
-                searchedRecipes.push(recipe);
-            })
+                console.log(`Getting ingredients for ${tempRecipe.title}`);
+                        startTimer();
 
-            let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
-                return !searchedRecipes.includes(recipe);
-            })
+                for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
+                    const tempIngredient = Object.keys(recipeData.recipes[index1].ingredients[index2])[0];
 
-            stringIngredientSearch(req.query.search, notAlreadyChosen).forEach((recipe) => {
-                searchedRecipes.push(recipe)
-            })
+                    try {
+                        let apiResponse = await callApi(encodeCharacters(tempIngredient));
+                        if(apiResponse === false){
+                            console.log(`Something went wrong with ${tempIngredient}`);
+                            console.log(apiResponse);
+                        } else {
+                            if(apiResponse.suggestions[0] === undefined) {
+                                console.log(`Failed to get ${tempIngredient}`);
+                            } else {
+                                apiResponse.suggestions.sort(comparePrice);
+                                recipeObject.ingredients.push(apiResponse.suggestions[0])
+                                totalPrice += apiResponse.suggestions[0].price;
+                            }
+                        }
+                    } catch(e) {
+                        console.error(e);
 
-            recipeObjects.recipes = searchedRecipes;
+                        //Dis breka da thing 
+                        //res.status(500).send();
+                    }
+                }
+                
+                recipeObject.recipe['price'] = Number(totalPrice.toFixed(2));
+
+                        logTime()
+
+                recipeObjects.recipes.push(recipeObject);
+            }
+            console.log('Done getting recipes');
+
+            //Filters the recipes given some search params. This can be a string for 
+            //title or two number for max and min price
+            if (Object.keys(req.query).length !== 0) {
+                if (req.query.search !== undefined) {
+                    let searchedRecipes = [];
+
+                    stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach((recipe) => {
+                        searchedRecipes.push(recipe);
+                    })
+
+                    let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
+                        return !searchedRecipes.includes(recipe);
+                    })
+
+                    stringIngredientSearch(req.query.search, notAlreadyChosen).forEach((recipe) => {
+                        searchedRecipes.push(recipe)
+                    })
+
+                    recipeObjects.recipes = searchedRecipes;
+                }
+
+                if (req.query.maxPrice !== undefined && req.query.minPrice !== undefined) {
+                    let minPrice = req.query.minPrice;
+                    let maxPrice = req.query.maxPrice;
+
+                    let searchedRecipes = betweenPricesSearch(minPrice, maxPrice, recipeObjects.recipes)
+
+                    recipeObjects.recipes = searchedRecipes;
+                }
+            }
+
+            let cacheData = {
+                date: new Date(),
+                data: recipeObjects
+            }
+
+            fs.writeFile(cachePath, JSON.stringify(cacheData, null, 2), (err) => {if(err) console.log(err)})
+        } else {
+            console.log("Using old data");
+            recipeObjects = parsedData.data;
         }
-
-        if (req.query.maxPrice !== undefined && req.query.minPrice !== undefined) {
-            let minPrice = req.query.minPrice;
-            let maxPrice = req.query.maxPrice;
-
-            let searchedRecipes = betweenPricesSearch(minPrice, maxPrice, recipeObjects.recipes)
-
-            recipeObjects.recipes = searchedRecipes;
-        }
-    }
-
-    res.json(recipeObjects);
+        res.json(recipeObjects);
+    })
 });
+
 
 
 // Retrieves a single recipe from an ID
@@ -242,25 +277,43 @@ app.get('/findRecipe/:ID', async (req, res) => {
     const recipeData = require(recipeDataPath);
 
     let recipeObject = {
-        recipe: {},
+        recipe: {
+            
+        },
         ingredients: []
     };
-
-    recipeIndex = findRecipeIndex(req.params.ID, recipeDataPath, "recipes");
+    let recipeIndex = findRecipeIndex(req.params.ID, recipeData, "recipes");
     if (recipeIndex) {
-        let details;
         let totalPrice = 0;
 
         // Finds the cheapest price for the ingredient and adds the details to the recipeObject
+        // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
         for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
-            let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
-            details = await callApi(encodeCharacters(ingredient));
-            recipeObject.ingredients[i] = details;
-            recipeObject.recipe = recipeData.recipes[recipeIndex];
-            totalPrice += details.price;
+            let ingredient = Object.keys(recipeData.recipes[recipeIndex].ingredients[i])[0] //keys from JSON recipe file, inserted in ingredient.
+            //console.log(ingredient)//
+            let details = await callApi(encodeCharacters(ingredient)); //API call
+            //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
+            details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
+            recipeObject.ingredients[i] = details.suggestions[0] //Store cheapest ingredient in recipeObject
+            recipeObject.ingredients[i].title = ingredient
+            totalPrice += details.suggestions[0].price; //sum of recipe.
+            recipeObject.ingredients[i]["amount"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].amount;
+            recipeObject.ingredients[i]["unit"] = recipeData.recipes[recipeIndex].ingredients[i][ingredient].unit;
         }
-        // Rounds the price of the recipe to two decimals and converts it to a number in this case float.
+        // Rounds the price of the recipe to two decimals and converts it to a number in this case float. 
+        recipeObject.recipe["title"] = recipeData.recipes[recipeIndex].title
+        recipeObject.recipe["method"] = recipeData.recipes[recipeIndex].method
+        recipeObject.recipe["url"] = recipeData.recipes[recipeIndex].url
+        recipeObject.recipe["image"] = recipeData.recipes[recipeIndex].image
+        recipeObject.recipe["size"] = recipeData.recipes[recipeIndex].size
+        recipeObject.recipe["time"] = recipeData.recipes[recipeIndex].time
+        recipeObject.recipe["rating"] = recipeData.recipes[recipeIndex].rating
+        recipeObject.recipe["description"] = recipeData.recipes[recipeIndex].description
+        recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
         recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
+        recipeObject.recipe["recipeIndex"] = recipeIndex;
+
+        console.log(recipeObject)
     }
 
     res.json(recipeObject);
@@ -286,11 +339,11 @@ async function callApi(product) {
             return res.data;
         });
         if (!apiRes.suggestions.length) {
-            return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
+            return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
         }
     } catch (e) {
         console.error(e);
-        return {suggestions: [{ "price": 0, "title": product, "productID": "null" }]};
+        return { suggestions: [{ "price": 0, "title": product, "productID": "null" }] };
     }
     return apiRes
 }
@@ -337,9 +390,24 @@ app.post('/addRecipeToShoppingList', (req, res) => {
 
 // Retrieves the data from the user's shoppinglist
 app.get('/shoppingList', (req, res) => {
-    let userData = require(userPath);
+    fs.readFile(userPath, "utf-8", (err, userDataString) => {
+        if(err) {
+            console.log("Error reading file from disk:", err);
+            return;
+        }
 
-    res.send(userData.shoppingList);
+        try {
+            userData = JSON.parse(userDataString);
+            //let userData = require(userPath);
+            userData.shoppingList.forEach((recipe) => {
+                console.log(recipe.recipe.title);
+            })
+            //console.log(userData.shoppingList);
+            res.json(userData.shoppingList);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 });
 
 app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
@@ -378,9 +446,9 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
     try {
         fs.readFile(userPath, function readFileCallback(err, data) {
             let userData = JSON.parse(data);
-            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
-            console.log(recipeIndex);
-            if (recipeIndex) {
+            let recipeIndex = findRecipeIndex(req.params.ID, userData, "shoppingList");
+            //console.log(recipeIndex);
+            if (recipeIndex !== false) {
                 userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
             }
             else {
@@ -392,6 +460,39 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
 
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
+                    console.error(err)
+                    res.status(500).send();
+                }
+                res.status(202).send();
+            });
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+});
+
+/** Removes a recipe from the shoppinglist* */
+app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
+    try {
+        fs.readFile(userPath, function readFileCallback(err, data) {
+            let userData = JSON.parse(data);
+            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+            console.log(recipeIndex);
+            if (recipeIndex !== false) {
+                userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
+            }
+            else {
+                console.log("Failed to get recipe ID index");
+                res.status(500).send();
+            }
+
+            let json = JSON.stringify(userData, null, 4);
+
+            fs.writeFile(userPath, json, function readFileCallback(err, data) {
+                if (err) {
+                    console.error(err)
                     res.status(500).send();
                 }
                 res.status(202).send();
@@ -412,27 +513,32 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
  * @param option - member we want to acess in the file.
  * @returns The index of the recipe.
  */
-function findRecipeIndex(ID, filePath, option) {
-    let file = require(filePath);
-
+function findRecipeIndex(ID, data, option) {
+    let numberID = Number.parseInt(ID)
+    let returnValue = false;
     if (option === "shoppingList") {
-        for (object in file[option]) {
-            for (recipe in file[option][object]) {
-                if (file[option][object][recipe].recipeID == ID) {
-                    return object;
-                }
+        let index = 0;
+        data[option].forEach((recipe) => {
+            console.log(Number.parseInt(ID))
+            console.log(recipe.recipe.recipeID)
+            if (recipe.recipe.recipeID === numberID) {
+                console.log("test");
+                returnValue = index;
             }
-        }
+            index++
+        })
     }
     else if (option === "recipes") {
-        for (object in file[option]) {
-            if (file[option][object].recipeID == ID) {
+        for (object in data[option]) {
+            if (data[option][object].recipeID == ID) {
                 return object;
             }
         }
     }
 
-    return false;
+    return returnValue;
+    // TODO reevaluate this function design
+
 }
 
 /**
@@ -557,16 +663,16 @@ function getToken() {
 var startTime, endTime;
 
 function startTimer() {
-  startTime = new Date();
+    startTime = new Date();
 };
 
 function logTime() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
+    endTime = new Date();
+    var timeDiff = endTime - startTime; //in ms
+    // strip the ms
+    timeDiff /= 1000;
 
-  // get seconds 
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
+    // get seconds 
+    var seconds = Math.round(timeDiff);
+    console.log(seconds + " seconds");
 }
