@@ -49,7 +49,7 @@ class RecipeCard extends React.Component {
         <div className="RecipeCard">
           <div class="col mb-4 outer-item-card hover-shadow" >
             <div class="card card-item h-100">
-              <button class="cardButtonBorder" type="button" onClick={() => { this.props.onSelectCard(this.props.recipe.recipe.recipeID)}}>
+              <button class="cardButtonBorder" type="button" onClick={() => { this.props.onSelectCard(this.props.recipe.recipe.recipeID) }}>
                 <div class="img-gradient img-gradient-black card-img-border">
                   <img src={this.props.recipe.recipe.image} class="card-img" alt="..." height="175" />
                 </div>

@@ -167,12 +167,12 @@ class HomePage extends React.Component {
       try {
         var popup = document.getElementById("popupRecipeModal1")
         console.log(popup)
-  
+
         var myModal2 = new Modal(popup, {});
         console.log(myModal2);
-  
+
         myModal2.show()
-      } catch(e) {
+      } catch (e) {
         console.log(e);
         console.log("Test")
       }

@@ -26,7 +26,7 @@ class ShoppingListRecipe extends React.Component {
 
   }
 
-  initShoppingListRecipe(){
+  initShoppingListRecipe() {
     this.setState({
       inited: true,
     });
@@ -38,7 +38,7 @@ class ShoppingListRecipe extends React.Component {
     let recipeIngredientComponent = this.state.recipeIngredientComponent;
     let tempRICLength = this.state.recipeIngredientComponent.length;
 
-    if(tempRICLength < this.props.recipe.ingredients.length){
+    if (tempRICLength < this.props.recipe.ingredients.length) {
       recipeIngredientComponent.push(stashRowElementInstance);
       tempRICLength++;
 
@@ -47,11 +47,11 @@ class ShoppingListRecipe extends React.Component {
       })
     }
 
-    if((tempRICLength === this.props.recipe.ingredients.length) && !this.state.isTrackingAllIngredientComponents){
+    if ((tempRICLength === this.props.recipe.ingredients.length) && !this.state.isTrackingAllIngredientComponents) {
       this.setState({
         isTrackingAllIngredientComponents: true,
       })
-    }   
+    }
   }
 
   updateRecipePrice() {
@@ -59,14 +59,14 @@ class ShoppingListRecipe extends React.Component {
     // this value should tell whether the value of the ingredient should be added to the price of
     // the recipe or deducted.
     let recipeSum = 0;
-    
+
     this.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
-      let isHidden =  this.props.ingredientInStash(recipeIngredientComponent, recipeIngredientComponent.props.ingredientIndex);
-      if(isHidden){
+      let isHidden = this.props.ingredientInStash(recipeIngredientComponent, recipeIngredientComponent.props.ingredientIndex);
+      if (isHidden) {
         recipeIngredientComponent.setState({
           hide: true,
         }, () => {
-          if(recipeIngredientComponent.state.hide){
+          if (recipeIngredientComponent.state.hide) {
             return;
           }
 
@@ -87,9 +87,9 @@ class ShoppingListRecipe extends React.Component {
 
   initShoppingListIngredient(ingredient, ingredientIndex) {
     let isInStash = this.props.ingredientInStash(ingredient, ingredientIndex)
-    
-    if(isInStash && !this.state.initedIsHiddenValues){
-      if(this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length){
+
+    if (isInStash && !this.state.initedIsHiddenValues) {
+      if (this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length) {
         this.setState({
           initedIsHiddenValues: true
         }, () => {
