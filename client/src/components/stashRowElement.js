@@ -23,7 +23,7 @@ class StashRowElement extends React.Component {
   }
 
   componentDidMount(){
-    if (this.props.hasOwnProperty('passToShoppingList') && !this.state.inited) {
+    if (this.props.hasOwnProperty('shoppingList') && !this.state.inited) {
       // TODO PROBABLY CALL THIS function with ()
       // this.props.ingredientInStash(recipeIngredientComponent, recipeIngredientComponent.props.ingredientIndex);
       // WHICH COULD BE GIVEN AS PROP FROM shoppingListRecipe

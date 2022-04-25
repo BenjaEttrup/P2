@@ -210,7 +210,7 @@ class ShoppingList extends React.Component {
 
   updateRecipePrices() {
     let totalRecipeSum = 0;
-    // console.log(this.state.shoppingListRecipeComponents)
+    console.log(this.state.shoppingListRecipeComponents)
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       let recipeSum = 0;  
       console.log(``);
@@ -241,7 +241,7 @@ class ShoppingList extends React.Component {
               if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
                 console.log(`stashComponent.state.hide || !stashComponent.state.boxChecked was true`)
                 tempIngredientPrice = 0;
-                //TODO This probably shouldnt be the place as, this should be figured out when initializing the shoppinglistRecipes and stashRowElements
+
                 recipeIngredientComponent.setState({
                   hide: true,
                 })
@@ -261,7 +261,7 @@ class ShoppingList extends React.Component {
       })
       console.log(`Adding ${recipeSum} to totalRecipeSum ${totalRecipeSum}`)
       console.log(``);
-      totalRecipeSum = Number(+totalRecipeSum + +recipeSum);
+      totalRecipeSum = Number(+totalRecipeSum + +recipeSum).toFixed(2);
     })
 
     console.log(this.state.shoppingListRecipeComponents)
@@ -320,13 +320,14 @@ class ShoppingList extends React.Component {
         }
 
         // Two cases: the recipeIngredient was added to stash or it wasn't
+        // TODO this could be cleaner without if else by using the value of addedToStash
+        // to determine how the state hide should be set
         if (addedToStash) {
           ingredientComponent.setState({
             hide: true,
             boxChecked: true
           }, () => {
             this.updateRecipePrices();
-            console.log("if addedToStash callback")
           })
           return;
         }
@@ -335,61 +336,19 @@ class ShoppingList extends React.Component {
             hide: stashIngredient.state.boxChecked,
             boxChecked: true
           }, () => {
-            console.log("else callback")
             this.updateRecipePrices();
           })
           return;
         }
-
-        // this.updateRecipePrices();
-
-        // let price = subtract ? recipeComponent.state.price - ingredientComponent.props.ingredient.price :
-        // +recipeComponent.state.price + +ingredientComponent.props.ingredient.price;
-
-        // To stop the case where a removed ingredient will also reduce the recipe sum further
-        // if (ingredientComponent.state.wasTrashed) {
-        //   price = recipeComponent.state.price;
-        //   console.log("IngredientComponent was trashed")
-        // }
-
-        // console.log(`Updating recipe price to ${Number(price).toFixed(2)}`)
-        // recipeComponent.setState({
-        //   price: Number(price).toFixed(2)
-        // })
-
-        // if (stopPriceUpdate) {
-        //   console.log("Price shouldnt update")
-        //   return;
-        // }
-        // else {
-        // this.updateTotalRecipePrice();
-        // }
       }
       else {
         console.log("didnt find match")
-        // let price = subtract ? recipeComponent.state.price - stashIngredient.props.ingredient.price :
-        //   +recipeComponent.state.price + +stashIngredient.props.ingredient.price;
-
-        console.log(stashIngredient)
-        console.log(`stashIngredient.state.inited = ${stashIngredient.state.inited}`)
-        console.log(`stashIngredient.state.hide = ${stashIngredient.state.hide}`)
-        console.log(`stashIngredient.state.wasTrasheed = ${stashIngredient.state.wasTrashed}`)
-        console.log(`recipeComponent.state.inited = ${recipeComponent.state.inited}`)
-        if (!stashIngredient.state.inited && this.state.myStashComponents.length >= 1) {
-          // console.log("updating price")
-          // recipeComponent.setState({
-          //   price: Number(price).toFixed(2)
-          // })
-        }
 
         recipeComponent.setState({
           inited: true,
         })
-
-
       }
     })
-    // console.log("reached matchIngredient end")
   }
 
 

@@ -147,7 +147,6 @@ class ShoppingListRecipe extends React.Component {
                   ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
                   isHidden={isHidden}
-                  passToShoppingList={true}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
