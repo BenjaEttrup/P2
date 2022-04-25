@@ -1,45 +1,45 @@
 #recipedropdown {
-background-color: #FFFFFF;
-width: 20rem;
-height: 30rem;
+	background-color: #FFFFFF;
+	width: 20rem;
+	height: 30rem;
 
 }
 
 #dropdownrecipes {
-    margin-left: 0;
+	margin-left: 0;
 }
 
 .shadow {
-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .shadow-rounded {
-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
-border-radius: 10px;
+	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	border-radius: 10px;
 }
 
 .horizontal-list li {
-display: inline;
-list-style-position: inside;
+	display: inline;
+	list-style-position: inside;
 }
 
 .right-align {
-text-align: right;
+	text-align: right;
 }
 
 .left-align {
-align-content: left;
+	align-content: left;
 }
 
 .dropdown-card {
-    width: 10rem;
-    right: -50px;
+	width: 10rem;
+	right: -50px;
 }
 
 .btn-row {
-    margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 .dropdown-title {
-    padding-left: .5rem;
+	padding-left: .5rem;
 }
