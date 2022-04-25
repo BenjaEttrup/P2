@@ -154,7 +154,7 @@
   text-align: right;
   padding-left: 0;
   padding-right: 4px;
-  margin-top: 90px;
+  margin-top: 120px;
 }
 
 .card-title {
@@ -168,6 +168,7 @@
 }
 
 .button-add {
+  position: absolute;
   background-color: #31AF3E;
   border: 0;
   border-radius: 20px;
@@ -175,6 +176,8 @@
   padding-left: 7px;
   padding-right: 7px;
   width: 30px;
+  margin-top: .5rem;
+  margin-left: 13rem;
 }
 
 .button-plus {
