@@ -57,17 +57,14 @@ class RecipeCard extends React.Component {
                   <div class="row card-info-row">
                     <h5 class="card-title col-7">{this.props.recipe ? this.props.recipe.recipe.title : ''}</h5>
                     <div class="card-info col-5">
-                      {/*<button type="button col" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
-                        <h4 class="button-plus">+</h4>
-    </button>*/}
                       <p class="card-text card-price col">{this.props.recipe ? this.props.recipe.recipe.price + ' DKK' : ''}</p>
                     </div>
                   </div>
                 </div>
               </button>
               <button type="button col" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
-                        <h4 class="button-plus">+</h4>
-                      </button>
+                <h4 class="button-plus">+</h4>
+              </button>
             </div>
           </div>
         </div>
