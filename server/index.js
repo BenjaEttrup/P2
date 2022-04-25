@@ -82,6 +82,7 @@ app.post("/stash/add", (req, res) => {
                 let duplicatedProduct = true;
                 for (element in parsedJson.myStash) {
                     if (parsedJson.myStash[element].prod_id === newProductJson.prod_id) {
+                        // This line causes trouble because it concatenates strings instead of treating them as numbers
                         parsedJson.myStash[element].amount += 1;
                         duplicatedProduct = false;
                     }
@@ -127,6 +128,7 @@ app.delete("/stash/remove/:prod_id", (req, res) => {
                     break;
                 }
             }
+
             res.status(200).send(parsedJson)
 
             fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), err => {
@@ -172,7 +174,7 @@ app.get('/findAllRecipes', async (req, res) => {
             }
         }
 
-        if(Date.now() - Date.parse(parsedData.date) > 3*60*60*1000){
+        if(Date.now() - Date.parse(parsedData.date) > 24*60*60*1000){
             console.log("Making new data");
             //Builds recipeObjects object from a recipe file and then searches 
             //the salling API for the recipes ingredients.
@@ -425,7 +427,6 @@ app.delete('/removeIngredientFromShoppingList/:ID&:prod_id', (req, res) => {
             }
 
             let json = JSON.stringify(userData, null, 4);
-
             fs.writeFile(userPath, json, function readFileCallback(err, data) {
                 if (err) {
                     res.status(500).send();
@@ -550,6 +551,7 @@ function findRecipeIndex(ID, data, option) {
  */
 function findIngredientIndex(recipeIndex, productID, filePath, option) {
     let userData = require(userPath);
+    productID = Number(productID);
 
     // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
     for (ingredient in userData[option][recipeIndex].ingredients) {
@@ -646,6 +648,7 @@ function sleep(milliseconds) {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
 }
+
 
 var startTime, endTime;
 

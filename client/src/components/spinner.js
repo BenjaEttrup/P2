@@ -1,5 +1,6 @@
 import React from "react";
-import {Modal} from 'bootstrap';
+import { Modal } from 'bootstrap';
+import PopupRecipe from "./recipePopup.js";
 
 import Wheel from "./wheel.js";
 
@@ -16,8 +17,8 @@ export class Spin extends React.Component {
       isSpinning: false
     }
   }
- 
-  activePopup(value, recipes){
+
+  activePopup(value, recipes) {
     this.setState({
       isSpinning: true
     })
@@ -35,7 +36,7 @@ export class Spin extends React.Component {
     return (
       <div className="Spin">
         {
-         this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={(value, recipes) => this.activePopup(value, recipes)} setStateFunction={this.setState} isSpinning={this.state.isSpinning} /> : ''
+          this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={(value, recipes) => this.activePopup(value, recipes)} setStateFunction={this.setState} isSpinning={this.state.isSpinning} /> : ''
         }
       </div>
     );

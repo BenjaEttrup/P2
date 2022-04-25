@@ -1,46 +1,6 @@
 {
     "userID": "",
     "shoppingList": [
-        {
-            "recipe": {
-                "recipeID": 0,
-                "title": "title",
-                "description": "description",
-                "size": "",
-                "ingredients": [
-                    "skinke",
-                    "ost",
-                    "mælk"
-                ],
-                "time": 0,
-                "method": "method",
-                "rating": "rating",
-                "image": "image",
-                "url": "url",
-                "price": 21.9
-            },
-            "ingredients": []
-        },
-        {
-            "recipe": {
-                "recipeID": 8,
-                "title": "title",
-                "description": "description",
-                "size": "",
-                "ingredients": [
-                    "skinke",
-                    "ost",
-                    "mælk"
-                ],
-                "time": 0,
-                "method": "method",
-                "rating": "rating",
-                "image": "image",
-                "url": "url",
-                "price": 21.9
-            },
-            "ingredients": []
-        }
     ],
     "myStash": [
         {

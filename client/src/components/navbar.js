@@ -27,8 +27,8 @@ class Navbar extends React.Component {
     return (
       <div className="Navbar">
         <header>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
-            <div class="container-fluid" id="center">
+          <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
+            <div className="container-fluid" id="center">
               <img id="logo" src="./pictures/logo.png" alt="logo" width="50" height="50" margin="0.5rem" />
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navigationbar">
@@ -61,9 +61,9 @@ class Navbar extends React.Component {
                       </ul>
                     </div>
                   </li>
-                  <li class="nav-item">
-                    <button class='hidden-btn icon' type='button' data-bs-toggle="dropdown">
-                        <i class="fa fa-user icon"></i>
+                  <li className="nav-item">
+                    <button className='hidden-btn icon' type='button' data-bs-toggle="dropdown">
+                        <i className="fa fa-user icon"></i>
                     </button>
                   </li>
                 </ul>

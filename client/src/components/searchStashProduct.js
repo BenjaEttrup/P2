@@ -118,11 +118,11 @@ class SearchStashProduct extends React.Component {
             this.setState({ showDropdown: true });
           }}
         >
-          <div class="form rounded">
-            <i class="fa fa-search"></i>
+          <div className="form rounded">
+            <i className="fa fa-search"></i>
             <input
               type="search"
-              class="form-control rounded search-bar"
+              className="form-control rounded search-bar"
               value={this.state.searchValue}
               placeholder="Add item to my stash..."
               aria-label="Search"
@@ -133,7 +133,7 @@ class SearchStashProduct extends React.Component {
               }}
             />
           </div>
-          <div class="searchResults">
+          <div className="searchResults">
             <ul className="list-group">
               {this.state.showDropdown
                 ? this.state.products !== undefined
@@ -147,7 +147,7 @@ class SearchStashProduct extends React.Component {
                             this.resetSearch();
                           }}
                         >
-                          <i class="fa fa-plus-circle searchResult"></i>
+                          <i className="fa fa-plus-circle searchResult"></i>
                           {product.title}
                         </button>
                       );
