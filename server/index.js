@@ -472,38 +472,6 @@ app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
     }
 });
 
-/** Removes a recipe from the shoppinglist* */
-app.delete('/removeRecipeFromShoppingList/:ID', (req, res) => {
-    try {
-        fs.readFile(userPath, function readFileCallback(err, data) {
-            let userData = JSON.parse(data);
-            let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
-            console.log(recipeIndex);
-            if (recipeIndex !== false) {
-                userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
-            }
-            else {
-                console.log("Failed to get recipe ID index");
-                res.status(500).send();
-            }
-
-            let json = JSON.stringify(userData, null, 4);
-
-            fs.writeFile(userPath, json, function readFileCallback(err, data) {
-                if (err) {
-                    console.error(err)
-                    res.status(500).send();
-                }
-                res.status(202).send();
-            });
-        });
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).send();
-    }
-});
-
 
 /**
  * This function finds the index of a recipe in the file.
