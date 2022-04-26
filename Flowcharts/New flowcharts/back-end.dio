@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="R65p8X-qRKKneFVtGqB-" name="APIFlowchart">
-        <mxGraphModel dx="3742" dy="2995" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1313" dy="499" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -163,7 +163,7 @@
                 <mxCell id="dgwOz9Ybmrye_ZAZXUtV-17" value="/addRecipeToShoppingList" style="whiteSpace=wrap;html=1;rounded=1;direction=south;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
                     <mxGeometry x="3110" y="240" width="160" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="dgwOz9Ybmrye_ZAZXUtV-18" value="Write updated JSON file" style="whiteSpace=wrap;html=1;rounded=1;direction=south;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                <mxCell id="dgwOz9Ybmrye_ZAZXUtV-18" value="Write data to user file" style="whiteSpace=wrap;html=1;rounded=1;direction=south;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
                     <mxGeometry x="3130" y="512" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="206" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="dgwOz9Ybmrye_ZAZXUtV-23" target="205" edge="1">
@@ -583,7 +583,7 @@
                 <mxCell id="163" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="161" target="159" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="161" value="Parse shopping list JSON" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="161" value="Parse user data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="3351" y="332" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="167" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="164" edge="1">
@@ -660,112 +660,19 @@
                 <mxCell id="180" value="Find ingredient index from given product ID" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="3601" y="512" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="183" value="" style="edgeStyle=none;html=1;" parent="1" source="184" target="186" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="184" value="/shoppinglist" style="whiteSpace=wrap;html=1;rounded=1;direction=south;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
-                    <mxGeometry x="3112.25" y="730" width="160.5" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="185" value="" style="edgeStyle=none;html=1;" parent="1" source="186" target="196" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="186" value="findIDs()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-                    <mxGeometry x="3132.5" y="825" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="187" value="returnShoppingList()" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
-                    <mxGeometry x="2860" y="955" width="130" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="188" value="" style="edgeStyle=none;html=1;startArrow=none;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="194" target="187" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="3160" y="985" as="sourcePoint"/>
-                        <mxPoint x="2950" y="985" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="189" value="" style="edgeStyle=none;html=1;startArrow=none;" parent="1" source="193" target="191" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="190" value="" style="edgeStyle=none;html=1;" parent="1" source="191" target="199" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="191" value="&lt;span&gt;findRecipe()&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-                    <mxGeometry x="3132.5" y="1090" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="192" value="" style="edgeStyle=none;html=1;endArrow=none;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" target="194" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="3120" y="985" as="sourcePoint"/>
-                        <mxPoint x="2950" y="985" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="193" value="True" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="3172.5" y="1045" width="40" height="20" as="geometry"/>
-                </mxCell>
-                <mxCell id="194" value="False" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="3031" y="970" width="50" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="195" value="" style="edgeStyle=none;html=1;endArrow=none;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.497;entryY=0.005;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="196" target="193" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="3192.5" y="1030" as="sourcePoint"/>
-                        <mxPoint x="3189" y="1045" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="196" value="continueExpression" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="3120" y="940" width="145" height="90" as="geometry"/>
-                </mxCell>
-                <mxCell id="197" value="" style="edgeStyle=none;html=1;startArrow=none;" parent="1" source="203" target="201" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="198" style="edgeStyle=none;rounded=0;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="199" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="3320" y="1240"/>
-                        </Array>
-                        <mxPoint x="3320" y="1135" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="199" value="continueExpression" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="3120" y="1195" width="145" height="90" as="geometry"/>
-                </mxCell>
-                <mxCell id="200" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;rounded=0;" parent="1" source="201" target="199" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="3090" y="1384"/>
-                            <mxPoint x="3090" y="1240"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="201" value="findIngredients()" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-                    <mxGeometry x="3132.5" y="1354" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="202" style="edgeStyle=none;rounded=0;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="196" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="3320" y="985"/>
-                        </Array>
-                        <mxPoint x="3320" y="1105" as="sourcePoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="203" value="True" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="3162.5" y="1295" width="60" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="204" value="" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="199" target="203" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="3192.5" y="1285" as="sourcePoint"/>
-                        <mxPoint x="3192.5" y="1335" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
                 <mxCell id="211" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="205" target="210" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="205" value="Parse shopping list JSON" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="205" value="Parse user data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="2950" y="335" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="210" value="Return parsed shopping list data as response" style="whiteSpace=wrap;html=1;rounded=1;direction=south;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                <mxCell id="210" value="Return shopping list from user data" style="whiteSpace=wrap;html=1;rounded=1;direction=south;arcSize=50;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
                     <mxGeometry x="2950" y="430" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="215" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="212" target="214" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="212" value="Parse shopping list JSON" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="212" value="Parse user data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="3130" y="332" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="217" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="214" edge="1">
@@ -773,7 +680,7 @@
                         <mxPoint x="3190" y="512" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="214" value="Add given recipe to shopping list data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="214" value="Add given recipe to shopping list array" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="3130" y="422" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="233" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="234" target="235" edge="1">
