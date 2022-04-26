@@ -1,5 +1,5 @@
 import React from 'react';
-import StashRowElement from '../stashRowElement';
+import IngredientElement from './ingredientElement';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -61,19 +61,12 @@ class ShoppingListRecipe extends React.Component {
     let recipeSum = 0;
 
     this.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
-      let isHidden = this.props.ingredientInStash(recipeIngredientComponent, recipeIngredientComponent.props.ingredientIndex);
-      if (isHidden) {
-        recipeIngredientComponent.setState({
-          hide: true,
-        }, () => {
-          if (recipeIngredientComponent.state.hide) {
-            return;
-          }
-
-        })
+      console.log(recipeIngredientComponent)
+      if (recipeIngredientComponent.state.hide) {
+        return;
       }
       else {
-        recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price)
+        recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price).toFixed(2)
       }
 
     })
@@ -83,22 +76,6 @@ class ShoppingListRecipe extends React.Component {
     }, () => {
       this.props.updateRecipePrices(true);
     })
-  }
-
-  initShoppingListIngredient(ingredient, ingredientIndex) {
-    let isInStash = this.props.ingredientInStash(ingredient, ingredientIndex)
-
-    if (isInStash && !this.state.initedIsHiddenValues) {
-      if (this.state.recipeIngredientComponent.length === this.props.recipe.ingredients.length) {
-        this.setState({
-          initedIsHiddenValues: true
-        }, () => {
-          this.updateRecipePrice();
-        });
-      }
-    }
-
-    return isInStash;
   }
 
   componentDidMount() {
@@ -140,13 +117,13 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
-              let isHidden = this.initShoppingListIngredient(ingredient, ingredientIndex);
+              // let isHidden = this.initShoppingListIngredient(ingredient, ingredientIndex);
               return (
-                <StashRowElement
+                <IngredientElement
                   key={ingredientIndex}
                   ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
-                  isHidden={isHidden}
+                  // isHidden={isHidden}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
@@ -155,6 +132,7 @@ class ShoppingListRecipe extends React.Component {
                   trackShoppingListElement={(stashRowElementInstance, isHidden) => this.trackShoppingListElement(stashRowElementInstance, isHidden)}
                   matchIngredient={(stashIngredient, subtract, wasTrashed, addedToStash) => this.props.matchIngredient(stashIngredient, subtract, wasTrashed, addedToStash)}
                   updateMyStashIngredients={(stashIngredient) => this.props.updateMyStashIngredients(stashIngredient)}
+                  ingredientInStash={(ingredient, ingredientIndex) => this.props.ingredientInStash(ingredient, ingredientIndex)}
                 />
               )
             })
