@@ -49,7 +49,7 @@ class ShoppingList extends React.Component {
   }
 
   fetchShoppingList() {
-    fetch(`/shoppingList`, {
+    fetch(`/shoppingList/get`, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -382,9 +382,9 @@ class ShoppingList extends React.Component {
 
   removeRecipe(recipe) {
     console.log(recipe);
-    console.log(`fetching endpoint = /removeRecipeFromShoppingList/${recipe.recipeID}`)
+    console.log(`fetching endpoint = /shoppinglist/remove/recipe/${recipe.recipeID}`)
 
-    fetch(`/removeRecipeFromShoppingList/${recipe.recipeID}`, {
+    fetch(`/shoppinglist/remove/recipe/${recipe.recipeID}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

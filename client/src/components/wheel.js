@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import PopupRecipe from './recipePopup';
 
 import '../stylesheets/wheel.css';
@@ -15,8 +14,9 @@ export default class Wheel extends React.Component {
     };
     this.selectItem = this.selectItem.bind(this);
   }
+
   addRecipe(recipe) {
-    fetch(`/addRecipeToShoppingList`, {
+    fetch(`/shoppinglist/add`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -28,9 +28,6 @@ export default class Wheel extends React.Component {
       .catch((err) => {
         console.error(err);
       })
-      .then(() => {
-        console.log('Success');
-      });
   }
 
   selectItem() {
@@ -39,7 +36,7 @@ export default class Wheel extends React.Component {
         const selectedItem = Math.floor(Math.random() * this.props.items.length);
 
         if (this.props.onSelectItem) {
-          this.props.onSelectItem(selectedItem, this.props.items);
+          this.props.onSelectItem();
         }
         this.setState({ selectedItem });
       }
@@ -58,18 +55,15 @@ export default class Wheel extends React.Component {
     this.index++
   }
 
-
   render() {
     const { selectedItem } = this.state;
     const { items } = this.props;
-
     const wheelVars = {
       '--nb-item': items.length,
       '--selected-item': selectedItem,
     };
     const spinning = selectedItem !== null ? 'spinning' : '';
-    console.log(items)
-    console.log(selectedItem)
+
     return (
       <div className="wheel-container">
         <div className={`wheel ${spinning}`} style={wheelVars} onClick={this.selectItem} data-toggle="modal">
@@ -79,11 +73,10 @@ export default class Wheel extends React.Component {
             </div>
           ))}
         </div>
-        <div class="modal fade" id="popupRecipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          {items && selectedItem ? < PopupRecipe items={items} selectedItem={selectedItem} /> : ""}
+        <div class="modal fade" id="spinnerPopupModal" tabindex="-1" aria-labelledby="spinnerPopupModal" aria-hidden="true">
+          {items !== [] && selectedItem !== null ? < PopupRecipe items={items} selectedItem={selectedItem} /> : ""}
         </div>
       </div>
     );
   }
 }
-

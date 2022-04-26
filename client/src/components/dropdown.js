@@ -21,8 +21,6 @@ class Dropdown extends React.Component {
     }
   }
 
-  //Functions go here
-
   //This is the render function. This is where the
   //html is.
   render() {

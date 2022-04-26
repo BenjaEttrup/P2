@@ -18,7 +18,6 @@ class MyStash extends React.Component {
 
     this.props.updateNavFunction(4);
 
-    //Your code here
     this.state = {
       products: [],
     };

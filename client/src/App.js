@@ -32,7 +32,7 @@ class App extends React.Component {
   }
 
   updateRecipes() {
-    fetch(`/shoppingList`, {
+    fetch(`/shoppingList/get`, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -49,7 +49,7 @@ class App extends React.Component {
   }
 
   removeRecipe(recipeID) {
-    fetch(`/removeRecipeFromShoppingList/${recipeID}`, {
+    fetch(`/shoppingList/remove/recipe/${recipeID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
