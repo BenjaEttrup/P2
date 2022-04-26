@@ -10,7 +10,7 @@ class SearchStashProduct extends React.Component {
     //Super has to be called as the first thing
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
 
     this.state = {
       products: [],
@@ -56,7 +56,6 @@ class SearchStashProduct extends React.Component {
       });
   }
 
-
   //The choosen product, is added to my stash. 
   addIngredient(product) {
     console.log(product);
@@ -86,6 +85,7 @@ class SearchStashProduct extends React.Component {
         this.props.updateFunction();
       });
   }
+
   //sets show dropdown to false.
   handleBlur = (evt) => {
     console.log("Blur evt");
@@ -103,8 +103,6 @@ class SearchStashProduct extends React.Component {
     });
     this.setState({ products: [] });
   }
-
-  /* this.state.product.prod_ID */
 
   //This is the render function. This is where the
   //html is.

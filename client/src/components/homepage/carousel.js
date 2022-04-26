@@ -6,11 +6,30 @@ import React from 'react';
 class Carousel extends React.Component {
   //This is the render function. This is where the
   //html is.
+
+  addRecipe(recipe) {
+    fetch(`/shoppingList/add`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(recipe),
+    })
+      .catch((err) => {
+        console.error(err);
+      })
+      .then(() => {
+        console.log('Success');
+        this.props.updateShoppingList()
+      });
+  }
+
   render() {
     return (
       <div className="Carousel">
         {this.props.recipes.length !== 0 ?
-
           <div id="homepage-carousel" class="carousel slide center" data-bs-ride="carousel">
             <div class="carousel-indicators">
               <button
@@ -57,6 +76,7 @@ class Carousel extends React.Component {
                         <button
                           type="button"
                           class="btn carousel-add-button shadow-rounded"
+                          onClick={() => {this.addRecipe(this.props.recipes[0])}}
                         >
                           <p class="carousel-add-recipe">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
@@ -93,6 +113,7 @@ class Carousel extends React.Component {
                         <button
                           type="button"
                           class="btn carousel-add-button shadow-rounded"
+                          onClick={() => {this.addRecipe(this.props.recipes[1])}}
                         >
                           <p class="carousel-add-recipe">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
@@ -129,6 +150,7 @@ class Carousel extends React.Component {
                         <button
                           type="button"
                           class="btn carousel-add-button shadow-rounded"
+                          onClick={() => {this.addRecipe(this.props.recipes[2])}}
                         >
                           <p class="carousel-add-recipe">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Add

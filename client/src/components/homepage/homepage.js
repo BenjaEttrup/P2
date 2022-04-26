@@ -1,8 +1,8 @@
 import React from 'react';
-import RecipeCard from './recipeCard';
-import Carousel from './carousel';
 import { compareTwoStrings } from 'string-similarity';
 import { Modal } from 'bootstrap';
+import RecipeCard from './recipeCard';
+import Carousel from './carousel';
 import PopupRecipe from '../recipePopup';
 
 import '../../stylesheets/homepage.css';
@@ -49,7 +49,7 @@ class HomePage extends React.Component {
           myStash: res
         }
         this.setState(data, () => {
-          fetch(`/findAllRecipes`, {
+          fetch(`/recipes/getAll`, {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
@@ -162,20 +162,10 @@ class HomePage extends React.Component {
   }
 
   activePopup(id) {
-    console.log("Kører active popup: " + id)
     this.setState({ selectedRecipeID: id }, () => {
-      try {
-        var popup = document.getElementById("popupRecipeModal1")
-        console.log(popup)
+      var homepageModal = new Modal(document.getElementById("homepagePopupModal"), {});
 
-        var myModal2 = new Modal(popup, {});
-        console.log(myModal2);
-
-        myModal2.show()
-      } catch (e) {
-        console.log(e);
-        console.log("Test")
-      }
+      homepageModal.show()
     })
   }
 
@@ -185,7 +175,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div className="HomePage">
-        <Carousel recipes={this.state.allRecipes} />
+        <Carousel recipes={this.state.allRecipes} updateShoppingList={() => this.props.updateShoppingList()} />
         <div class="container searchbar">
           <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
@@ -246,7 +236,7 @@ class HomePage extends React.Component {
                 })
               }
             </div>
-            <div class="modal fade" id="popupRecipeModal1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="homepagePopupModal" aria-labelledby="homepagePopupModal" aria-hidden="true">
               {this.state.allRecipes !== [] && this.state.selectedRecipeID ? <PopupRecipe items={this.state.allRecipes} selectedItem={this.state.selectedRecipeID} /> : ""}
             </div>
           </div>
@@ -343,6 +333,14 @@ function compareRating(a, b) {
   return a.recipe.rating - b.recipe.rating;
 }
 
+/**
+ * It takes in an array of recipes and an array of ingredients and returns an array of recipes with the
+ * ingredients that are not in the ingredients array removed.
+ * 
+ * @param recipes An array of recipes
+ * @param myStash An array of ingredients
+ * @returns An array of objects.
+ */
 function myStashSearch(recipes, myStash) {
   let tempRecipes = JSON.parse(JSON.stringify(recipes))
   let updatedRecipes = []

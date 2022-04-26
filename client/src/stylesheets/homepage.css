@@ -150,6 +150,16 @@
   max-width: 420px;
 }
 
+.btn-link {
+  text-decoration: none;
+  color: white;
+}
+
+.btn-link:hover {
+  text-decoration: none;
+  color: black;
+}
+
 .card-price {
   text-align: right;
   padding-left: 0;
