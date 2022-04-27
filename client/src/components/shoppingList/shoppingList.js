@@ -460,7 +460,7 @@ class ShoppingList extends React.Component {
                       recipeIndex={index}
                       updateTotalRecipePrice={(stashRowElement, subtract) => this.updateTotalRecipePrice(stashRowElement, subtract)}
                       updateMyStashIngredients={(stashIngredient) => this.updateMyStashIngredients(stashIngredient)}
-                      updateRecipePrices={(lastIngredientPassedToShoppingLists) => this.updateRecipePrices(lastIngredientPassedToShoppingLists)}
+                      updateRecipePrices={() => this.updateRecipePrices()}
                     />
                   )
                 })

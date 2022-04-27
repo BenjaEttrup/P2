@@ -48,6 +48,8 @@ class ShoppingListRecipe extends React.Component {
     if ((tempRICLength === this.props.recipe.ingredients.length) && !this.state.isTrackingAllIngredientComponents) {
       this.setState({
         isTrackingAllIngredientComponents: true,
+      }, () => {
+        this.props.updateRecipePrices();
       })
     }
   }
