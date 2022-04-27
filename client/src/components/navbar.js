@@ -15,7 +15,6 @@ class Navbar extends React.Component {
     //runs before our code in the contructor
     super(props);
 
-    //Your code here
     this.shown = false;
   }
 

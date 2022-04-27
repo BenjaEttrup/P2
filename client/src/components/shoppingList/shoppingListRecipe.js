@@ -13,8 +13,6 @@ class ShoppingListRecipe extends React.Component {
     //runs before our code in the contructor
     super(props);
 
-    //Your code here
-
     this.state = {
       hide: false,
       initedIsHiddenValues: false,
@@ -50,6 +48,8 @@ class ShoppingListRecipe extends React.Component {
     if ((tempRICLength === this.props.recipe.ingredients.length) && !this.state.isTrackingAllIngredientComponents) {
       this.setState({
         isTrackingAllIngredientComponents: true,
+      }, () => {
+        this.props.updateRecipePrices();
       })
     }
   }
@@ -68,7 +68,6 @@ class ShoppingListRecipe extends React.Component {
       else {
         recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price).toFixed(2)
       }
-
     })
 
     this.setState({
@@ -91,7 +90,6 @@ class ShoppingListRecipe extends React.Component {
     }, () => {
       this.props.removeRecipe(recipe)
     })
-
   }
 
   //This is the render function. This is where the

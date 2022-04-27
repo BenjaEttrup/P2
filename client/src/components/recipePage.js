@@ -35,19 +35,15 @@ class RecipePage extends React.Component {
 
   //Request back-end function findRecipe, to add the recipe respons to this.state.products.  
   componentDidMount() {
-    fetch(`/findRecipe/${this.props.id}`)
+    fetch(`/recipes/get/${this.props.id}`)
       .then((response) => response.json())
       .then((response) => {
-        this.setState({ recipeData: { recipe: response.recipe, ingredients: response.ingredients } }, () => {
-          console.log(this.state.recipeData.recipe.totalPrice);
-          console.log(this.state.recipeData.recipe);
-        })
-
+        this.setState({ recipeData: { recipe: response.recipe, ingredients: response.ingredients } });
       }).catch((e) => console.log(e));
   }
 
   addRecipe(recipe) {
-    fetch(`/addRecipeToShoppingList`, {
+    fetch(`/shoppingList/add`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -58,14 +54,8 @@ class RecipePage extends React.Component {
     })
       .catch((err) => {
         console.error(err);
-      })
-      .then(() => {
-        console.log('Success');
-        //this.props.updateShoppingList()
       });
   }
-
-
 
   // HTML
   render() {
@@ -150,16 +140,15 @@ class RecipePage extends React.Component {
                       </tr>
                     </tbody>
                   </table>
-
                   <div class="card-buttons-recipe g-0 ">
                     <div class="recipe-button" >
                       <button type="button" class="btn card-button-recipe" onClick={() => { this.addRecipe(this.state.recipeData); }}>
                         Add to shopping list
                       </button>
                     </div>
-                  </div></div>
+                  </div>
+                </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -167,6 +156,5 @@ class RecipePage extends React.Component {
     );
   }
 }
-
 
 export default RecipePage;

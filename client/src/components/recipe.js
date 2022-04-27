@@ -22,4 +22,5 @@ function Recipe() {
     </div>
   );
 }
+
 export default Recipe;

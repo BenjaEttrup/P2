@@ -3,6 +3,7 @@ import Spin from './spinner';
 import { compareTwoStrings } from 'string-similarity';
 
 import '../stylesheets/spinTheMeal.css'
+
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
@@ -40,7 +41,7 @@ class SpinTheMeal extends React.Component {
           myStash: res
         }
         this.setState(data, () => {
-          fetch(`/findAllRecipes`, {
+          fetch(`/recipes/getAll`, {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
@@ -80,7 +81,6 @@ class SpinTheMeal extends React.Component {
     this.setState({
       minPrice: evt.target.value
     }, () => {
-      console.log(this.state)
       this.updateRecipes();
     })
   }
@@ -89,7 +89,6 @@ class SpinTheMeal extends React.Component {
     this.setState({
       maxPrice: evt.target.value
     }, () => {
-      console.log(this.state)
       this.updateRecipes();
     })
   }
@@ -137,7 +136,6 @@ class SpinTheMeal extends React.Component {
 }
 
 export default SpinTheMeal;
-
 /**
  * Given a list of recipes, return a list of recipes that fall between a min and max price
  * @param minPrice - The minimum price you want to pay for your recipe.
@@ -145,7 +143,6 @@ export default SpinTheMeal;
  * @param recipes - an array of recipes
  * @returns An array of recipes.
  */
-
 function betweenPricesSearch(minPrice, maxPrice, recipes) {
   let returnRecipes = [];
   recipes.forEach((recipe) => {
@@ -166,6 +163,7 @@ function myStashSearch(recipes, myStash) {
   let tempRecipes = JSON.parse(JSON.stringify(recipes))
   let updatedRecipes = []
   let containsIngredientFromStash = false;
+
   tempRecipes.forEach((recipe) => {
     let tempRecipe = recipe;
     let updatedIngredients = [];
@@ -202,4 +200,3 @@ function myStashSearch(recipes, myStash) {
 
   return updatedRecipes;
 }
-
