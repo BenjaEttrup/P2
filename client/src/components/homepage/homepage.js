@@ -1,7 +1,9 @@
 import React from 'react';
+import { compareTwoStrings } from 'string-similarity';
+import { Modal } from 'bootstrap';
 import RecipeCard from './recipeCard';
 import Carousel from './carousel';
-import { compareTwoStrings } from 'string-similarity';
+import PopupRecipe from '../recipePopup';
 
 import '../../stylesheets/homepage.css';
 
@@ -18,7 +20,7 @@ class HomePage extends React.Component {
     super(props);
 
     this.props.updateNavFunction(1);
-    
+
     //Your code here
     this.state = {
       allRecipes: [],
@@ -28,45 +30,46 @@ class HomePage extends React.Component {
       maxPrice: 0,
       searchValue: '',
       categoryID: '1',
-      myStashChecked: false
+      myStashChecked: false,
+      selectedRecipeID: 1
     }
   }
 
   //Functions go here
   componentDidMount() {
     fetch(`/stash/get`, {
-      headers : { 
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then((res) => {
-      let data = {
-        myStash: res
-      }
-      this.setState(data, () => {
-        fetch(`/findAllRecipes`, {
-          headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        })
-        .then(res => res.json())
-        .then((json) => {
-          let data = {
-            allRecipes: json.recipes
-          }
-          this.setState(data, () => {
-            this.refreshSearch();
-          });
-        }).catch(err => {
-          console.error(err);
+      .then(res => res.json())
+      .then((res) => {
+        let data = {
+          myStash: res
+        }
+        this.setState(data, () => {
+          fetch(`/recipes/getAll`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          })
+            .then(res => res.json())
+            .then((json) => {
+              let data = {
+                allRecipes: json.recipes
+              }
+              this.setState(data, () => {
+                this.refreshSearch();
+              });
+            }).catch(err => {
+              console.error(err);
+            });
         });
+      }).catch(err => {
+        console.error(err);
       });
-    }).catch(err => {
-      console.error(err);
-    });
   }
 
   setSearchValue(evt) {
@@ -94,7 +97,7 @@ class HomePage extends React.Component {
   }
 
   refreshSearch() {
-	  let searchedRecipes = [];
+    let searchedRecipes = [];
 
     stringRecipeSearch(this.state.searchValue, this.state.allRecipes).forEach((recipe) => {
       searchedRecipes.push(recipe);
@@ -107,22 +110,22 @@ class HomePage extends React.Component {
     stringIngredientSearch(this.state.searchValue, notAlreadyChosen).forEach((recipe) => {
       searchedRecipes.push(recipe)
     })
-    
-    if(searchedRecipes === []){
+
+    if (searchedRecipes === []) {
       searchedRecipes = this.state.allRecipes;
     }
 
-    if(this.state.myStashChecked){
+    if (this.state.myStashChecked) {
       searchedRecipes = myStashSearch(searchedRecipes, this.state.myStash)
     }
 
-    if(this.state.maxPrice !== 0 && this.state.maxPrice !== '') {
+    if (this.state.maxPrice !== 0 && this.state.maxPrice !== '') {
       searchedRecipes = betweenPricesSearch(this.state.minPrice, this.state.maxPrice, searchedRecipes);
     }
 
-    if(this.state.categoryID === '1') {
+    if (this.state.categoryID === '1') {
       searchedRecipes.sort(comparePrice)
-    } else if(this.state.categoryID === '2'){
+    } else if (this.state.categoryID === '2') {
       searchedRecipes.sort(compareRating)
     }
 
@@ -149,17 +152,35 @@ class HomePage extends React.Component {
     })
   }
 
+
+  toggleModal() {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal
+    }), () => {
+      console.log(this.state.showModal)
+    })
+  }
+
+  activePopup(id) {
+    this.setState({ selectedRecipeID: id }, () => {
+      var homepageModal = new Modal(document.getElementById("homepagePopupModal"), {});
+
+      homepageModal.show()
+    })
+  }
+
+
   //This is the render function. This is where the
   //html is.
   render() {
     return (
       <div className="HomePage">
-        <Carousel recipes={this.state.allRecipes} />
+        <Carousel recipes={this.state.allRecipes} updateShoppingList={() => this.props.updateShoppingList()} />
         <div class="container searchbar">
           <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
               <div class="form shadow-rounded"><i class="fa fa-search"></i>
-                <input type="text" class="form-control form-input" placeholder="Search recipe..." onChange={this.state.recipes ? (evt) => {this.setSearchValue(evt)} : ''} />
+                <input type="text" class="form-control form-input" placeholder="Search recipe..." onChange={this.state.recipes ? (evt) => { this.setSearchValue(evt) } : ''} />
               </div>
             </div>
           </div>
@@ -170,9 +191,9 @@ class HomePage extends React.Component {
 
               <div class="col-5 btn-group">
                 <div class="form-check-group">
-                  <label class="form-check-label"  for="flexCheckDefault" >
+                  <label class="form-check-label" for="flexCheckDefault" >
                     My Stash
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={this.state.myStashChecked} onChange={() => {this.onStashChange()}} />
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={this.state.myStashChecked} onChange={() => { this.onStashChange() }} />
                   </label>
                 </div>
                 <button type="button" id="filterButton" class="btn dropdown-toggle" data-bs-toggle="dropdown"
@@ -185,22 +206,22 @@ class HomePage extends React.Component {
                         <span class="input-group-text" id="min-input-left">Min</span>
                         <input type="number" class="form-control" id="min-input-right"
                           step="10.00" min="00.00" placeholder="DKK" aria-label="Minimum price"
-                          aria-describedby="basic-addon1" onChange={(evt) => {this.setMinPriceValue(evt)}} />
+                          aria-describedby="basic-addon1" onChange={(evt) => { this.setMinPriceValue(evt) }} />
                       </div>
                       <div class="input-group max-min-margin">
                         <span class="input-group-text" id="max-input-left">Max</span>
                         <input type="number" class="form-control" id="max-input-right" step="10.00"
                           min="00.00" placeholder="DKK" aria-label="Maximum price"
-                          aria-describedby="basic-addon2" onChange={(evt) => {this.setMaxPriceValue(evt)}} />
+                          aria-describedby="basic-addon2" onChange={(evt) => { this.setMaxPriceValue(evt) }} />
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
               <div class="col-3 btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value='1' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '1' ? true : false} />
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value='1' onClick={(evt) => { this.changeCategory(evt) }} checked={this.state.categoryID === '1' ? true : false} />
                 <label class="btn btn-outline-primary" for="btnradio1">Price</label>
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value='2' onClick={(evt) => {this.changeCategory(evt)}} checked={this.state.categoryID === '2' ? true : false} />
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value='2' onClick={(evt) => { this.changeCategory(evt) }} checked={this.state.categoryID === '2' ? true : false} />
                 <label class="btn btn-outline-primary" for="btnradio2">Rating</label>
               </div>
             </div>
@@ -210,10 +231,13 @@ class HomePage extends React.Component {
               {
                 this.state.recipes.map((recipe) => {
                   return (
-                    <RecipeCard recipe={recipe} updateShoppingList={() => this.props.updateShoppingList()}/>
+                    <RecipeCard recipes={this.state.recipes} recipe={recipe} onSelectCard={(id) => this.activePopup(id)} updateShoppingList={() => this.props.updateShoppingList()} />
                   )
                 })
               }
+            </div>
+            <div class="modal fade" id="homepagePopupModal" aria-labelledby="homepagePopupModal" aria-hidden="true">
+              {this.state.allRecipes !== [] && this.state.selectedRecipeID ? <PopupRecipe items={this.state.allRecipes} selectedItem={this.state.selectedRecipeID} /> : ""}
             </div>
           </div>
         </div>
@@ -229,11 +253,11 @@ class HomePage extends React.Component {
  * @param recipes - an array of recipes
  * @returns An array of recipes that match the search value.
  */
- function stringRecipeSearch(searchValue, recipes) {
+function stringRecipeSearch(searchValue, recipes) {
   let returnRecipes = [];
   recipes.forEach((recipe) => {
     let recipeTitleLowerCase = recipe.recipe.title.toLowerCase();
-    if(recipeTitleLowerCase.includes(searchValue.toLowerCase())){
+    if (recipeTitleLowerCase.includes(searchValue.toLowerCase())) {
       returnRecipes.push(recipe);
     }
   })
@@ -247,17 +271,17 @@ class HomePage extends React.Component {
  * @param recipes - an array of recipes
  * @returns An array of recipes that contain the search value in their ingredients.
  */
- function stringIngredientSearch(searchValue, recipes) {
+function stringIngredientSearch(searchValue, recipes) {
   let returnRecipes = [];
   recipes.forEach((recipe) => {
     let doesIncludeIngredient = false;
     recipe.ingredients.forEach((ingredient) => {
       let ingredientTitleLowerCase = ingredient.title.toLowerCase();
-      if(ingredientTitleLowerCase.includes(searchValue.toLowerCase())){
+      if (ingredientTitleLowerCase.includes(searchValue.toLowerCase())) {
         doesIncludeIngredient = true;
       }
     })
-    if(doesIncludeIngredient) {
+    if (doesIncludeIngredient) {
       returnRecipes.push(recipe);
     }
   })
@@ -271,17 +295,17 @@ class HomePage extends React.Component {
  * @param recipes - an array of recipes
  * @returns An array of recipes.
  */
- function betweenPricesSearch(minPrice, maxPrice, recipes) {
+function betweenPricesSearch(minPrice, maxPrice, recipes) {
   let returnRecipe = [];
   recipes.forEach((recipe) => {
     let price = 0;
 
     recipe.ingredients.forEach((ingredient) => {
-        price += ingredient.price;
+      price += ingredient.price;
     })
 
-    if(price >= minPrice && price <= maxPrice){
-        returnRecipe.push(recipe);
+    if (price >= minPrice && price <= maxPrice) {
+      returnRecipe.push(recipe);
     }
   })
   return returnRecipe;
@@ -309,6 +333,14 @@ function compareRating(a, b) {
   return a.recipe.rating - b.recipe.rating;
 }
 
+/**
+ * It takes in an array of recipes and an array of ingredients and returns an array of recipes with the
+ * ingredients that are not in the ingredients array removed.
+ * 
+ * @param recipes An array of recipes
+ * @param myStash An array of ingredients
+ * @returns An array of objects.
+ */
 function myStashSearch(recipes, myStash) {
   let tempRecipes = JSON.parse(JSON.stringify(recipes))
   let updatedRecipes = []
@@ -321,13 +353,13 @@ function myStashSearch(recipes, myStash) {
       myStash.forEach((stashIngredient) => {
         let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
 
-        if(similarity >= 0.5 && isSimilar === false){
+        if (similarity >= 0.5 && isSimilar === false) {
           isSimilar = true;
-        } else if(similarity <= 0.5 && isSimilar === false) {
+        } else if (similarity <= 0.5 && isSimilar === false) {
           isSimilar = false;
         }
       })
-      if(!isSimilar) {
+      if (!isSimilar) {
         updatedIngredients.push(ingredient);
       }
     })

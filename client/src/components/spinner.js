@@ -1,6 +1,5 @@
 import React from "react";
-import {Modal} from 'bootstrap';
-
+import { Modal } from 'bootstrap';
 import Wheel from "./wheel.js";
 
 import "../stylesheets/spinner.css";
@@ -16,26 +15,25 @@ export class Spin extends React.Component {
       isSpinning: false
     }
   }
- 
-  activePopup(value, recipes){
+
+  activePopup() {
     this.setState({
       isSpinning: true
     })
     setTimeout(() => {
-      var myModal = new Modal(document.getElementById("popupRecipeModal"), {});
-      myModal.show()
+      var spinnerModal = new Modal(document.getElementById("spinnerPopupModal"), {});
+      spinnerModal.show()
       this.setState({
         isSpinning: false
       })
     }, 5000)
-    console.log(recipes[value]);
   }
 
   render() {
     return (
       <div className="Spin">
         {
-         this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={(value, recipes) => this.activePopup(value, recipes)} setStateFunction={this.setState} isSpinning={this.state.isSpinning} /> : ''
+          this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={() => this.activePopup()} setStateFunction={this.setState} isSpinning={this.state.isSpinning} /> : ''
         }
       </div>
     );

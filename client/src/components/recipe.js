@@ -7,19 +7,20 @@ import RecipePage from './recipePage';
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
 function Recipe() {
-    let { id } = useParams();
-    function errorMessage() {
-        return (
-            <div>
-                <h1>Page not found</h1>
-            </div>
-        )
-    }
-    // HTML
+  let { id } = useParams();
+  function errorMessage() {
     return (
-        <div>
-            {id ? <RecipePage id={id} /> : errorMessage()}
-        </div>
-    );
+      <div>
+        <h1>Page not found</h1>
+      </div>
+    )
+  }
+  // HTML
+  return (
+    <div>
+      {id ? <RecipePage id={id} /> : errorMessage()}
+    </div>
+  );
 }
+
 export default Recipe;

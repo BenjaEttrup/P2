@@ -14,12 +14,9 @@ class Navbar extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super(props);
-    
-    //Your code here
+
     this.shown = false;
   }
-
-  //Functions go here
 
   //This is the render function. This is where the
   //html is.
@@ -63,7 +60,7 @@ class Navbar extends React.Component {
                   </li>
                   <li class="nav-item">
                     <button class='hidden-btn icon' type='button' data-bs-toggle="dropdown">
-                        <i class="fa fa-user icon"></i>
+                      <i class="fa fa-user icon"></i>
                     </button>
                   </li>
                 </ul>

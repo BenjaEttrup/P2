@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/navbar";
 import HomePage from "./components/homepage/homepage";
-import ShoppingList from "./components/shoppingList";
+import ShoppingList from "./components/shoppingList/shoppingList";
 import SpinTheMeal from "./components/spinTheMeal";
 import MyStash from "./components/myStash";
 import Recipe from "./components/recipe.js"
@@ -32,24 +32,24 @@ class App extends React.Component {
   }
 
   updateRecipes() {
-    fetch(`/shoppingList`, {
-      headers : { 
+    fetch(`/shoppingList/get`, {
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     })
-    .then(res => res.json())
-    .then((res) => {
-      this.setState({
-        recipes: res
-      })
-    }).catch(err => {
-      console.error(err);
-    });
+      .then(res => res.json())
+      .then((res) => {
+        this.setState({
+          recipes: res
+        })
+      }).catch(err => {
+        console.error(err);
+      });
   }
 
   removeRecipe(recipeID) {
-    fetch(`/removeRecipeFromShoppingList/${recipeID}`, {
+    fetch(`/shoppingList/remove/recipe/${recipeID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ class App extends React.Component {
     let newRecipes = [];
 
     tempRecipes.forEach(recipe => {
-      if(recipe.recipe.recipeID !== recipeID) {
+      if (recipe.recipe.recipeID !== recipeID) {
         newRecipes.push(recipe)
       }
     });
@@ -77,25 +77,25 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <Navbar active={this.state.activeNav} updateRecipes={() => {this.updateRecipes()}} removeRecipe={(recipeID) => {this.removeRecipe(recipeID)}} recipes={this.state.recipes}/>
+          <Navbar active={this.state.activeNav} updateRecipes={() => { this.updateRecipes() }} removeRecipe={(recipeID) => { this.removeRecipe(recipeID) }} recipes={this.state.recipes} />
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/shoppingList">
-              <ShoppingList updateNavFunction={(id) => {this.updateNav(id)}}/>
+              <ShoppingList updateNavFunction={(id) => { this.updateNav(id) }} />
             </Route>
             <Route path="/myStash">
-              <MyStash updateNavFunction={(id) => {this.updateNav(id)}}/>
+              <MyStash updateNavFunction={(id) => { this.updateNav(id) }} />
             </Route>
             <Route path="/spinTheMeal">
-              <SpinTheMeal updateNavFunction={(id) => {this.updateNav(id)}}/>
+              <SpinTheMeal updateNavFunction={(id) => { this.updateNav(id) }} />
             </Route>
             <Route path="/recipe/:id">
-              <Recipe/>
+              <Recipe />
             </Route>
             <Route path="/">
 
-              <HomePage updateNavFunction={(id) => {this.updateNav(id)}} updateShoppingList={() => this.updateRecipes()}/>
+              <HomePage updateNavFunction={(id) => { this.updateNav(id) }} updateShoppingList={() => this.updateRecipes()} />
             </Route>
           </Switch>
         </div>

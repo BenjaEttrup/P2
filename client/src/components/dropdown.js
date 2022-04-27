@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../stylesheets/dropdown.css'
+import '../stylesheets/myStash.css'
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -13,14 +14,12 @@ class Dropdown extends React.Component {
     //this says that the code from the React component
     //runs before our code in the contructor
     super(props);
-    
+
     //Your code here
     this.state = {
       newRecipes: []
     }
   }
-
-  //Functions go here
 
   //This is the render function. This is where the
   //html is.
@@ -29,30 +28,32 @@ class Dropdown extends React.Component {
       <div className="Dropdown">
         <h5 class="dropdown-title">Recipes</h5>
         <div>
-        <table class="table table-striped table-borderless">
-          <thead>
-            <tr>
-              <th class="col-6" scope="col"></th>
-              <th class="col-4" scope="col"></th>
-              <th class="col-1" scope="col"></th>
-            </tr>
-          </thead>
-              <tbody>
-                {this.props.recipes.map((recipe) => {
-                  return (
-                    <tr class="table-content  table-rounded">
-                      <td>{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</td>
-                      <td class="table-content-secondary">
+          <table class="table table-striped table-borderless">
+            <thead>
+              <tr>
+                <th class="col-6" scope="col"></th>
+                <th class="col-4" scope="col"></th>
+                <th class="col-1" scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.recipes.map((recipe) => {
+                return (
+                  <tr class="table-content  table-rounded">
+                    <td>{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</td>
+                    <td class="table-content-secondary">
                       {recipe.recipe.price + ' DKK'}
-                      </td>
-                      <td class="right-align-text">
+                    </td>
+                    <td class="right-align-text">
+                      <button class="deleteButton">
                         <i class="fa fa-trash" onClick={() => this.props.removeRecipe(recipe.recipe.recipeID)}></i>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
         <div class="btn-row">
           <Link to="/shoppingList">
