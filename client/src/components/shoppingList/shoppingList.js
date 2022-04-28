@@ -264,7 +264,6 @@ class ShoppingList extends React.Component {
    */
   matchIngredient(stashIngredient, subtract, wasTrashed = false, addedToStash = false) {
     let ingredientComponent = undefined;
-    let hide = false;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
