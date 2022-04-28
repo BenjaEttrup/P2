@@ -30,7 +30,7 @@ class HomePage extends React.Component {
       maxPrice: 0,
       searchValue: '',
       categoryID: '1',
-      myStashChecked: false,
+      myStashChecked: true,
       selectedRecipeID: 1
     }
   }
