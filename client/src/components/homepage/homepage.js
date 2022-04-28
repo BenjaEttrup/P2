@@ -369,7 +369,6 @@ function myStashSearch(recipes, myStash) {
       newPrice += ingredient.price;
     })
 
-    tempRecipe.ingredients = updatedIngredients;
     tempRecipe.recipe.price = Number(newPrice.toFixed(2));
 
     updatedRecipes.push(tempRecipe)
