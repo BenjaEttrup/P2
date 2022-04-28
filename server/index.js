@@ -195,9 +195,14 @@ app.get('/recipes/get/:ID', async (req, res) => {
     recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
     recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
     recipeObject.recipe["recipeIndex"] = recipeIndex;
+
+    res.json(recipeObject);
+  } else {
+    res.status(204).json(recipeObject);
   }
 
-  res.json(recipeObject);
+
+  
 });
 
 // Stash
