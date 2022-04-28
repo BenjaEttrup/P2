@@ -387,7 +387,6 @@ class ShoppingList extends React.Component {
     let myStashComponents = this.state.myStashComponents;
     let isDuplicate = false;
 
-    // TODO figure out how to check if it is not included in any of the recipes 
     myStashComponents.forEach(stashComponent => {
       if (Number(stashRowElementInstance.props.ingredient.prod_id) === Number(stashComponent.props.ingredient.prod_id)) {
         isDuplicate = true;
