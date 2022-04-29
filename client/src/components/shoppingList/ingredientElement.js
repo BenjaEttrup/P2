@@ -79,22 +79,18 @@ class IngredientElement extends React.Component {
       endPoint: endPoint
     };
 
-    console.log("")
-    console.log("pushed Trashcan")
     if (this.props.hasOwnProperty('recipeID')) {
       this.setState({
         hide: !this.state.hide,
         wasTrashed: true
       }, () => {
         params['recipeID'] = this.props.recipeID;
-        console.log("removing recipeIngredient")
         this.props.removeIngredient(stashRowElement, params)
         this.props.updateRecipePrice()
       })
     }
     else {
       params['recipeID'] = false;
-      console.log("removing stashIngredient")
       this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
     }
@@ -160,7 +156,7 @@ class IngredientElement extends React.Component {
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
           <td className="right-align">
-            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, 'removeIngredientFromShoppingList/') }}>
+            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/shoppinglist/remove/ingredient/') }}>
               <i className="fa fa-trash"></i></button>
           </td>
           <td className="right-align center" width="2%">

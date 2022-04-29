@@ -195,9 +195,14 @@ app.get('/recipes/get/:ID', async (req, res) => {
     recipeObject.recipe["recipeID"] = recipeData.recipes[recipeIndex].recipeID
     recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
     recipeObject.recipe["recipeIndex"] = recipeIndex;
+
+    res.json(recipeObject);
+  } else {
+    res.status(204).json(recipeObject);
   }
 
-  res.json(recipeObject);
+
+  
 });
 
 // Stash
@@ -355,13 +360,12 @@ app.get('/shoppingList/get', (req, res) => {
   })
 });
 
-// /removeIngredientFromShoppingList/:ID&:prod_id
 app.delete('/shoppinglist/remove/ingredient/:ID&:prod_id', (req, res) => {
   // TODO: needs validation! if req.params.prod_id is %19965, this will mess up
   try {
     fs.readFile(userPath, function readFileCallback(err, data) {
       let userData = JSON.parse(data);
-      let recipeIndex = findRecipeIndex(req.params.ID, userPath, "shoppingList");
+      let recipeIndex = findRecipeIndex(req.params.ID, userData, "shoppingList");
       let ingredientIndex = findIngredientIndex(recipeIndex, req.params.prod_id, userPath, "shoppingList");
 
       if (ingredientIndex) {
@@ -503,12 +507,12 @@ function findRecipeIndex(ID, data, option) {
  * @returns The index of the ingredient in the recipe.
  */
 function findIngredientIndex(recipeIndex, productID, filePath, option) {
-  let userData = require(userPath);
+  let userData = require(filePath);
   productID = Number(productID);
 
   // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
   for (ingredient in userData[option][recipeIndex].ingredients) {
-    if (userData[option][recipeIndex].ingredients[ingredient].prod_id === productID) {
+    if (Number(userData[option][recipeIndex].ingredients[ingredient].prod_id) === productID) {
       return ingredient;
     }
   }
