@@ -55,27 +55,9 @@ class ShoppingListRecipe extends React.Component {
   }
 
   updateRecipePrice() {
-    // TODO SHOULD LOOP THROUGH THE recipeIngredientComponents.forEach then check if props.isHidden
-    // this value should tell whether the value of the ingredient should be added to the price of
-    // the recipe or deducted.
-    let recipeSum = 0;
-
-    this.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
-      console.log(recipeIngredientComponent)
-      if (recipeIngredientComponent.state.hide) {
-        return;
-      }
-      else {
-        recipeSum = Number(+recipeSum + +recipeIngredientComponent.props.ingredient.price).toFixed(2)
-      }
-    })
-
-    this.setState({
-      price: recipeSum,
-    }, () => {
-      this.props.updateRecipePrices(true);
-    })
+    this.props.updateRecipePrices(true);
   }
+
 
   componentDidMount() {
     this.setState({

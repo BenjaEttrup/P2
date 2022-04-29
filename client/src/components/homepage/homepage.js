@@ -30,7 +30,7 @@ class HomePage extends React.Component {
       maxPrice: 0,
       searchValue: '',
       categoryID: '1',
-      myStashChecked: false,
+      myStashChecked: true,
       selectedRecipeID: 1
     }
   }
@@ -369,7 +369,6 @@ function myStashSearch(recipes, myStash) {
       newPrice += ingredient.price;
     })
 
-    tempRecipe.ingredients = updatedIngredients;
     tempRecipe.recipe.price = Number(newPrice.toFixed(2));
 
     updatedRecipes.push(tempRecipe)

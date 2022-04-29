@@ -2,6 +2,8 @@ import React from 'react';
 import '../../stylesheets/shoppingList.css'
 import ShoppingListRecipe from './shoppingListRecipe';
 import IngredientElement from './ingredientElement';
+import { compareTwoStrings } from 'string-similarity';
+import { param } from 'jquery';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -13,7 +15,8 @@ class ShoppingList extends React.Component {
     //Super has to be called as the first thing 
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
+    super(props);
+    this.props.updateNavFunction(2);
 
     this.state = {
       shoppingListRecipes: [],
@@ -35,10 +38,9 @@ class ShoppingList extends React.Component {
     })
       .then(res => res.json())
       .then((res) => {
-        let data = {
-          myStashIngredients: res
-        };
-        this.setState(data);
+        this.setState({
+          myStashIngredients: res,
+        });
       }).catch(err => {
         console.error(err);
       }).then(() => {
@@ -57,14 +59,40 @@ class ShoppingList extends React.Component {
     })
       .then(res => res.json())
       .then((res) => {
-        let data = {
+        this.setState({
           shoppingListRecipes: res,
-        };
-        this.setState(data);
+        }, () => {this.filterStashItems()});
       }).catch(err => {
         console.error(err);
       });
   }
+
+  filterStashItems() {
+    console.log(this.state.shoppingListRecipes);
+    console.log(this.state.myStashIngredients)
+    let filteredStash = [];
+
+    this.state.myStashIngredients.forEach(stashIngredient => {
+      let similarity;
+      this.state.shoppingListRecipes.forEach(recipe => {
+        for (let recipeIngredient of recipe.ingredients) {
+          similarity = compareTwoStrings(stashIngredient.title, recipeIngredient.title);
+          if (similarity >= 0.5) {
+            break;
+          }
+        }
+      })
+
+      if (similarity >= 0.5) {
+        filteredStash.push(stashIngredient);
+      }
+    })
+
+    this.setState({
+      myStashIngredients: filteredStash
+    });
+  }
+
 
   /**
    * @function Adds all recipe prices together
@@ -79,16 +107,14 @@ class ShoppingList extends React.Component {
     let myStashComponents = this.state.myStashComponents;
 
     myStashComponents.forEach(component => {
-      if (Number(component.props.ingredient.prod_id) === Number(shoppingListElement.props.ingredient.prod_id)) {
+      let similarity = compareTwoStrings(component.props.ingredient.title, shoppingListElement.props.ingredient.title);
+
+      if (similarity >= 0.5) {
         component.setState({
           hide: false,
           boxChecked: true,
           wasTrashed: false
         })
-        console.log("")
-        console.log("Changed hide to false")
-        console.log(component)
-        console.log("")
       }
     })
 
@@ -99,8 +125,6 @@ class ShoppingList extends React.Component {
    * @param {*} stashIngredient the stashIngredient
    */
   updateMyStashIngredients(shoppingListElement) {
-    console.log("")
-    console.log("UpdatingMystashingredients")
     let myStashIngredients = this.state.myStashIngredients;
     let isDuplicate = false;
     console.log(shoppingListElement)
@@ -120,21 +144,13 @@ class ShoppingList extends React.Component {
       return;
     }
 
-    console.log("PUSHING TO MYSTASHINGREDIENTS")
-    console.log(shoppingListElement.props.ingredient);
     myStashIngredients.push(shoppingListElement.props.ingredient);
 
 
     this.setState((prevState) => ({
       myStashIngredients: myStashIngredients
     }))
-
-    console.log(`myStashIngredients.length = ${myStashIngredients.length}`)
-
-
   }
-
-
 
   /**
    * 
@@ -142,10 +158,6 @@ class ShoppingList extends React.Component {
    * @param {*} params an object that contains the members recipeId and an endpoint (the url to access)
    */
   removeIngredient(stashRowElement, params) {
-    console.log(`Deleting ingredient in stash with prod_id = ${stashRowElement.prod_id}`);
-    console.log(stashRowElement);
-    console.log(`fetching endpoint = ${params.endPoint}${Number.isInteger(params.recipeID) ? params.recipeID + "&" : ""}${stashRowElement.prod_id}`)
-
     fetch(`${params.endPoint}${Number.isInteger(params.recipeID) ? params.recipeID + "&" : ""}${stashRowElement.prod_id}`, {
       method: 'DELETE',
       headers: {
@@ -158,7 +170,6 @@ class ShoppingList extends React.Component {
 
   }
 
-
   /**
    * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
    * the stashIngredient.
@@ -169,7 +180,9 @@ class ShoppingList extends React.Component {
   componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash) {
     let ingredientMatch = undefined
     recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
-      if (Number(ingredientComponent.props.ingredient.prod_id) === Number(stashIngredient.props.ingredient.prod_id)) {
+      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
+
+      if (similarity >= 0.5) {
         ingredientMatch = ingredientComponent
         return ingredientComponent;
       }
@@ -198,13 +211,8 @@ class ShoppingList extends React.Component {
     let tempRecipeSum = 0;
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      console.log(``)
-      console.log(`updateTotalRecipePrice to = ${tempRecipeSum}`)
-      console.log(``)
       tempRecipeSum += recipeComponent.state.price
     })
-
-
 
     this.setState({
       recipeSum: tempRecipeSum,
@@ -215,61 +223,44 @@ class ShoppingList extends React.Component {
 
   updateRecipePrices() {
     let totalRecipeSum = 0;
-    console.log(this.state.shoppingListRecipeComponents)
+
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       let recipeSum = 0;
-      console.log(``);
-      console.log(`________updateRecipePrices forEach ${rcIndex}________`);
+
       if (recipeComponent.state.hide) {
         return;
       }
-      console.log(recipeComponent.state.recipeIngredientComponent)
 
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
-        console.log(``);
-        console.log(`________recipeIngredientComponent forEach ${ricIndex}________`);
-        console.log(`recipeIngredientComponent.state.hide = ${recipeIngredientComponent.state.hide} recipeIngredientComponent.state.wasTrashed = ${recipeIngredientComponent.state.wasTrashed}`);
         let tempIngredientPrice = recipeIngredientComponent.props.ingredient.price;
-        console.log(`recipeIngredientComponent.props.ingredient.price = ${recipeIngredientComponent.props.ingredient.price}`);
-
 
         if (recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed) {
-          console.log(`recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed was true`)
           tempIngredientPrice = 0;
-          console.log(`tempIngredientPrice = ${tempIngredientPrice}`)
         }
         else {
           this.state.myStashComponents.forEach((stashComponent, scIndex) => {
-            console.log(`________myStashComponents forEach ${scIndex}________`);
-            console.log(`stashComponent.state.hide = ${stashComponent.state.hide} stashComponent.state.wasTrashed = ${stashComponent.state.wasTrashed} stashComponent.state.boxChecked = ${stashComponent.state.boxChecked}`);
-            if (Number(stashComponent.props.ingredient.prod_id) === recipeIngredientComponent.props.ingredient.prod_id) {
+            let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
+            if (similarity >= 0.5) {
               if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
-                console.log(`stashComponent.state.hide || !stashComponent.state.boxChecked was true`)
                 tempIngredientPrice = 0;
 
                 recipeIngredientComponent.setState({
                   hide: true,
                 })
-                console.log(`tempIngredientPrice = ${tempIngredientPrice}`)
               }
             }
           })
         }
 
-        console.log(`Before changing recipe sum`)
-        console.log(`recipeSum = ${recipeSum} adding ${recipeIngredientComponent.props.ingredient.price} to recipeSum`);
-        console.log(`recipeSum = ${recipeSum} adding ${tempIngredientPrice} to recipeSum`);
         recipeSum = Number(+recipeSum + +tempIngredientPrice).toFixed(2)
         recipeComponent.setState({
           price: recipeSum
         })
       })
-      console.log(`Adding ${recipeSum} to totalRecipeSum ${totalRecipeSum}`)
-      console.log(``);
+
       totalRecipeSum = Number(+totalRecipeSum + +recipeSum).toFixed(2);
     })
 
-    console.log(this.state.shoppingListRecipeComponents)
     this.updateTotalRecipePrice(totalRecipeSum);
   }
 
@@ -299,18 +290,9 @@ class ShoppingList extends React.Component {
   matchIngredient(stashIngredient, subtract, wasTrashed = false, addedToStash = false) {
     let ingredientComponent = undefined;
 
-    console.log("")
-    console.log(`New matchIngredient call subtract = ${subtract}, wasTrashed = ${wasTrashed}, addedToStash = ${addedToStash}`)
-    console.log(stashIngredient);
-    console.log(this);
-
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      console.log(recipeComponent);
       ingredientComponent = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
-      console.log(`_______________MatchIngredient_forEach ${rcIndex}_________________`)
-      console.log("THE MATCHED INGREDIENT COMPONENT")
-      console.log(ingredientComponent);
       if (ingredientComponent) {
         // The case where the trash can on the stashRowElement was pushed
         if (wasTrashed) {
@@ -325,30 +307,20 @@ class ShoppingList extends React.Component {
         }
 
         // Two cases: the recipeIngredient was added to stash or it wasn't
-        // TODO this could be cleaner without if else by using the value of addedToStash
-        // to determine how the state hide should be set
-        if (addedToStash) {
-          ingredientComponent.setState({
-            hide: true,
-            boxChecked: true
-          }, () => {
-            this.updateRecipePrices();
-          })
-          return;
-        }
-        else {
-          ingredientComponent.setState({
-            hide: stashIngredient.state.boxChecked,
-            boxChecked: true
-          }, () => {
-            this.updateRecipePrices();
-          })
-          return;
-        }
-      }
-      else {
-        console.log("didnt find match")
+        let hide = addedToStash ? true : stashIngredient.state.boxChecked;
+        ingredientComponent.setState({
+          hide: hide,
+          boxChecked: true,
+        }, () => {
+          this.updateRecipePrices();
+        })
 
+      }
+      
+      // If no matching ingredient component was found.
+      else {
+        // IS this every reachable?
+        console.log("INITING RECIPECOMPONENT")
         recipeComponent.setState({
           inited: true,
         })
@@ -360,13 +332,14 @@ class ShoppingList extends React.Component {
   ingredientInStash(shoppingListIngredient, ingredientIndex) {
     let isInStash = false;
     let myStashIngredients = this.state.myStashIngredients;
-    console.log(myStashIngredients)
     if (ingredientIndex === undefined) {
       return isInStash
     }
 
     myStashIngredients.forEach((ingredient, i) => {
-      if (Number(ingredient.prod_id) === Number(shoppingListIngredient.props.ingredient.prod_id)) {
+      let similarity = compareTwoStrings(ingredient.title, shoppingListIngredient.props.ingredient.title);
+
+      if (similarity >= 0.5) {
         isInStash = true
         shoppingListIngredient.setState({
           hide: true,
@@ -414,7 +387,6 @@ class ShoppingList extends React.Component {
     let myStashComponents = this.state.myStashComponents;
     let isDuplicate = false;
 
-
     myStashComponents.forEach(stashComponent => {
       if (Number(stashRowElementInstance.props.ingredient.prod_id) === Number(stashComponent.props.ingredient.prod_id)) {
         isDuplicate = true;
@@ -422,16 +394,12 @@ class ShoppingList extends React.Component {
     })
     if (isDuplicate) return;
 
+
     myStashComponents.push(stashRowElementInstance);
     this.setState({
       myStashComponents: myStashComponents
     }
-      // , () => {
-      // if (this.state.myStashComponents.length)
-      // }
     )
-
-
   }
 
   //This is the render function. This is where the
