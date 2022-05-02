@@ -253,13 +253,9 @@ app.post(
     check(["unit", "amount"]).exists().withMessage("Does not exist"),
   ],
   (req, res) => {
+    // Handle validation errors
     const errors = validationResult(req);
-
-    console.log(req.body);
-
     if (!errors.isEmpty()) {
-      console.log(errors);
-      console.log(req.body);
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -307,39 +303,39 @@ app.post(
 );
 
 // Remove product by id in stash json file
-app.delete("/stash/remove/:prod_id", (req, res) => {
-  // When file exists, take file data and remove product from the data. opdate data in new file after
-  fs.readFile(userPath, (err, fileData) => {
-    if (err) {
-      console.log("Can't read file");
-      res.status(404).send("File couldn't be read");
-    } else {
+app.delete(
+  "/stash/remove/:prod_id",
+  [check("prod_id").isNumeric().withMessage("Not a number")],
+  (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    // When file exists, take file data and remove product from the data. opdate data in new file after
+    fs.readFile(userPath, (err, data) => {
+      if (err) {
+        console.log("Can't read file");
+        return res.status(404).send("File couldn't be read");
+      }
       // Gets already stored ingredients and removes ingredient by id.
-      let parsedJson = JSON.parse(fileData);
-      jsonArray = parsedJson.myStash;
-      //Loops through file, and remove all products with the given id.
-      for (let i = 0; i < jsonArray.length; i++) {
-        // console.log("Kører for-loop")
-        // console.log(`Index: ${i}  |  jsonArray[i].prod_id == req.body.prod_id:  ${jsonArray[i].prod_id == req.params.prod_id}`)
-        // console.log("Req.body.prod_id i if: " + req.params.prod_id)
-        // console.log("jsonArray prod_id i if: " + jsonArray[i].prod_id)
-        if (jsonArray[i].prod_id == req.params.prod_id) {
-          if (jsonArray[i].amount > 1) {
-            jsonArray[i].amount--;
-          } else {
-            jsonArray.splice(i, 1);
-          }
+      let userData = JSON.parse(data);
+      for (element in userData.myStash) {
+        if (userData.myStash[element].prod_id == req.params.prod_id) {
+          userData.myStash[element].amount > 1
+            ? userData.myStash[element].amount--
+            : userData.myStash.splice(element, 1);
           break;
         }
       }
-      res.status(200).send(parsedJson);
+      res.status(200).send(userData);
 
-      fs.writeFile(userPath, JSON.stringify(parsedJson, null, 4), (err) => {
+      fs.writeFile(userPath, JSON.stringify(userData, null, 4), (err) => {
         if (err) console.log("Error writing file:", err);
       });
-    }
-  });
-});
+    });
+  }
+);
 
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
@@ -401,13 +397,9 @@ app.post(
       .withMessage("Is empty"),
   ],
   (req, res) => {
+    // Handle validation errors
     const errors = validationResult(req);
-
-    console.log(req.body);
-
     if (!errors.isEmpty()) {
-      console.log(errors);
-      console.log(req.body);
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -417,8 +409,6 @@ app.post(
       } else {
         // Lets us manipalute the json object in js
         let userData = JSON.parse(data);
-
-        // TODO: needs to validate the req.body object.
 
         // In theory, only the recipeID should be stored in myStash to reduce the amount of storage needed
         // However, we're limited to only a single api call per second.
@@ -457,81 +447,95 @@ app.get("/shoppingList/get", (req, res) => {
   });
 });
 
-app.delete("/shoppinglist/remove/ingredient/:ID&:prod_id", (req, res) => {
-  // TODO: needs validation! if req.params.prod_id is %19965, this will mess up
-  try {
-    fs.readFile(userPath, function readFileCallback(err, data) {
-      let userData = JSON.parse(data);
-      let recipeIndex = findRecipeIndex(
-        req.params.ID,
-        userData,
-        "shoppingList"
-      );
-      let ingredientIndex = findIngredientIndex(
-        recipeIndex,
-        req.params.prod_id,
-        userPath,
-        "shoppingList"
-      );
+app.delete(
+  "/shoppinglist/remove/ingredient/:ID&:prod_id",
+  [check(["ID", "prod_id"]).isNumeric().withMessage("Not a number")],
+  (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ errors: errors.array(), params: req.params });
+    }
+    try {
+      fs.readFile(userPath, function readFileCallback(err, data) {
+        let userData = JSON.parse(data);
+        let recipeIndex = findRecipeIndex(
+          req.params.ID,
+          userData,
+          "shoppingList"
+        );
+        let ingredientIndex = findIngredientIndex(
+          recipeIndex,
+          req.params.prod_id,
+          userPath,
+          "shoppingList"
+        );
 
-      if (ingredientIndex) {
-        userData.shoppingList[recipeIndex].ingredients.splice(
-          ingredientIndex,
-          1
-        ); // 2nd parameter means remove one item only
-      } else {
-        console.log("Failed to get product ID index");
-        res.status(500).send();
-      }
-
-      let json = JSON.stringify(userData, null, 4);
-
-      fs.writeFile(userPath, json, function readFileCallback(err, data) {
-        if (err) {
+        if (ingredientIndex) {
+          userData.shoppingList[recipeIndex].ingredients.splice(
+            ingredientIndex,
+            1
+          ); // 2nd parameter means remove one item only
+        } else {
+          console.log("Failed to get product ID index");
           res.status(500).send();
         }
-        res.status(202).send();
+
+        let json = JSON.stringify(userData, null, 4);
+
+        fs.writeFile(userPath, json, function readFileCallback(err, data) {
+          if (err) {
+            res.status(500).send();
+          }
+          res.status(202).send();
+        });
       });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send();
+    } catch (err) {
+      console.log(err);
+      res.status(500).send();
+    }
   }
-});
+);
 
 /** Removes a recipe from the shoppinglist* */
 // /removeRecipeFromShoppingList/:ID
-app.delete("/shoppingList/remove/recipe/:ID", (req, res) => {
-  try {
-    fs.readFile(userPath, function readFileCallback(err, data) {
-      let userData = JSON.parse(data);
-      let recipeIndex = findRecipeIndex(
-        req.params.ID,
-        userData,
-        "shoppingList"
-      );
-      if (recipeIndex !== false) {
-        userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
-      } else {
-        console.log("Failed to get recipe ID index");
-        res.status(500).send();
-      }
-
-      let json = JSON.stringify(userData, null, 4);
-
-      fs.writeFile(userPath, json, function readFileCallback(err, data) {
-        if (err) {
-          console.error(err);
+app.delete(
+  "/shoppingList/remove/recipe/:ID",
+  [check("ID").isNumeric().withMessage("Not a number")],
+  (req, res) => {
+    try {
+      fs.readFile(userPath, function readFileCallback(err, data) {
+        let userData = JSON.parse(data);
+        let recipeIndex = findRecipeIndex(
+          req.params.ID,
+          userData,
+          "shoppingList"
+        );
+        if (recipeIndex !== false) {
+          userData.shoppingList.splice(recipeIndex, 1); // 2nd parameter means remove one item only
+        } else {
+          console.log("Failed to get recipe ID index");
           res.status(500).send();
         }
-        res.status(202).send();
+
+        let json = JSON.stringify(userData, null, 4);
+
+        fs.writeFile(userPath, json, function readFileCallback(err, data) {
+          if (err) {
+            console.error(err);
+            res.status(500).send();
+          }
+          res.status(202).send();
+        });
       });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send();
+    } catch (err) {
+      console.log(err);
+      res.status(500).send();
+    }
   }
-});
+);
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
