@@ -68,7 +68,7 @@ app.get("/recipes/getAll", async (req, res) => {
     if (Date.now() - Date.parse(parsedData.date) > 24 * 60 * 60 * 1000) {
       console.log("Making new data");
       //Builds recipeObjects object from a recipe file and then searches
-      //the salling API for the recipes ingredients.
+      //the salling API the recipes ingredients.
       for (let index1 = 0; index1 < recipeData.recipes.length; index1++) {
         const tempRecipe = recipeData.recipes[index1];
         let totalPrice = 0;
@@ -191,11 +191,7 @@ app.get("/recipes/get/:ID", async (req, res) => {
 
     // Finds the cheapest price for the ingredient and adds the details to the recipeObject
     // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
-    for (
-      let i = 0;
-      i < recipeData.recipes[recipeIndex].ingredients.length;
-      i++
-    ) {
+    for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
       let ingredient = Object.keys(
         recipeData.recipes[recipeIndex].ingredients[i]
       )[0]; //keys from JSON recipe file, inserted in ingredient.
