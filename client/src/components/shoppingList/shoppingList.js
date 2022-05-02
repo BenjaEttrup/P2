@@ -24,6 +24,7 @@ class ShoppingList extends React.Component {
       recipeSum: 0,
       myStashComponents: [],
       shoppingListRecipeComponents: [],
+      filteredStash: false,
     };
   }
 
@@ -68,8 +69,6 @@ class ShoppingList extends React.Component {
   }
 
   filterStashItems() {
-    console.log(this.state.shoppingListRecipes);
-    console.log(this.state.myStashIngredients)
     let filteredStash = [];
 
     this.state.myStashIngredients.forEach(stashIngredient => {
@@ -90,6 +89,10 @@ class ShoppingList extends React.Component {
 
     this.setState({
       myStashIngredients: filteredStash
+    }, () => {
+      this.setState({
+        filteredStash: true,
+      })
     });
   }
 
@@ -448,16 +451,21 @@ class ShoppingList extends React.Component {
                 <tbody>
                   {
                     this.state.myStashIngredients.map((ingredient) => {
-                      return (
-                        <IngredientElement
-                          matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
-                          key={this.state.myStashIngredients.indexOf(ingredient)}
-                          ingredient={ingredient} myStash={true}
-                          removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
-                          trackStashElement={(stashRowElementInstance) => this.trackStashElement(stashRowElementInstance)}
-                          passToStashComponents={true}
-                        />
-                      )
+                      if(this.state.filteredStash){
+                        return (
+                          <IngredientElement
+                            matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
+                            key={this.state.myStashIngredients.indexOf(ingredient)}
+                            ingredient={ingredient} myStash={true}
+                            removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
+                            trackStashElement={(stashRowElementInstance) => this.trackStashElement(stashRowElementInstance)}
+                            passToStashComponents={true}
+                          />
+                        )
+                      }
+                      else{
+                        return null;
+                      }
                     })
                   }
                 </tbody>
