@@ -247,7 +247,11 @@ app.get("/stash/get", (req, res) => {
 // Add given product to stash json file.
 app.post(
   "/stash/add",
-  [check(["prod_id", "unit"]).isNumeric(), check(["title", "unit"]).isString()],
+  [
+    check("prod_id").isNumeric().withMessage("Not a number"),
+    check("title").isString().withMessage("Not a string"),
+    check(["unit", "amount"]).exists().withMessage("Does not exist"),
+  ],
   (req, res) => {
     const errors = validationResult(req);
 
@@ -385,12 +389,16 @@ app.post(
       .withMessage("Not a URL"),
     check([
       "recipe.method",
+      "recipe.method.*",
       "recipe.ingredients.*",
       "recipe.ingredients.*.*.unit",
       "recipe.ingredients.*.*.amount",
     ])
       .exists()
       .withMessage("Does not exists"),
+    check(["recipe.method", "recipe.ingredients.*"])
+      .notEmpty()
+      .withMessage("Is empty"),
   ],
   (req, res) => {
     const errors = validationResult(req);
