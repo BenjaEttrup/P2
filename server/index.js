@@ -3,6 +3,7 @@ const app = express();
 const port = 3001;
 const axios = require("axios");
 const { check, validationResult } = require("express-validator");
+const utils = require('./utils');
 
 const { token } = require("./config.json");
 
@@ -81,7 +82,6 @@ app.get("/recipes/getAll", async (req, res) => {
         recipeObject.recipe = tempRecipe;
 
         console.log(`Getting ingredients for ${tempRecipe.title}`);
-        startTimer();
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
           const tempIngredient = Object.keys(
@@ -89,7 +89,7 @@ app.get("/recipes/getAll", async (req, res) => {
           )[0];
 
           try {
-            let apiResponse = await callApi(encodeCharacters(tempIngredient));
+            let apiResponse = await utils.callApi(utils.encodeCharacters(tempIngredient));
             if (apiResponse === false) {
               console.log(`Something went wrong with ${tempIngredient}`);
               console.log(apiResponse);
@@ -111,8 +111,6 @@ app.get("/recipes/getAll", async (req, res) => {
         }
 
         recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
-
-        logTime();
 
         recipeObjects.recipes.push(recipeObject);
       }
@@ -196,7 +194,7 @@ app.get("/recipes/get/:ID", async (req, res) => {
         recipeData.recipes[recipeIndex].ingredients[i]
       )[0]; //keys from JSON recipe file, inserted in ingredient.
       //console.log(ingredient)//
-      let details = await callApi(encodeCharacters(ingredient)); //API call
+      let details = await utils.callApi(utils.encodeCharacters(ingredient)); //API call
       //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
       details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
       recipeObject.ingredients[i] = details.suggestions[0]; //Store cheapest ingredient in recipeObject
@@ -336,7 +334,7 @@ app.delete(
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
   try {
-    let apiResponse = await callApi(encodeCharacters(req.params.productName));
+    let apiResponse = await utils.callApi(utils.encodeCharacters(req.params.productName));
     //console.log(apiResponse)
     res.json(apiResponse);
   } catch (e) {
@@ -538,51 +536,6 @@ app.listen(port, () => {
 });
 
 /**
- * This function calls the Salling Group API and returns the product ID and price of the first product
- * in the list of relevant products
- * @param product - The product name to search for.
- * @returns The API returns a JSON object with the following keys:
- */
-async function callApi(product) {
-  let apiRes;
-  try {
-    sleep(200);
-    apiRes = await axios
-      .get(
-        "https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=" +
-          product,
-        config
-      )
-      .then((res) => {
-        return res.data;
-      });
-    if (!apiRes.suggestions.length) {
-      return { suggestions: [{ price: 0, title: product, productID: "null" }] };
-    }
-  } catch (e) {
-    console.error(e);
-    return { suggestions: [{ price: 0, title: product, productID: "null" }] };
-  }
-  return apiRes;
-}
-
-/**
- * Replace all the special characters in the ingredient with their encoded values
- * @param ingredient - the ingredient to be encoded
- * @returns The ingredient name is being encoded to be used in the URL.
- */
-function encodeCharacters(ingredient) {
-  ingredient = ingredient.toLowerCase();
-
-  // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
-  ingredient = ingredient.replace(/%/g, "");
-  ingredient = ingredient.replace(/\//g, "%2F");
-  ingredient = encodeURIComponent(ingredient);
-
-  return ingredient;
-}
-
-/**
  * This function finds the index of a recipe in the file.
  * @param ID - The ID of the recipe you're looking for.
  * @param filePath - The path to the file you want to search.
@@ -709,40 +662,4 @@ function betweenPricesSearch(minPrice, maxPrice, recipes) {
     }
   });
   return returnRecipe;
-}
-
-/**
- * Sleep for a given number of milliseconds
- * @param milliseconds - The number of milliseconds to wait.
- */
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
-var startTime, endTime;
-
-/**
- * It starts the timer.
- */
-function startTimer() {
-  startTime = new Date();
-}
-
-/**
- * It calculates the time difference between the start time and the end time,
- * and logs the time difference in seconds to the console
- */
-function logTime() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
-
-  // get seconds
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
 }
