@@ -501,6 +501,14 @@ app.delete(
   "/shoppingList/remove/recipe/:ID",
   [check("ID").isNumeric().withMessage("Not a number")],
   (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ errors: errors.array(), params: req.params });
+    }
+    
     try {
       fs.readFile(userPath, function readFileCallback(err, data) {
         let userData = JSON.parse(data);
