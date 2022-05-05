@@ -191,11 +191,7 @@ app.get("/recipes/get/:ID", async (req, res) => {
 
     // Finds the cheapest price for the ingredient and adds the details to the recipeObject
     // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
-    for (
-      let i = 0;
-      i < recipeData.recipes[recipeIndex].ingredients.length;
-      i++
-    ) {
+    for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
       let ingredient = Object.keys(
         recipeData.recipes[recipeIndex].ingredients[i]
       )[0]; //keys from JSON recipe file, inserted in ingredient.
