@@ -191,7 +191,11 @@ app.get("/recipes/get/:ID", async (req, res) => {
 
     // Finds the cheapest price for the ingredient and adds the details to the recipeObject
     // let ingredient = recipeData.recipes[recipeIndex].ingredients[i];
-    for (let i = 0; i < recipeData.recipes[recipeIndex].ingredients.length; i++) {
+    for (
+      let i = 0;
+      i < recipeData.recipes[recipeIndex].ingredients.length;
+      i++
+    ) {
       let ingredient = Object.keys(
         recipeData.recipes[recipeIndex].ingredients[i]
       )[0]; //keys from JSON recipe file, inserted in ingredient.
@@ -501,6 +505,14 @@ app.delete(
   "/shoppingList/remove/recipe/:ID",
   [check("ID").isNumeric().withMessage("Not a number")],
   (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ errors: errors.array(), params: req.params });
+    }
+    
     try {
       fs.readFile(userPath, function readFileCallback(err, data) {
         let userData = JSON.parse(data);
