@@ -86,7 +86,7 @@ class ShoppingListRecipe extends React.Component {
         <thead>
           <tr>
             <th className='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
-            <th className="col-4 text-success">Pris på opskrift: {this.state.price} kr.</th>
+            <th className="col-4 text-success">Opskrift pris: {this.state.price} kr.</th>
             <th>
               <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
                 <i className="fa fa-trash"></i></button>

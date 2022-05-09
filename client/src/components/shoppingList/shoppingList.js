@@ -437,7 +437,7 @@ class ShoppingList extends React.Component {
                 })
               }
               <div id="totalPrice">
-                <p> Samlet pris: {
+                <p> Pris i alt: {
                   this.state.recipeSum
                 } kr.</p>
               </div>

@@ -79,14 +79,14 @@ class RecipePage extends React.Component {
                 </div>
               </div>
               <div class="description">
-                <h6>Description</h6>
+                <h6>Beskrivelse</h6>
                 <p class="word-break">
                   {this.state.recipeData.recipe.description}
                 </p>
               </div>
               <div class="row">
                 <div class="col">
-                  <h6>Directions</h6>
+                  <h6>Metode</h6>
                   <div class="text-style">
                     {this.state.recipeData.recipe.method.map((step, index) => {
                       return (
@@ -107,7 +107,7 @@ class RecipePage extends React.Component {
                     <thead>
                       <tr>
                         <th>
-                          <h6>Ingredients</h6>
+                          <h6>Ingredienser</h6>
                         </th>
                       </tr>
                     </thead>
@@ -129,7 +129,7 @@ class RecipePage extends React.Component {
                       })}
                       <tr >
                         <td>
-                          <p class="ingredientsTabelCol capitalize">Total price</p>
+                          <p class="ingredientsTabelCol capitalize">Pris i alt</p>
                         </td>
                         <td>
                           <p class="ingredientsTabelCol"></p>
@@ -143,7 +143,7 @@ class RecipePage extends React.Component {
                   <div class="card-buttons-recipe g-0 ">
                     <div class="recipe-button" >
                       <button type="button" class="btn card-button-recipe" onClick={() => { this.addRecipe(this.state.recipeData); }}>
-                        Add to shopping list
+                        Tilføj til Shopping List
                       </button>
                     </div>
                   </div>

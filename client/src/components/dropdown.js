@@ -26,7 +26,7 @@ class Dropdown extends React.Component {
   render() {
     return (
       <div className="Dropdown">
-        <h5 class="dropdown-title">Recipes</h5>
+        <h5 class="dropdown-title">Opskrifter</h5>
         <div>
           <table class="table table-striped table-borderless">
             <thead>
