@@ -76,11 +76,10 @@ class Carousel extends React.Component {
                         <button
                           type="button"
                           class="btn carousel-add-button shadow-rounded"
-                          onClick={() => {this.addRecipe(this.props.recipes[0])}}
+                          onClick={() => { this.addRecipe(this.props.recipes[0]) }}
                         >
                           <p class="carousel-add-recipe">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
-                            recipe
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Tilføj opskrift
                           </p>
                         </button>
                       </div>
@@ -113,11 +112,10 @@ class Carousel extends React.Component {
                         <button
                           type="button"
                           class="btn carousel-add-button shadow-rounded"
-                          onClick={() => {this.addRecipe(this.props.recipes[1])}}
+                          onClick={() => { this.addRecipe(this.props.recipes[1]) }}
                         >
                           <p class="carousel-add-recipe">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
-                            recipe
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Tilføj opskrift
                           </p>
                         </button>
                       </div>
@@ -150,11 +148,10 @@ class Carousel extends React.Component {
                         <button
                           type="button"
                           class="btn carousel-add-button shadow-rounded"
-                          onClick={() => {this.addRecipe(this.props.recipes[2])}}
+                          onClick={() => { this.addRecipe(this.props.recipes[2]) }}
                         >
                           <p class="carousel-add-recipe">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
-                            recipe
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Tilføj opskrift
                           </p>
                         </button>
                       </div>
@@ -176,7 +173,7 @@ class Carousel extends React.Component {
                 class="carousel-control-prev-icon prev-icon"
                 aria-hidden="true"
               ></span>
-              <span class="visually-hidden">Previous</span>
+              <span class="visually-hidden">Tidligere</span>
             </button>
             <button
               class="carousel-control-next"
@@ -188,7 +185,7 @@ class Carousel extends React.Component {
                 class="carousel-control-next-icon next-icon"
                 aria-hidden="true"
               ></span>
-              <span class="visually-hidden">Next</span>
+              <span class="visually-hidden">Næste</span>
             </button>
           </div>
           : <div> <br /><br /> </div>}

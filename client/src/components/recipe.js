@@ -11,7 +11,7 @@ function Recipe() {
   function errorMessage() {
     return (
       <div>
-        <h1>Page not found</h1>
+        <h1>Kunne ikke finde siden</h1>
       </div>
     )
   }
