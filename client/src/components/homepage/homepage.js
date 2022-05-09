@@ -351,6 +351,8 @@ function myStashSearch(recipes, myStash) {
     tempRecipe.ingredients.forEach((ingredient) => {
       let isSimilar = false;
       myStash.forEach((stashIngredient) => {
+        // compareTwoStrings finds the degree of similarity between two strings based on Dice's coefficient.
+        // https://github.com/aceakash/string-similarity
         let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
 
         if (similarity >= 0.5 && isSimilar === false) {
