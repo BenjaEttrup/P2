@@ -1,0 +1,712 @@
+{
+    "recipes": [
+      {
+        "recipeID": 0,
+        "title": "Simpel wokret",
+        "description": "Nem og simpel wokret med få ingedienser.",
+        "size": 1,
+        "ingredients": [
+          {
+            "kyllingebryst": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "wokblanding": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "rød karry pasta": {
+              "amount": 1,
+              "unit": "spsk"
+            }
+          },
+          {
+            "kokosmælk": {
+              "amount": 0.5,
+              "unit": "ds"
+            }
+          },
+          {
+            "ris": {
+              "amount": "",
+              "unit": ""
+            }
+          }        
+        ],
+        "time": 30,
+        "method": [
+          "Kyllingen skæres i mundrette stykker og svitses i en wok. Tilsæt lidt salt.",
+          "Når kyllingen er gennemstegt tilsættes karrypastaen og det svitses lidt.",
+          "Så tilsættes grønsagerne og de steges til de lige akkurat er blevet gennemvarme.",
+          "Til sidst tilsættes kokosmælken, og maden er klar når det har kogt et minut."
+        ],
+        "rating": 3,
+        "image": "https://www.kogebog.dk/images/show_images/34/2018/10/kylling-i-wok_1539787209020.png",
+        "url": "https://su-mad.dk/opskrifter/hovedretter/simpel-wokret"
+      },
+      {
+        "recipeID": 1,
+        "title": "Svampe risotto ",
+        "description": "Lækker cremet svamperisotto på alm. ris.",
+        "size": 1,
+        "ingredients": [
+          {
+            "ris": {
+              "amount": 75.0,
+              "unit": "g"
+            }
+          },
+          {
+            "champingon": {
+              "amount": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "løg": {
+              "amount": 0.25,
+              "unit": "stk"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": "0.25",
+              "unit": "fed"
+            }
+          },
+          {
+            "parmesan": {
+              "amount": 12.5,
+              "unit": "g"
+            }
+          },
+          {
+            "boullion": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 30,
+        "method": [
+          "Vask champignonerne grundigt og skær dem i skiver.",
+          "Løg og hvidløg hakkes fint.",
+          "Varm fedtstof i en gryde og rist champignonerne til de er gyldne. Tilsæt hakket løg og hvidløg og lad det stege med 1 minuts tid.",
+          "Tilsæt ris, bouillon og vand samt blomkålsrisen. Lad retten koge ved middel varme uden låg i 15-20 minutter til risene er møre. Rør i retten undervejs – især til sidst hvor den ellers godt kan brænde på.",
+          "Tilsæt parmesan til retten lige inden serveringen.",
+          "Smag til med salt og peber.",
+          "Serveres med det samme, evt. med et ekstra drys parmesan ved siden af."
+        ],
+        "rating": 3,
+        "image": "https://sundpaabudget.dk/wp-content/uploads/2021/02/2021-02-02-090015055-800x530.jpg",
+        "url": "https://sundpaabudget.dk/cremet-snyde-risotto-med-champignon/"
+      },
+      {
+        "recipeID": 2,
+        "title": "Pastaret i ovn m/brocolli og bacon",
+        "description": "Lækker og mild pastaret i ovn med bacon og broccoli.",
+        "size": 1,
+        "ingredients": [
+          {
+            "bacon": {
+              "amount": 4,
+              "unit": "skiver"
+            }
+          },
+          {
+            "pasta": {
+              "amount": 75,
+              "unit": "g"
+            }
+          },
+          {
+            "brocolli": {
+              "amount": 65,
+              "unit": "g"
+            }
+          },
+          {
+            "mornaysauce": {
+              "amount": 0.75,
+              "unit": "dl"
+            }
+          },
+          {
+            "mozarella": {
+              "amount": 50,
+              "unit": "g"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 30,
+        "method": [
+          "Læg baconskiverne på en bageplade beklædt med bagepapir. Tænd ovnen på 225 grader, og sæt bagepladen i ovnen. Steg baconen sprødt i de ca. 20 minutter, det tager for ovnen at forvarme. Der kan være forskel på ovne, så hold øje med, at det ikke brænder på, og giv det evt. lidt længere tid, hvis baconen ikke er sprød efter de 20 minutter.",
+          "Kog imens pastaen i letsaltet vand, til den næsten er al dente. Pastaen skal efterfølgende bages i ovnen, så hæld vandet fra, inden den er helt færdigkogt.",
+          "Skær broccoli eller aspargesbroccoli ud i mindre buketter. Skær de sprøde baconskiver i mindre stykker.",
+          "Bland pasta, broccoli og bacon sammen med mornaysaucen og halvdelen af osten i et ovnfast fald. Krydr med salt og peber, og drys resten af osten på toppen.",
+          "Bag pastaretten i ca. 10 minutter – sæt evt. ovnen på grill, så osten smelter og bliver gylden."
+  ],
+        "rating": 0,
+        "image": "https://www.webopskrifter.dk/images/7606/620x310/pastabaconbroccoliovn.jpg",
+        "url": "https://www.webopskrifter.dk/opskrifter/pastaiovnmedbaconogbroccoli-22518/"
+      },
+      {
+        "recipeID": 3,
+        "title": "Lasagne",
+        "description": "Nem basis opskrift på lasagne. Tilføj ekstra ingredienter som det lyster.",
+        "size": 1,
+        "ingredients": [
+          {
+            "oksekød": {
+              "amount": 125,
+              "unit": "g"
+            }
+          },
+          {
+            "hakkede tomater": {
+              "amount": 0.25,
+              "unit": "stk"
+            }
+          },
+          {
+            "løg": {
+              "amount": 0.25,
+              "unit": "stk"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": 0.5,
+              "unit": "fed"
+            }
+          },
+          {
+            "basilikum": {
+              "amount": 0.5,
+              "unit": "tsk"
+            }
+          },
+          {
+            "oregano": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "timian": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "mozarella": {
+              "amount": 0.25,
+              "unit": "stk"
+            }
+          },
+          {
+            "lasagneplader": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "olie": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 60,
+        "method": [
+  
+        "Snit løg og hvidløg, og steg dem i en gryde med olie i et par minutter.",
+        "Tilsæt kødet og rør rundt i gryden med en grydeske, til det er gennemstegt ved høj varme.",
+        "Tilsæt hakkede tomater, tomatpure og krydderier.",
+        "Smag sovsen til med salt og peber, og evt. ekstra krydderier.",
+        "Skru ned på lav varme og tænd ovnen på 200 grader.",
+        "Nu er det tid til at lave Mornaysovsen. Klik på linket for at få opskriften.",
+        "Nu skal du lave/samle din lasagne i et ildfast fad ved, skiftevis, at tilføje kødsovs, plader og mornaysauce i 3-4 lag, eller til der ikke er mere kødsovs. Slut evt. af med lidt revet ost på toppen.",
+        "Bag lasagnen i 35-40 minutter, til lasagnepladerne er bløde og osten på toppen er gylden.",
+        "Tag lasagnen ud og lad den stå 5-10 minutter inden servering, så bliver den lidt mere fast at skære i."
+        ],
+        "rating": 4,
+        "image": "https://vielskermad.dk/wp-content/uploads/2020/11/lasagne-360x361.jpg",
+        "url": "https://vielskermad.dk/opskrift/lasagne/"
+      },
+      {
+        "recipeID": 4,
+        "title": "Pasta med tomatsovs",
+        "description": "En lækker og basisopskrift på tomatsovs. Tilføj evt. kylling eller oksekød.",
+        "size": 1,
+        "ingredients": [
+          {
+            "løg": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": 0.5,
+              "unit": "fed"
+            }
+          },
+          {
+            "oregano": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sukker": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "hakkede tomater": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "pasta": {
+              "amount": 75,
+              "unit": "g"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "olie": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 45,
+        "method": [
+          "Løg og hvidløg hakkes helt fint, og er du glad for hvidløg, kan du sagtens tilføje et enkelt hvidløgsfed mere. Men tomatsovsen skal heller ikke drukne i hvidløgssmag.",
+          "Varm lidt olivenolie i en tykbundet gryde, og svits nu løg og hvidløg uden det tager farve. Det tager 3-4 minutter.",
+          "Kom sukker og oregano i, og lad det lige svitse af, inden du tilsætter hakkede tomater",
+          "Rør rundt og lad nu tomatsovsen småkoge i 10 minutter.",
+          "Imens koger du pasta, og det kan være pastapenne eller spaghetti.",
+          "Dryp den færdigkogte pasta af og vend den sammen med den færdige tomatsovs.",
+          "Hak persille fint og vend den i. Smag til med salt og peber, og servér straks."
+        ],
+        "rating": 5,
+        "image": "https://madensverden.dk/wp-content/uploads/2018/03/verdens-nemmeste-tomatsovs-opskrift.jpg",
+        "url": "https://madensverden.dk/tomatsovs/"
+      },
+      {
+        "recipeID": 5,
+        "title": "Søde kartofler med kyllingesalat",
+        "description": "Fantastiske fyldte søde kartofler med kyllingesalat samt friske tomater og spinat - en virkelig lækker kombination, der tilmed er super simpel at lave.",
+        "size": 1,
+        "ingredients": [
+          {
+            "søde kartofler": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "kyllingebryst": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "forårsløg": {
+              "amount": 2,
+              "unit": "stk"
+            }
+          },
+          {
+            "creme fraiche": {
+              "amount": 75,
+              "unit": "g"
+            }
+          },
+          {
+            "tomater": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "spinat": {
+              "amount": 12.5,
+              "unit": " g"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "olie": {
+              "amount": 1,
+              "unit": "spsk"
+            }
+          }
+        ],
+        "time": 60,
+        "method": [
+          "Tænd ovnen på 180 grader varmluft.",
+          "Skræl og vask jordskokker, kartofler og løg, og skær dem i tern.",
+          "Kom jordskokker, løg og kartofler i en gryde med hvidløg, 1 liter vand, bouillonterninger og timian.",
+          "Lad suppen simre til kartofler og jordskokker er møre (imens går du igang med torsken), og blend suppen helt jævn. ",
+          "Tilsæt madlavningsfløde og smag suppen til.",
+          "Bagt torsk",
+          "Bagt torsk",
+          "Kom torskefileterne i et ildfast og kom en klat smør ved samt citronsaft. Drys med salt og peber.",
+          "Bag torsken i ovnen i 15 minutter.",
+          "Del torsken over i mindre stykker, så der er et stykke torske pr. portion.",
+          "Server jordskokkesuppen med et stykke torsk på toppen, lunt fuldkornsbrød og evt. lidt persille til pynt."
+        ],
+        "rating": 4,
+        "image": "https://www.webopskrifter.dk/images/7226/620x310/soede-kartofler-kyllingesalat.jpg",
+        "url": "https://www.webopskrifter.dk/opskrifter/fyldte-sweet-potato-med-kyllingesalat-23845/"
+      },
+      {
+        "recipeID": 6,
+        "title": "koldskål",
+        "description": "En rigtig lækker sommer klassiker. Spis evt sammen med jordbær eller tilføj ekstra citron",
+        "size": 1,
+        "ingredients": [
+          {
+            "tykmælk": {
+              "amount": 0.25,
+              "unit": "l"
+            }
+          },
+          {
+            "kærnemælk": {
+              "amount": 0.25,
+              "unit": "l"
+            }
+          },
+          {
+            "sukker": {
+              "amount": 1,
+              "unit": "spsk"
+            }
+          },
+          {
+            "vaniljesukker": {
+              "amount": 1,
+              "unit": "tsk"
+            }
+          },
+          {
+            "citron": {
+              "amount": "1",
+              "unit": "tsk"
+            }
+          }
+        ],
+        "time": 10,
+        "method": [
+          "Hæld tykmælken i en stor skål.",
+          "Tilsæt sukker, vaniljesukker og citronsaft og rør godt rundt, indtil sukkeret er opløst.",
+          "Tilsæt kærnemælk og pisk sammen til en lækker og cremet koldskål. Smag til med sukker og citron.",
+          "Opbevar koldskålen til køl indtil servering. Server med kammerjunkere og evt. friske jordbær."
+        ],
+        "rating": 5,
+        "image": "https://madenimitliv.dk/wp-content/uploads/2013/07/Koldskaal-med-citron-og-vanilje-150x150.jpg",
+        "url": "https://madenimitliv.dk/2013/07/koldskal-vanille-uden-aeg/"
+      },
+      {
+        "recipeID": 7,
+        "title": "Stegte nudler",
+        "description": "Smager skønt som tilbehør eller som en selvstændig ret med f.eks. stegt kylling, fisk eller skinke i.",
+        "size": 1,
+        "ingredients": [
+          {
+            "nudler": {
+              "amount": 50,
+              "unit": "g"
+            }
+          },
+          {
+            "hvidkål": {
+              "amount": 25.0,
+              "unit": "g"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": 1,
+              "unit": "fed"
+            }
+          },
+          {
+            "æg": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "chili": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sukker": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sojasauce": {
+              "amount": "0.25",
+              "unit": "spsk"
+            }
+          },
+          {
+            "sød chilisauce": {
+              "amount": "0.25",
+              "unit": "spsk"
+            }
+          },
+          {
+            "lime saft": {
+              "amount": 0.25,
+              "unit": ""
+            }
+          },
+          {
+            "ingefær": {
+              "amount": 0.5,
+              "unit": "spsk"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 25,
+        "method": [
+        "Kog nudlerne efter anvisningen på pakken, og skyl dem derefter med koldt vand, og lad dem dryppe af i et dørslag eller en sigte.",
+        "Snit hvidkålen, drys den med lidt groft salt, og ”ælt” den i et par minutter.",
+        "Lad den stå i 10-15 minutter, ”kram” den, hæld væsken fra, og lad derefter kålen dryppe af.",
+        "Pil hvidløgsfeddene, og hak dem fint, eller riv dem.",
+        "Skær rod og ”doven” top af forårsløgene, og skær løgene i tynde ringe.",
+        "Varm 1 spsk. olie op i wokken.",
+        "Slå æggene ud i wokken, og rør rundt i dem, så blomme og hvide bliver blandet under stegningen.",
+        "Tag æggene op efter et minuts tid.",
+        "Varm resten af olien op i wokken, og svits chilif, ingefær og hvidløg ved høj varme i et minuts tid.",
+        "Tilsæt hvidkål og lad det svitse med i et par minutter. De skal stadig have lidt bid.",
+        "Vend de kogte nudler og de stegte æg i wokken.",
+        "Tilsæt soja- og chilisauce.",
+        "Smag til med sukker, limesaft, salt og peber."
+        ],
+        "rating": 4.5,
+        "image": "https://www.hurtigmums.dk/wp-content/uploads/2019/03/stegte-nudler.jpg",
+        "url": "https://www.hurtigmums.dk/stegte-nudler/"
+      },
+      {
+        "recipeID": 8,
+        "title": "One pot kylling i karry",
+        "description": "Opskrift på saftig, nem og lækker one pot kylling i karry. Det er verdens nemmeste aftensmad.",
+        "size": 1,
+        "ingredients": [
+          {
+            "kyllingebryst": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "karry": {
+              "amount": 1.5,
+              "unit": "tsk"
+            }
+          },
+          {
+            "paprika": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sukker": {
+              "amount": 0.5,
+              "unit": "spsk"
+            }
+          },
+          {
+            "kokosmælk": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "hønseboullion": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "ris": {
+              "amount": 80,
+              "unit": "g"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "olie": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 30,
+        "method": [
+          "Fjern eventuelle sener fra kyllingen.",
+          "Du kan vælge at brænde karry af i gryden inden i lidt olie, men det gjorde vi ikke og det smagte rigtig godt alligevel. Hvis du vælger at brænde karryen af inden, så tilsætter du blot de andre ingredienser efter og følger fremgangsmåden.",
+          "Tag en gryde. Placer kyllingen (kylling skal hel i og ikke hakkes eller noget) og alle de andre ingredienser der i. Rør det hele godt rundt.",
+          "Sæt låget på, men lad der være en lille sprække, hvor damp kan slippe ud.",
+          "Sæt gryden på komfuret, tænd for varmen (middel) og lad det simre i 30 minutter.",
+          "Efter de 30 minutter tages gryden af varmen. Brug to gafler til at “rive” kyllingen fra hinanden.",
+          "Sæt gryden tilbage i 5 minutter på blusset og lad det få et lille opkog. Smag til med salt og peber."
+        ],
+        "rating": 5,
+        "image": "https://img.mummum.dk/wp-content/uploads/2020/04/P1140970-3-1350x1233.jpg",
+        "url": "https://mummum.dk/one-pot-kylling-i-karry/"
+      },
+      {
+        "recipeID": 9,
+        "title": "Pita-Pizza m/kartoffel",
+        "description": "Nem og lækker hverdagsret, med mulighed for at skifte tilbehøret ud til hvad man bedst kan lide.",
+        "size": 1,
+        "ingredients": [
+          {
+            "pitabrød": {
+              "amount": 2,
+              "unit": "stk"
+            }
+          },
+          {
+            "mozarella": {
+              "amount": 50,
+              "unit": "g"
+            }
+          },
+          {
+            "kartofler": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": 1,
+              "unit": "fed"
+            }
+          },
+          {
+            "skinke": {
+              "amount": 20,
+              "unit": "g"
+            }
+          }
+        ],
+        "time": 10,
+        "method": [
+          "Opvarm ovnen til 200 grader varmluft.",
+          "Gør en bageplade klar med bagepapir. Læg pitabrødene herpå.",
+          "Knus hvidløg og fordel det på pitabrødene. Du kan også smøre dem med lidt olie.",
+          "Skyl kartofler og skær dem i tynde skiver. Læg dem oven på pitaerne.",
+          "Riv mozzarella og fordel ovenpå. Drys med lidt salt/peber.",
+          "Bages i ovnen i cirka 10 minutter eller indtil osten er smeltet og gyldent.",
+          "Steg serranoskinken på en pande med olie til det er sprødt, imens pita-pizzaerne er i ovnen.",
+          "Top de færdige pita-pizzaer med sprødstegt serrano og evt. frisk persille."
+        ],
+        "rating": 3,
+        "image": "https://img.mummum.dk/wp-content/uploads/2020/01/pitapizza-med-kartofler.jpg",
+        "url": "https://mummum.dk/pita-pizza-med-kartoffel-og-hvidloeg/"
+      }
+    ]
+  }

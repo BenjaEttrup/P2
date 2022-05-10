@@ -1,0 +1,94 @@
+{
+  "suggestions": [
+    {
+      "id": "81247700120",
+      "prod_id": "15611",
+      "title": "Fusilli",
+      "description": "Fusilli",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=15611&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/15611",
+      "price": 9.25
+    },
+    {
+      "id": "90538141",
+      "prod_id": "85467",
+      "title": "Fusilli m. fuldkorn øko",
+      "description": "Fusilli m. fuldkorn øko",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=85467&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/85467",
+      "price": 10.2
+    },
+    {
+      "id": "90537821",
+      "prod_id": "88588",
+      "title": "Fusilli Tricolore",
+      "description": "Fusilli Tricolore",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=88588&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/88588",
+      "price": 9.95
+    },
+    {
+      "id": "87535371",
+      "prod_id": "70004",
+      "title": "Fusilli",
+      "description": "Fusilli",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=70004&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/70004",
+      "price": 10
+    },
+    {
+      "id": "90537861",
+      "prod_id": "85471",
+      "title": "Farfalle",
+      "description": "Farfalle",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=85471&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/85471",
+      "price": 12.5
+    },
+    {
+      "id": "90536671",
+      "prod_id": "88365",
+      "title": "Spaghetti",
+      "description": "Spaghetti",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=88365&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/88365",
+      "price": 14.95
+    },
+    {
+      "id": "90537871",
+      "prod_id": "88364",
+      "title": "Pastahjul",
+      "description": "Pastahjul",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=88364&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/88364",
+      "price": 12.95
+    },
+    {
+      "id": "90537911",
+      "prod_id": "89762",
+      "title": "Pastakonkylier",
+      "description": "Pastakonkylier",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=89762&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/89762",
+      "price": 12.5
+    },
+    {
+      "id": "90538041",
+      "prod_id": "85476",
+      "title": "Rigatoni",
+      "description": "Rigatoni",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=85476&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/85476",
+      "price": 12
+    },
+    {
+      "id": "90537901",
+      "prod_id": "85470",
+      "title": "Cavatappi",
+      "description": "Cavatappi",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=85470&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/85470",
+      "price": 12.5
+    }
+  ]
+}
