@@ -8,6 +8,7 @@ const utils = require('./utils');
 const { token } = require("./config.json");
 
 const fs = require("fs");
+const { Console } = require("console");
 
 const config = {
   headers: { Authorization: `Bearer ${token}` },
@@ -97,7 +98,7 @@ app.get("/recipes/getAll", async (req, res) => {
               if (apiResponse.suggestions[0] === undefined) {
                 console.log(`Failed to get ${tempIngredient}`);
               } else {
-                apiResponse.suggestions.sort(comparePrice);
+                apiResponse.suggestions.sort(utils.comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0]);
                 totalPrice += apiResponse.suggestions[0].price;
               }
@@ -122,7 +123,7 @@ app.get("/recipes/getAll", async (req, res) => {
         if (req.query.search !== undefined) {
           let searchedRecipes = [];
 
-          stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach(
+          utils.stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach(
             (recipe) => {
               searchedRecipes.push(recipe);
             }
@@ -131,8 +132,9 @@ app.get("/recipes/getAll", async (req, res) => {
           let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
             return !searchedRecipes.includes(recipe);
           });
+          console.log(!searchedRecipes.includes(recipe))
 
-          stringIngredientSearch(req.query.search, notAlreadyChosen).forEach(
+          utils.stringIngredientSearch(req.query.search, notAlreadyChosen).forEach(
             (recipe) => {
               searchedRecipes.push(recipe);
             }
@@ -148,7 +150,7 @@ app.get("/recipes/getAll", async (req, res) => {
           let minPrice = req.query.minPrice;
           let maxPrice = req.query.maxPrice;
 
-          let searchedRecipes = betweenPricesSearch(
+          let searchedRecipes = utils.betweenPricesSearch(
             minPrice,
             maxPrice,
             recipeObjects.recipes
@@ -183,7 +185,7 @@ app.get("/recipes/get/:ID", async (req, res) => {
     recipe: {},
     ingredients: [],
   };
-  let recipeIndex = findRecipeIndex(req.params.ID, recipeData, "recipes");
+  let recipeIndex = utils.findRecipeIndex(req.params.ID, recipeData, "recipes");
   if (recipeIndex) {
     let totalPrice = 0;
 
@@ -196,7 +198,7 @@ app.get("/recipes/get/:ID", async (req, res) => {
       //console.log(ingredient)//
       let details = await utils.callApi(utils.encodeCharacters(ingredient)); //API call
       //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
-      details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
+      details.suggestions.sort(utils.comparePrice); //ingredients from API call is sorted and stored in details.
       recipeObject.ingredients[i] = details.suggestions[0]; //Store cheapest ingredient in recipeObject
       recipeObject.ingredients[i].title = ingredient;
       totalPrice += details.suggestions[0].price; //sum of recipe.
@@ -455,12 +457,12 @@ app.delete(
     try {
       fs.readFile(userPath, function readFileCallback(err, data) {
         let userData = JSON.parse(data);
-        let recipeIndex = findRecipeIndex(
+        let recipeIndex = utils.findRecipeIndex(
           req.params.ID,
           userData,
           "shoppingList"
         );
-        let ingredientIndex = findIngredientIndex(
+        let ingredientIndex = utils.findIngredientIndex(
           recipeIndex,
           req.params.prod_id,
           userPath,
@@ -502,7 +504,7 @@ app.delete(
     try {
       fs.readFile(userPath, function readFileCallback(err, data) {
         let userData = JSON.parse(data);
-        let recipeIndex = findRecipeIndex(
+        let recipeIndex = utils.findRecipeIndex(
           req.params.ID,
           userData,
           "shoppingList"
@@ -535,131 +537,3 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-/**
- * This function finds the index of a recipe in the file.
- * @param ID - The ID of the recipe you're looking for.
- * @param filePath - The path to the file you want to search.
- * @param option - member we want to acess in the file.
- * @returns The index of the recipe.
- */
-function findRecipeIndex(ID, data, option) {
-  let numberID = Number.parseInt(ID);
-  let returnValue = false;
-  if (option === "shoppingList") {
-    let index = 0;
-    data[option].forEach((recipe) => {
-      if (recipe.recipe.recipeID === numberID) {
-        returnValue = index;
-      }
-      index++;
-    });
-  } else if (option === "recipes") {
-    for (object in data[option]) {
-      if (data[option][object].recipeID == ID) {
-        return object;
-      }
-    }
-  }
-
-  return returnValue;
-  // TODO reevaluate this function design
-}
-
-/**
- * Find the index of an ingredient in a recipe
- * @param recipeIndex - The index of the recipe in the user's recipe list.
- * @param productID - The ID of the product you want to find.
- * @param filePath - the path to the user data file
- * @param option - the member we want to access in the user.json file
- * @returns The index of the ingredient in the recipe.
- */
-function findIngredientIndex(recipeIndex, productID, filePath, option) {
-  let userData = require(filePath);
-  productID = Number(productID);
-
-  // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
-  for (ingredient in userData[option][recipeIndex].ingredients) {
-    if (
-      Number(userData[option][recipeIndex].ingredients[ingredient].prod_id) ===
-      productID
-    ) {
-      return ingredient;
-    }
-  }
-}
-
-/**
- * Compare the price of two items and return the difference
- * @param a - The first item to compare.
- * @param b - The second value to compare.
- * @returns The function is being called with the arguments of a and b. The function is then returning
- * the result of a.price - b.price.
- */
-function comparePrice(a, b) {
-  return a.price - b.price;
-}
-
-/**
- * Given a search value and a list of recipes, return a list of recipes that contain the search value
- * in the title
- * @param searchValue - The string that you want to search for.
- * @param recipes - an array of recipes
- * @returns An array of recipes that match the search value.
- */
-function stringRecipeSearch(searchValue, recipes) {
-  let returnRecipes = [];
-  recipes.forEach((recipe) => {
-    let recipeTitleLowerCase = recipe.recipe.title.toLowerCase();
-    if (recipeTitleLowerCase.includes(searchValue.toLowerCase())) {
-      returnRecipes.push(recipe);
-    }
-  });
-  return returnRecipes;
-}
-
-/**
- * Given a search value and a list of recipes, return a list of recipes that include the search value
- * in their ingredients
- * @param searchValue - The string that you want to search for in the recipe ingredients.
- * @param recipes - an array of recipes
- * @returns An array of recipes that contain the search value in their ingredients.
- */
-function stringIngredientSearch(searchValue, recipes) {
-  let returnRecipes = [];
-  recipes.forEach((recipe) => {
-    let doesIncludeIngredient = false;
-    recipe.ingredients.forEach((ingredient) => {
-      let ingredientTitleLowerCase = ingredient.title.toLowerCase();
-      if (ingredientTitleLowerCase.includes(searchValue.toLowerCase())) {
-        doesIncludeIngredient = true;
-      }
-    });
-    if (doesIncludeIngredient) {
-      returnRecipes.push(recipe);
-    }
-  });
-  return returnRecipes;
-}
-
-/**
- * Given a list of recipes, return a list of recipes that fall between a min and max price
- * @param minPrice - The minimum price you want to pay for your recipe.
- * @param maxPrice - The maximum price you want to pay for your recipe.
- * @param recipes - an array of recipes
- * @returns An array of recipes.
- */
-function betweenPricesSearch(minPrice, maxPrice, recipes) {
-  let returnRecipe = [];
-  recipes.forEach((recipe) => {
-    let price = 0;
-
-    recipe.ingredients.forEach((ingredient) => {
-      price += ingredient.price;
-    });
-
-    if (price >= minPrice && price <= maxPrice) {
-      returnRecipe.push(recipe);
-    }
-  });
-  return returnRecipe;
-}

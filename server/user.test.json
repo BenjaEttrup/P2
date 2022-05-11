@@ -1,0 +1,697 @@
+{
+  "userID": "",
+  "shoppingList": [
+    {
+      "recipe": {
+        "recipeID": 0,
+        "title": "Pita-Pizza m/kartoffel",
+        "description": "Nem og lækker hverdagsret, med mulighed for at skifte tilbehøret ud til hvad man bedst kan lide.",
+        "size": 1,
+        "ingredients": [
+          {
+            "pitabrød": {
+              "amount": 2,
+              "unit": "stk"
+            }
+          },
+          {
+            "mozarella": {
+              "amount": 50,
+              "unit": "g"
+            }
+          },
+          {
+            "kartofler": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": 1,
+              "unit": "fed"
+            }
+          },
+          {
+            "skinke": {
+              "amount": 20,
+              "unit": "g"
+            }
+          }
+        ],
+        "time": 10,
+        "method": [
+          "Opvarm ovnen til 200 grader varmluft.",
+          "Gør en bageplade klar med bagepapir. Læg pitabrødene herpå.",
+          "Knus hvidløg og fordel det på pitabrødene. Du kan også smøre dem med lidt olie.",
+          "Skyl kartofler og skær dem i tynde skiver. Læg dem oven på pitaerne.",
+          "Riv mozzarella og fordel ovenpå. Drys med lidt salt/peber.",
+          "Bages i ovnen i cirka 10 minutter eller indtil osten er smeltet og gyldent.",
+          "Steg serranoskinken på en pande med olie til det er sprødt, imens pita-pizzaerne er i ovnen.",
+          "Top de færdige pita-pizzaer med sprødstegt serrano og evt. frisk persille."
+        ],
+        "rating": 3,
+        "image": "https://img.mummum.dk/wp-content/uploads/2020/01/pitapizza-med-kartofler.jpg",
+        "url": "https://mummum.dk/pita-pizza-med-kartoffel-og-hvidloeg/",
+        "price": 34
+      },
+      "ingredients": [
+        {
+          "id": 82582200120,
+          "prod_id": 20555,
+          "title": "Fuldkornspitabrød",
+          "description": "Fuldkornspitabrød",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=20555&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/20555",
+          "price": 7.4
+        },
+        {
+          "id": 37918301,
+          "prod_id": 41685,
+          "title": "Mozzarella",
+          "description": "Mozzarella",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=41685&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/41685",
+          "price": 6.5
+        },
+        {
+          "id": 89124400050,
+          "prod_id": 18372,
+          "title": "Løse bagekartofler",
+          "description": "Løse bagekartofler",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=18372&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/18372",
+          "price": 4.1
+        },
+        {
+          "id": 88335901,
+          "prod_id": 70828,
+          "title": "Hvidløg",
+          "description": "Hvidløg",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=70828&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/70828",
+          "price": 9
+        },
+        {
+          "id": 21149601,
+          "prod_id": 46907,
+          "title": "Lufttørret italiensk skinke i skiver",
+          "description": "Lufttørret italiensk skinke i skiver",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=46907&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/46907",
+          "price": 7
+        }
+      ]
+    },
+    {
+      "recipe": {
+        "recipeID": 1,
+        "title": "One pot kylling i karry",
+        "description": "Opskrift på saftig, nem og lækker one pot kylling i karry. Det er verdens nemmeste aftensmad.",
+        "size": 1,
+        "ingredients": [
+          {
+            "kyllingebryst": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "karry": {
+              "amount": 1.5,
+              "unit": "tsk"
+            }
+          },
+          {
+            "paprika": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sukker": {
+              "amount": 0.5,
+              "unit": "spsk"
+            }
+          },
+          {
+            "kokosmælk": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "hønseboullion": {
+              "amount": 0.5,
+              "unit": "stk"
+            }
+          },
+          {
+            "ris": {
+              "amount": 80,
+              "unit": "g"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "olie": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 30,
+        "method": [
+          "Fjern eventuelle sener fra kyllingen.",
+          "Du kan vælge at brænde karry af i gryden inden i lidt olie, men det gjorde vi ikke og det smagte rigtig godt alligevel. Hvis du vælger at brænde karryen af inden, så tilsætter du blot de andre ingredienser efter og følger fremgangsmåden.",
+          "Tag en gryde. Placer kyllingen (kylling skal hel i og ikke hakkes eller noget) og alle de andre ingredienser der i. Rør det hele godt rundt.",
+          "Sæt låget på, men lad der være en lille sprække, hvor damp kan slippe ud.",
+          "Sæt gryden på komfuret, tænd for varmen (middel) og lad det simre i 30 minutter.",
+          "Efter de 30 minutter tages gryden af varmen. Brug to gafler til at “rive” kyllingen fra hinanden.",
+          "Sæt gryden tilbage i 5 minutter på blusset og lad det få et lille opkog. Smag til med salt og peber."
+        ],
+        "rating": 5,
+        "image": "https://img.mummum.dk/wp-content/uploads/2020/04/P1140970-3-1350x1233.jpg",
+        "url": "https://mummum.dk/one-pot-kylling-i-karry/",
+        "price": 68.15
+      },
+      "ingredients": [
+        {
+          "id": 92212400010,
+          "prod_id": 21215,
+          "title": "Grillet kyllingebryst i skiver",
+          "description": "Grillet kyllingebryst i skiver",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=21215&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/21215",
+          "price": 14
+        },
+        {
+          "id": 82980101,
+          "prod_id": 63861,
+          "title": "Karry",
+          "description": "Karry",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=63861&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/63861",
+          "price": 5.9
+        },
+        {
+          "id": 82980501,
+          "prod_id": 63864,
+          "title": "Sød paprika",
+          "description": "Sød paprika",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=63864&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/63864",
+          "price": 5.1
+        },
+        {
+          "id": 91225291,
+          "prod_id": 81992,
+          "title": "Sukker",
+          "description": "Sukker",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81992&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/81992",
+          "price": 8.15
+        },
+        {
+          "id": 80497800220,
+          "prod_id": 17317,
+          "title": "Kokosmælk",
+          "description": "Kokosmælk",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=17317&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/17317",
+          "price": 9.25
+        },
+        {
+          "id": 71214501,
+          "prod_id": 65023,
+          "title": "Hønsebouillon",
+          "description": "Hønsebouillon",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=65023&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/65023",
+          "price": 3.5
+        },
+        {
+          "id": 81211000022,
+          "prod_id": 15717,
+          "title": "Langkornede ris i kogepose",
+          "description": "Langkornede ris i kogepose",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=15717&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/15717",
+          "price": 5.6
+        },
+        {
+          "id": 81752300020,
+          "prod_id": 16867,
+          "title": "Groft salt m. jod",
+          "description": "Groft salt m. jod",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=16867&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/16867",
+          "price": 2.6
+        },
+        {
+          "id": 89251000055,
+          "prod_id": 51061,
+          "title": "Løse rød peberfrugter",
+          "description": "Løse rød peberfrugter",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=51061&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/51061",
+          "price": 7.5
+        },
+        {
+          "id": 89972251,
+          "prod_id": 79955,
+          "title": "Rapsolie",
+          "description": "Rapsolie",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=79955&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/79955",
+          "price": 17.3
+        }
+      ]
+    },
+    {
+      "recipe": {
+        "recipeID": 2,
+        "title": "Svampe risotto ",
+        "description": "Lækker cremet svamperisotto på alm. ris.",
+        "size": 1,
+        "ingredients": [
+          {
+            "ris": {
+              "amount": 75,
+              "unit": "g"
+            }
+          },
+          {
+            "champingon": {
+              "amount": 100,
+              "unit": "g"
+            }
+          },
+          {
+            "løg": {
+              "amount": 0.25,
+              "unit": "stk"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": "0.25",
+              "unit": "fed"
+            }
+          },
+          {
+            "parmesan": {
+              "amount": 12.5,
+              "unit": "g"
+            }
+          },
+          {
+            "boullion": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 30,
+        "method": [
+          "Vask champignonerne grundigt og skær dem i skiver.",
+          "Løg og hvidløg hakkes fint.",
+          "Varm fedtstof i en gryde og rist champignonerne til de er gyldne. Tilsæt hakket løg og hvidløg og lad det stege med 1 minuts tid.",
+          "Tilsæt ris, bouillon og vand samt blomkålsrisen. Lad retten koge ved middel varme uden låg i 15-20 minutter til risene er møre. Rør i retten undervejs – især til sidst hvor den ellers godt kan brænde på.",
+          "Tilsæt parmesan til retten lige inden serveringen.",
+          "Smag til med salt og peber.",
+          "Serveres med det samme, evt. med et ekstra drys parmesan ved siden af."
+        ],
+        "rating": 3,
+        "image": "https://sundpaabudget.dk/wp-content/uploads/2021/02/2021-02-02-090015055-800x530.jpg",
+        "url": "https://sundpaabudget.dk/cremet-snyde-risotto-med-champignon/",
+        "price": 54.7
+      },
+      "ingredients": [
+        {
+          "id": 81211000022,
+          "prod_id": 15717,
+          "title": "Langkornede ris i kogepose",
+          "description": "Langkornede ris i kogepose",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=15717&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/15717",
+          "price": 5.6
+        },
+        {
+          "id": 72168501,
+          "prod_id": 63626,
+          "title": "Champignon i skiver",
+          "description": "Champignon i skiver",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=63626&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/63626",
+          "price": 4.6
+        },
+        {
+          "id": 89163000600,
+          "prod_id": 18359,
+          "title": "Forårsløg i bundt",
+          "description": "Forårsløg i bundt",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=18359&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/18359",
+          "price": 6
+        },
+        {
+          "id": 88335901,
+          "prod_id": 70828,
+          "title": "Hvidløg",
+          "description": "Hvidløg",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=70828&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/70828",
+          "price": 9
+        },
+        {
+          "id": 34426601,
+          "prod_id": 47740,
+          "title": "Revet parmesan 30% fedt",
+          "description": "Revet parmesan 30% fedt",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=47740&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/47740",
+          "price": 18.5
+        },
+        {
+          "id": 71214501,
+          "prod_id": 65023,
+          "title": "Hønsebouillon",
+          "description": "Hønsebouillon",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=65023&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/65023",
+          "price": 3.5
+        },
+        {
+          "id": 89251000055,
+          "prod_id": 51061,
+          "title": "Løse rød peberfrugter",
+          "description": "Løse rød peberfrugter",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=51061&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/51061",
+          "price": 7.5
+        },
+        {
+          "id": 81752300020,
+          "prod_id": 16867,
+          "title": "Groft salt m. jod",
+          "description": "Groft salt m. jod",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=16867&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/16867",
+          "price": 2.6
+        }
+      ]
+    },
+    {
+      "recipe": {
+        "recipeID": 3,
+        "title": "Stegte nudler",
+        "description": "Smager skønt som tilbehør eller som en selvstændig ret med f.eks. stegt kylling, fisk eller skinke i.",
+        "size": 1,
+        "ingredients": [
+          {
+            "nudler": {
+              "amount": 50,
+              "unit": "g"
+            }
+          },
+          {
+            "hvidkål": {
+              "amount": 25,
+              "unit": "g"
+            }
+          },
+          {
+            "hvidløg": {
+              "amount": 1,
+              "unit": "fed"
+            }
+          },
+          {
+            "æg": {
+              "amount": 1,
+              "unit": "stk"
+            }
+          },
+          {
+            "chili": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sukker": {
+              "amount": 0.25,
+              "unit": "tsk"
+            }
+          },
+          {
+            "sojasauce": {
+              "amount": "0.25",
+              "unit": "spsk"
+            }
+          },
+          {
+            "sød chilisauce": {
+              "amount": "0.25",
+              "unit": "spsk"
+            }
+          },
+          {
+            "lime saft": {
+              "amount": 0.25,
+              "unit": ""
+            }
+          },
+          {
+            "ingefær": {
+              "amount": 0.5,
+              "unit": "spsk"
+            }
+          },
+          {
+            "salt": {
+              "amount": "",
+              "unit": ""
+            }
+          },
+          {
+            "peber": {
+              "amount": "",
+              "unit": ""
+            }
+          }
+        ],
+        "time": 25,
+        "method": [
+          "Kog nudlerne efter anvisningen på pakken, og skyl dem derefter med koldt vand, og lad dem dryppe af i et dørslag eller en sigte.",
+          "Snit hvidkålen, drys den med lidt groft salt, og ”ælt” den i et par minutter.",
+          "Lad den stå i 10-15 minutter, ”kram” den, hæld væsken fra, og lad derefter kålen dryppe af.",
+          "Pil hvidløgsfeddene, og hak dem fint, eller riv dem.",
+          "Skær rod og ”doven” top af forårsløgene, og skær løgene i tynde ringe.",
+          "Varm 1 spsk. olie op i wokken.",
+          "Slå æggene ud i wokken, og rør rundt i dem, så blomme og hvide bliver blandet under stegningen.",
+          "Tag æggene op efter et minuts tid.",
+          "Varm resten af olien op i wokken, og svits chilif, ingefær og hvidløg ved høj varme i et minuts tid.",
+          "Tilsæt hvidkål og lad det svitse med i et par minutter. De skal stadig have lidt bid.",
+          "Vend de kogte nudler og de stegte æg i wokken.",
+          "Tilsæt soja- og chilisauce.",
+          "Smag til med sukker, limesaft, salt og peber."
+        ],
+        "rating": 4.5,
+        "image": "https://www.hurtigmums.dk/wp-content/uploads/2019/03/stegte-nudler.jpg",
+        "url": "https://www.hurtigmums.dk/stegte-nudler/",
+        "price": 93.6
+      },
+      "ingredients": [
+        {
+          "id": 22597001,
+          "prod_id": 30575,
+          "title": "Instant nudler m. kyllingesmag",
+          "description": "Instant nudler m. kyllingesmag",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=30575&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/30575",
+          "price": 3.6
+        },
+        {
+          "id": 89153000108,
+          "prod_id": 38306,
+          "title": "Hvidkål",
+          "description": "Hvidkål",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=38306&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/38306",
+          "price": 12
+        },
+        {
+          "id": 88335901,
+          "prod_id": 70828,
+          "title": "Hvidløg",
+          "description": "Hvidløg",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=70828&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/70828",
+          "price": 9
+        },
+        {
+          "id": 94405000001,
+          "prod_id": 19643,
+          "title": "Bagegær",
+          "description": "Bagegær",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=19643&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/19643",
+          "price": 1.25
+        },
+        {
+          "id": 34875201,
+          "prod_id": 72493,
+          "title": "Chilisauce ekstra stærk",
+          "description": "Chilisauce ekstra stærk",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=72493&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/72493",
+          "price": 10.25
+        },
+        {
+          "id": 91225291,
+          "prod_id": 81992,
+          "title": "Sukker",
+          "description": "Sukker",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81992&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/81992",
+          "price": 8.15
+        },
+        {
+          "id": 80483800010,
+          "prod_id": 17309,
+          "title": "Sojasauce",
+          "description": "Sojasauce",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=17309&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/17309",
+          "price": 10.25
+        },
+        {
+          "id": 28541901,
+          "prod_id": 31653,
+          "title": "Woksauce m. sød chili",
+          "description": "Woksauce m. sød chili",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=31653&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/31653",
+          "price": 14.25
+        },
+        {
+          "id": 45756201,
+          "prod_id": 51193,
+          "title": "Limesaft øko",
+          "description": "Limesaft øko",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=51193&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/51193",
+          "price": 15.25
+        },
+        {
+          "id": 80462100520,
+          "prod_id": 17305,
+          "title": "Knust ingefær",
+          "description": "Knust ingefær",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=17305&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/17305",
+          "price": 10.25
+        },
+        {
+          "id": 81752300020,
+          "prod_id": 16867,
+          "title": "Groft salt m. jod",
+          "description": "Groft salt m. jod",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=16867&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/16867",
+          "price": 2.6
+        },
+        {
+          "id": 89251000055,
+          "prod_id": 51061,
+          "title": "Løse rød peberfrugter",
+          "description": "Løse rød peberfrugter",
+          "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=51061&imgType=jpeg",
+          "link": "https://www.bilkatogo.dk/p/51061",
+          "price": 7.5
+        }
+      ]
+    }
+  ],
+  "myStash": [
+    {
+      "id": "91225291",
+      "prod_id": "81992",
+      "title": "Sukker",
+      "description": "Sukker",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81992&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/81992",
+      "price": 8.15
+    },
+    {
+      "id": "62129701",
+      "prod_id": "64006",
+      "title": "Hakkede tomater",
+      "description": "Hakkede tomater",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=64006&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/64006",
+      "price": 4.5
+    },
+    {
+      "id": "81247700120",
+      "prod_id": "15611",
+      "title": "Fusilli",
+      "description": "Fusilli",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=15611&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/15611",
+      "price": 9.25
+    },
+    {
+      "id": "81752300020",
+      "prod_id": "16867",
+      "title": "Groft salt m. jod",
+      "description": "Groft salt m. jod",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=16867&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/16867",
+      "price": 2.6
+    },
+    {
+      "id": "83099201",
+      "prod_id": "63866",
+      "title": "Stødt sort peber",
+      "description": "Stødt sort peber",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=63866&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/63866",
+      "price": 4
+    },
+    {
+      "id": "89972261",
+      "prod_id": "81994",
+      "title": "Solsikkeolie",
+      "description": "Solsikkeolie",
+      "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81994&imgType=jpeg",
+      "link": "https://www.bilkatogo.dk/p/81994",
+      "price": 17.3
+    }
+  ]
+}
