@@ -31,7 +31,8 @@ class HomePage extends React.Component {
       searchValue: '',
       categoryID: '1',
       myStashChecked: true,
-      selectedRecipeID: null
+      selectedRecipeID: null,
+      priceToggle: false
     }
   }
 
@@ -169,6 +170,11 @@ class HomePage extends React.Component {
     })
   }
 
+  togglePricePopup() {
+    this.setState(prevState => ({
+      priceToggle: !prevState.priceToggle
+    }));
+  }
 
   //This is the render function. This is where the
   //html is.
@@ -197,8 +203,8 @@ class HomePage extends React.Component {
                   </label>
                 </div>
                 <button type="button" id="filterButton" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                  aria-expanded="false">Price</button>
-                <ul class="dropdown-menu" id="price-dropdown">
+                  aria-expanded="false" onClick={() => {this.togglePricePopup()}}>Price</button>
+                <ul class={this.state.priceToggle ? "dropdown-menu show" : "dropdown-menu"} id="price-dropdown">
                   <li>
                     <h6>Price range</h6>
                     <div class="max-min-price">
