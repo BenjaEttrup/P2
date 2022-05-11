@@ -1,0 +1,366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing App component 1`] = `
+<div>
+  <div
+    className="Navbar"
+  >
+    <header>
+      <nav
+        class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow"
+      >
+        <div
+          class="container-fluid"
+          id="center"
+        >
+          <img
+            alt="logo"
+            height="50"
+            id="logo"
+            margin="0.5rem"
+            src="./pictures/logo.png"
+            width="50"
+          />
+          <div
+            class="collapse navbar-collapse"
+            id="navbarSupportedContent"
+          >
+            <ul
+              class="navbar-nav me-auto mb-2 mb-lg-0"
+              id="navigationbar"
+            >
+              <li
+                class="nav-item"
+              >
+                <a
+                  class="nav-link active"
+                  href="/"
+                  onClick={[Function]}
+                >
+                  Inspiration
+                </a>
+              </li>
+              <li
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  href="/shoppingList"
+                  onClick={[Function]}
+                >
+                  Shopping List
+                </a>
+              </li>
+              <li
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  href="/spinTheMeal"
+                  onClick={[Function]}
+                >
+                  Spin The Meal
+                </a>
+              </li>
+              <li
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  href="/myStash"
+                  onClick={[Function]}
+                >
+                  My Stash
+                </a>
+              </li>
+            </ul>
+            <ul
+              class="navbar-nav"
+              id="user-and-recipe"
+            >
+              <li
+                class="nav-item"
+              >
+                <div
+                  class="btn-group"
+                >
+                  <button
+                    class="hidden-btn icon"
+                    data-bs-auto-close="false"
+                    data-bs-toggle="dropdown"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <i
+                      class="fa fa-book"
+                    />
+                  </button>
+                  <ul
+                    class="dropdown-menu dropdown-card dropdown-menu-end"
+                  >
+                    <li
+                      id="dropdown-recipes"
+                    >
+                      <div
+                        className="Dropdown"
+                      >
+                        <h5
+                          class="dropdown-title"
+                        >
+                          Recipes
+                        </h5>
+                        <div>
+                          <table
+                            class="table table-striped table-borderless"
+                          >
+                            <thead>
+                              <tr>
+                                <th
+                                  class="col-6"
+                                  scope="col"
+                                />
+                                <th
+                                  class="col-4"
+                                  scope="col"
+                                />
+                                <th
+                                  class="col-1"
+                                  scope="col"
+                                />
+                              </tr>
+                            </thead>
+                            <tbody />
+                          </table>
+                        </div>
+                        <div
+                          class="btn-row"
+                        >
+                          <a
+                            href="/shoppingList"
+                            onClick={[Function]}
+                          >
+                            <button
+                              class="btn btn-primary add-recipe-btn"
+                            >
+                              Shopping List
+                            </button>
+                          </a>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li
+                class="nav-item"
+              >
+                <button
+                  class="hidden-btn icon"
+                  data-bs-toggle="dropdown"
+                  type="button"
+                >
+                  <i
+                    class="fa fa-user icon"
+                  />
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+  </div>
+  <div
+    className="HomePage"
+  >
+    <div
+      className="Carousel"
+    >
+      <div>
+         
+        <br />
+        <br />
+         
+      </div>
+    </div>
+    <div
+      class="container searchbar"
+    >
+      <div
+        class="row height d-flex justify-content-center align-items-center"
+      >
+        <div
+          class="col-md-6"
+        >
+          <div
+            class="form shadow-rounded"
+          >
+            <i
+              class="fa fa-search"
+            />
+            <input
+              class="form-control form-input"
+              onChange={[Function]}
+              placeholder="Search recipe..."
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="page-spacing center"
+    >
+      <div
+        id="searchAndFilterOptions"
+      >
+        <div
+          class="row bd-example"
+        >
+          <div
+            class="col-5 btn-group"
+          >
+            <div
+              class="form-check-group"
+            >
+              <label
+                class="form-check-label"
+                for="flexCheckDefault"
+              >
+                My Stash
+                <input
+                  checked={true}
+                  class="form-check-input"
+                  id="flexCheckDefault"
+                  onChange={[Function]}
+                  type="checkbox"
+                  value=""
+                />
+              </label>
+            </div>
+            <button
+              aria-expanded="false"
+              class="btn dropdown-toggle"
+              data-bs-toggle="dropdown"
+              id="filterButton"
+              onClick={[Function]}
+              type="button"
+            >
+              Price
+            </button>
+            <ul
+              class="dropdown-menu"
+              id="price-dropdown"
+            >
+              <li>
+                <h6>
+                  Price range
+                </h6>
+                <div
+                  class="max-min-price"
+                >
+                  <div
+                    class="input-group"
+                  >
+                    <span
+                      class="input-group-text"
+                      id="min-input-left"
+                    >
+                      Min
+                    </span>
+                    <input
+                      aria-describedby="basic-addon1"
+                      aria-label="Minimum price"
+                      class="form-control"
+                      id="min-input-right"
+                      min="00.00"
+                      onChange={[Function]}
+                      placeholder="DKK"
+                      step="10.00"
+                      type="number"
+                    />
+                  </div>
+                  <div
+                    class="input-group max-min-margin"
+                  >
+                    <span
+                      class="input-group-text"
+                      id="max-input-left"
+                    >
+                      Max
+                    </span>
+                    <input
+                      aria-describedby="basic-addon2"
+                      aria-label="Maximum price"
+                      class="form-control"
+                      id="max-input-right"
+                      min="00.00"
+                      onChange={[Function]}
+                      placeholder="DKK"
+                      step="10.00"
+                      type="number"
+                    />
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div
+            aria-label="Basic radio toggle button group"
+            class="col-3 btn-group"
+            role="group"
+          >
+            <input
+              autocomplete="off"
+              checked={true}
+              class="btn-check"
+              id="btnradio1"
+              name="btnradio"
+              onClick={[Function]}
+              type="radio"
+              value="1"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="btnradio1"
+            >
+              Price
+            </label>
+            <input
+              autocomplete="off"
+              checked={false}
+              class="btn-check"
+              id="btnradio2"
+              name="btnradio"
+              onClick={[Function]}
+              type="radio"
+              value="2"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="btnradio2"
+            >
+              Rating
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        class="content center"
+      >
+        <div
+          class="row row-cols-1 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1"
+        />
+        <div
+          aria-hidden="true"
+          aria-labelledby="homepagePopupModal"
+          class="modal fade"
+          id="homepagePopupModal"
+        >
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

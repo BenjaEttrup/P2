@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "jest": "^28.0.3"
+  },
+  "scripts": {
+    "test-server": "jest server/",
+    "test-react": "cd client && npm test"
   }
 }

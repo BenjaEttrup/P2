@@ -3,10 +3,12 @@ const app = express();
 const port = 3001;
 const axios = require("axios");
 const { check, validationResult } = require("express-validator");
+const utils = require('./utils');
 
 const { token } = require("./config.json");
 
 const fs = require("fs");
+const { Console } = require("console");
 
 const config = {
   headers: { Authorization: `Bearer ${token}` },
@@ -81,7 +83,6 @@ app.get("/recipes/getAll", async (req, res) => {
         recipeObject.recipe = tempRecipe;
 
         console.log(`Getting ingredients for ${tempRecipe.title}`);
-        startTimer();
 
         for (let index2 = 0; index2 < tempRecipe.ingredients.length; index2++) {
           const tempIngredient = Object.keys(
@@ -89,7 +90,7 @@ app.get("/recipes/getAll", async (req, res) => {
           )[0];
 
           try {
-            let apiResponse = await callApi(encodeCharacters(tempIngredient));
+            let apiResponse = await utils.callApi(utils.encodeCharacters(tempIngredient));
             if (apiResponse === false) {
               console.log(`Something went wrong with ${tempIngredient}`);
               console.log(apiResponse);
@@ -97,7 +98,7 @@ app.get("/recipes/getAll", async (req, res) => {
               if (apiResponse.suggestions[0] === undefined) {
                 console.log(`Failed to get ${tempIngredient}`);
               } else {
-                apiResponse.suggestions.sort(comparePrice);
+                apiResponse.suggestions.sort(utils.comparePrice);
                 recipeObject.ingredients.push(apiResponse.suggestions[0]);
                 totalPrice += apiResponse.suggestions[0].price;
               }
@@ -112,8 +113,6 @@ app.get("/recipes/getAll", async (req, res) => {
 
         recipeObject.recipe["price"] = Number(totalPrice.toFixed(2));
 
-        logTime();
-
         recipeObjects.recipes.push(recipeObject);
       }
       console.log("Done getting recipes");
@@ -124,7 +123,7 @@ app.get("/recipes/getAll", async (req, res) => {
         if (req.query.search !== undefined) {
           let searchedRecipes = [];
 
-          stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach(
+          utils.stringRecipeSearch(req.query.search, recipeObjects.recipes).forEach(
             (recipe) => {
               searchedRecipes.push(recipe);
             }
@@ -133,8 +132,9 @@ app.get("/recipes/getAll", async (req, res) => {
           let notAlreadyChosen = recipeObjects.recipes.filter((recipe) => {
             return !searchedRecipes.includes(recipe);
           });
+          console.log(!searchedRecipes.includes(recipe))
 
-          stringIngredientSearch(req.query.search, notAlreadyChosen).forEach(
+          utils.stringIngredientSearch(req.query.search, notAlreadyChosen).forEach(
             (recipe) => {
               searchedRecipes.push(recipe);
             }
@@ -150,7 +150,7 @@ app.get("/recipes/getAll", async (req, res) => {
           let minPrice = req.query.minPrice;
           let maxPrice = req.query.maxPrice;
 
-          let searchedRecipes = betweenPricesSearch(
+          let searchedRecipes = utils.betweenPricesSearch(
             minPrice,
             maxPrice,
             recipeObjects.recipes
@@ -185,7 +185,7 @@ app.get("/recipes/get/:ID", async (req, res) => {
     recipe: {},
     ingredients: [],
   };
-  let recipeIndex = findRecipeIndex(req.params.ID, recipeData, "recipes");
+  let recipeIndex = utils.findRecipeIndex(req.params.ID, recipeData, "recipes");
   if (recipeIndex) {
     let totalPrice = 0;
 
@@ -196,9 +196,9 @@ app.get("/recipes/get/:ID", async (req, res) => {
         recipeData.recipes[recipeIndex].ingredients[i]
       )[0]; //keys from JSON recipe file, inserted in ingredient.
       //console.log(ingredient)//
-      let details = await callApi(encodeCharacters(ingredient)); //API call
+      let details = await utils.callApi(utils.encodeCharacters(ingredient)); //API call
       //recipeObject.ingredients[i] = recipeData.recipes[recipeIndex][i];
-      details.suggestions.sort(comparePrice); //ingredients from API call is sorted and stored in details.
+      details.suggestions.sort(utils.comparePrice); //ingredients from API call is sorted and stored in details.
       recipeObject.ingredients[i] = details.suggestions[0]; //Store cheapest ingredient in recipeObject
       recipeObject.ingredients[i].title = ingredient;
       totalPrice += details.suggestions[0].price; //sum of recipe.
@@ -336,7 +336,7 @@ app.delete(
 //Search after a specific product in Salling group API and returns json with data on products.
 app.get("/stash/search/:productName", async (req, res) => {
   try {
-    let apiResponse = await callApi(encodeCharacters(req.params.productName));
+    let apiResponse = await utils.callApi(utils.encodeCharacters(req.params.productName));
     //console.log(apiResponse)
     res.json(apiResponse);
   } catch (e) {
@@ -457,12 +457,12 @@ app.delete(
     try {
       fs.readFile(userPath, function readFileCallback(err, data) {
         let userData = JSON.parse(data);
-        let recipeIndex = findRecipeIndex(
+        let recipeIndex = utils.findRecipeIndex(
           req.params.ID,
           userData,
           "shoppingList"
         );
-        let ingredientIndex = findIngredientIndex(
+        let ingredientIndex = utils.findIngredientIndex(
           recipeIndex,
           req.params.prod_id,
           userPath,
@@ -512,7 +512,7 @@ app.delete(
     try {
       fs.readFile(userPath, function readFileCallback(err, data) {
         let userData = JSON.parse(data);
-        let recipeIndex = findRecipeIndex(
+        let recipeIndex = utils.findRecipeIndex(
           req.params.ID,
           userData,
           "shoppingList"
@@ -545,212 +545,3 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-/**
- * This function calls the Salling Group API and returns the product ID and price of the first product
- * in the list of relevant products
- * @param product - The product name to search for.
- * @returns The API returns a JSON object with the following keys:
- */
-async function callApi(product) {
-  let apiRes;
-  try {
-    sleep(200);
-    apiRes = await axios
-      .get(
-        "https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=" +
-          product,
-        config
-      )
-      .then((res) => {
-        return res.data;
-      });
-    if (!apiRes.suggestions.length) {
-      return { suggestions: [{ price: 0, title: product, productID: "null" }] };
-    }
-  } catch (e) {
-    console.error(e);
-    return { suggestions: [{ price: 0, title: product, productID: "null" }] };
-  }
-  return apiRes;
-}
-
-/**
- * Replace all the special characters in the ingredient with their encoded values
- * @param ingredient - the ingredient to be encoded
- * @returns The ingredient name is being encoded to be used in the URL.
- */
-function encodeCharacters(ingredient) {
-  ingredient = ingredient.toLowerCase();
-
-  // encodeURIComponent does not handle backslash and percentage sign. These are manually handled here
-  ingredient = ingredient.replace(/%/g, "");
-  ingredient = ingredient.replace(/\//g, "%2F");
-  ingredient = encodeURIComponent(ingredient);
-
-  return ingredient;
-}
-
-/**
- * This function finds the index of a recipe in the file.
- * @param ID - The ID of the recipe you're looking for.
- * @param filePath - The path to the file you want to search.
- * @param option - member we want to acess in the file.
- * @returns The index of the recipe.
- */
-function findRecipeIndex(ID, data, option) {
-  let numberID = Number.parseInt(ID);
-  let returnValue = false;
-  if (option === "shoppingList") {
-    let index = 0;
-    data[option].forEach((recipe) => {
-      if (recipe.recipe.recipeID === numberID) {
-        returnValue = index;
-      }
-      index++;
-    });
-  } else if (option === "recipes") {
-    for (object in data[option]) {
-      if (data[option][object].recipeID == ID) {
-        return object;
-      }
-    }
-  }
-
-  return returnValue;
-  // TODO reevaluate this function design
-}
-
-/**
- * Find the index of an ingredient in a recipe
- * @param recipeIndex - The index of the recipe in the user's recipe list.
- * @param productID - The ID of the product you want to find.
- * @param filePath - the path to the user data file
- * @param option - the member we want to access in the user.json file
- * @returns The index of the ingredient in the recipe.
- */
-function findIngredientIndex(recipeIndex, productID, filePath, option) {
-  let userData = require(filePath);
-  productID = Number(productID);
-
-  // Loops through the ingredients found in userData.shoppinglist[recipeIndex].ingredients and compares prod ID.
-  for (ingredient in userData[option][recipeIndex].ingredients) {
-    if (
-      Number(userData[option][recipeIndex].ingredients[ingredient].prod_id) ===
-      productID
-    ) {
-      return ingredient;
-    }
-  }
-}
-
-/**
- * Compare the price of two items and return the difference
- * @param a - The first item to compare.
- * @param b - The second value to compare.
- * @returns The function is being called with the arguments of a and b. The function is then returning
- * the result of a.price - b.price.
- */
-function comparePrice(a, b) {
-  return a.price - b.price;
-}
-
-/**
- * Given a search value and a list of recipes, return a list of recipes that contain the search value
- * in the title
- * @param searchValue - The string that you want to search for.
- * @param recipes - an array of recipes
- * @returns An array of recipes that match the search value.
- */
-function stringRecipeSearch(searchValue, recipes) {
-  let returnRecipes = [];
-  recipes.forEach((recipe) => {
-    let recipeTitleLowerCase = recipe.recipe.title.toLowerCase();
-    if (recipeTitleLowerCase.includes(searchValue.toLowerCase())) {
-      returnRecipes.push(recipe);
-    }
-  });
-  return returnRecipes;
-}
-
-/**
- * Given a search value and a list of recipes, return a list of recipes that include the search value
- * in their ingredients
- * @param searchValue - The string that you want to search for in the recipe ingredients.
- * @param recipes - an array of recipes
- * @returns An array of recipes that contain the search value in their ingredients.
- */
-function stringIngredientSearch(searchValue, recipes) {
-  let returnRecipes = [];
-  recipes.forEach((recipe) => {
-    let doesIncludeIngredient = false;
-    recipe.ingredients.forEach((ingredient) => {
-      let ingredientTitleLowerCase = ingredient.title.toLowerCase();
-      if (ingredientTitleLowerCase.includes(searchValue.toLowerCase())) {
-        doesIncludeIngredient = true;
-      }
-    });
-    if (doesIncludeIngredient) {
-      returnRecipes.push(recipe);
-    }
-  });
-  return returnRecipes;
-}
-
-/**
- * Given a list of recipes, return a list of recipes that fall between a min and max price
- * @param minPrice - The minimum price you want to pay for your recipe.
- * @param maxPrice - The maximum price you want to pay for your recipe.
- * @param recipes - an array of recipes
- * @returns An array of recipes.
- */
-function betweenPricesSearch(minPrice, maxPrice, recipes) {
-  let returnRecipe = [];
-  recipes.forEach((recipe) => {
-    let price = 0;
-
-    recipe.ingredients.forEach((ingredient) => {
-      price += ingredient.price;
-    });
-
-    if (price >= minPrice && price <= maxPrice) {
-      returnRecipe.push(recipe);
-    }
-  });
-  return returnRecipe;
-}
-
-/**
- * Sleep for a given number of milliseconds
- * @param milliseconds - The number of milliseconds to wait.
- */
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
-var startTime, endTime;
-
-/**
- * It starts the timer.
- */
-function startTimer() {
-  startTime = new Date();
-}
-
-/**
- * It calculates the time difference between the start time and the end time,
- * and logs the time difference in seconds to the console
- */
-function logTime() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
-
-  // get seconds
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
-}
