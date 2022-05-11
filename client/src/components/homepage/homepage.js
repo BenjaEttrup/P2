@@ -181,7 +181,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div className="HomePage">
-        <Carousel recipes={this.state.allRecipes} updateShoppingList={() => this.props.updateShoppingList()} />
+        <Carousel dropdownShowFunction={this.props.dropdownShowFunction} recipes={this.state.allRecipes} updateShoppingList={() => this.props.updateShoppingList()} />
         <div class="container searchbar">
           <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
@@ -237,7 +237,7 @@ class HomePage extends React.Component {
               {
                 this.state.recipes.map((recipe) => {
                   return (
-                    <RecipeCard recipes={this.state.recipes} recipe={recipe} onSelectCard={(id) => this.activePopup(id)} updateShoppingList={() => this.props.updateShoppingList()} />
+                    <RecipeCard dropdownShowFunction={this.props.dropdownShowFunction} recipes={this.state.recipes} recipe={recipe} onSelectCard={(id) => this.activePopup(id)} updateShoppingList={() => this.props.updateShoppingList()} />
                   )
                 })
               }

@@ -34,6 +34,7 @@ class RecipeCard extends React.Component {
       .then(() => {
         console.log('Success');
         this.props.updateShoppingList()
+        this.props.dropdownShowFunction(true);
       });
   }
 

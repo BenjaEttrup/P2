@@ -17,7 +17,8 @@ class App extends React.Component {
 
     this.state = {
       activeNav: 0,
-      recipes: []
+      recipes: [],
+      dropdownShown: false
     }
   }
 
@@ -73,11 +74,17 @@ class App extends React.Component {
     });
   }
 
+  setDropdownShow(value) {
+    this.setState({
+      dropdownShown: value
+    })
+  }
+
   render() {
     return (
       <Router>
         <div>
-          <Navbar active={this.state.activeNav} updateRecipes={() => { this.updateRecipes() }} removeRecipe={(recipeID) => { this.removeRecipe(recipeID) }} recipes={this.state.recipes} />
+          <Navbar dropdownShowFunction={(value) => {this.setDropdownShow(value)}} dropdownShown={this.state.dropdownShown} active={this.state.activeNav} updateRecipes={() => { this.updateRecipes() }} removeRecipe={(recipeID) => { this.removeRecipe(recipeID) }} recipes={this.state.recipes} />
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
@@ -94,8 +101,7 @@ class App extends React.Component {
               <Recipe />
             </Route>
             <Route path="/">
-
-              <HomePage updateNavFunction={(id) => { this.updateNav(id) }} updateShoppingList={() => this.updateRecipes()} />
+              <HomePage dropdownShowFunction={(value) => {this.setDropdownShow(value)}} updateNavFunction={(id) => { this.updateNav(id) }} updateShoppingList={() => this.updateRecipes()} />
             </Route>
           </Switch>
         </div>
