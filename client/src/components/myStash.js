@@ -71,9 +71,9 @@ class MyStash extends React.Component {
               <thead>
                 <tr>
                   <th class="col-11" scope="col">
-                    Product
+                    Produkt
                   </th>
-                  <th scope="col">Amount</th>
+                  <th scope="col">Mængde</th>
                   <th scope="col"></th>
                 </tr>
               </thead>

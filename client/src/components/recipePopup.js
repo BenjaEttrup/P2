@@ -68,7 +68,7 @@ class PopupRecipe extends React.Component {
                 <p class="text-left">{this.props.selectedItem !== null && this.props.items.length !== 0 ? this.props.items[this.props.selectedItem].recipe.time : ''}</p>
               </div>
               <div class="col-md-12 mb-3">
-                <h5>Description</h5>
+                <h5>Beskrivelse</h5>
                 {this.props.selectedItem !== null && this.props.items.length !== 0 ? this.props.items[this.props.selectedItem].recipe.description : ''}
               </div>
               <ul class="ingrediens-list">
@@ -76,10 +76,10 @@ class PopupRecipe extends React.Component {
                   <thead>
                     <tr>
                       <th class="col-6" scope="col">
-                        Ingredients
+                        Ingredienser
                       </th>
-                      <th scope="col-3">Amount</th>
-                      <th scope="col-3">Price</th>
+                      <th scope="col-3">Mængde</th>
+                      <th scope="col-3">Pris</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -101,17 +101,17 @@ class PopupRecipe extends React.Component {
                 </table>
               </ul>
               <div class="row mb-3">
-                <b><div class="col-7">Total price</div></b>
+                <b><div class="col-7">Pris i alt</div></b>
                 <div class="col-5">
-                  {this.props.selectedItem !== null && this.props.items.length !== 0 ? this.props.items[this.props.selectedItem].recipe.price : ''} DKK
+                  {this.props.selectedItem !== null && this.props.items.length !== 0 ? this.props.items[this.props.selectedItem].recipe.price : ''} kr.
                 </div>
               </div>
               <div class="row">
                 <div class="col-6">
-                  <button type="button" onClick={() => this.addRecipe(this.props.items[this.props.selectedItem])} data-bs-dismiss="modal" class="btn btn-primary col-12">Add to shopping list</button>
+                  <button type="button" onClick={() => this.addRecipe(this.props.items[this.props.selectedItem])} data-bs-dismiss="modal" class="btn btn-primary col-12">Tilføj til Shopping List</button>
                 </div>
                 <div class="col-6" data-bs-dismiss="modal" >
-                  <Link to={`/recipe/${this.props.selectedItem !== null && this.props.items.length !== 0 ? this.props.items[this.props.selectedItem].recipe.recipeID : ''}`} class="btn btn-secondary col-12">Go to recipe</Link>
+                  <Link to={`/recipe/${this.props.selectedItem !== null && this.props.items.length !== 0 ? this.props.items[this.props.selectedItem].recipe.recipeID : ''}`} class="btn btn-secondary col-12">Gå til opskrift</Link>
                 </div>
               </div>
             </div>

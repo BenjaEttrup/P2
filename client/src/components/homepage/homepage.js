@@ -31,7 +31,8 @@ class HomePage extends React.Component {
       searchValue: '',
       categoryID: '1',
       myStashChecked: true,
-      selectedRecipeID: null
+      selectedRecipeID: null,
+      priceToggle: false
     }
   }
 
@@ -169,13 +170,18 @@ class HomePage extends React.Component {
     })
   }
 
+  togglePricePopup() {
+    this.setState(prevState => ({
+      priceToggle: !prevState.priceToggle
+    }));
+  }
 
   //This is the render function. This is where the
   //html is.
   render() {
     return (
       <div className="HomePage">
-        <Carousel recipes={this.state.allRecipes} updateShoppingList={() => this.props.updateShoppingList()} />
+        <Carousel dropdownShowFunction={this.props.dropdownShowFunction} recipes={this.state.allRecipes} updateShoppingList={() => this.props.updateShoppingList()} />
         <div class="container searchbar">
           <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
@@ -197,8 +203,8 @@ class HomePage extends React.Component {
                   </label>
                 </div>
                 <button type="button" id="filterButton" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                  aria-expanded="false">Price</button>
-                <ul class="dropdown-menu" id="price-dropdown">
+                  aria-expanded="false" onClick={() => {this.togglePricePopup()}}>Price</button>
+                <ul class={this.state.priceToggle ? "dropdown-menu show" : "dropdown-menu"} id="price-dropdown">
                   <li>
                     <h6>Price range</h6>
                     <div class="max-min-price">
@@ -231,7 +237,7 @@ class HomePage extends React.Component {
               {
                 this.state.recipes.map((recipe) => {
                   return (
-                    <RecipeCard recipes={this.state.recipes} recipe={recipe} onSelectCard={(id) => this.activePopup(id)} updateShoppingList={() => this.props.updateShoppingList()} />
+                    <RecipeCard dropdownShowFunction={this.props.dropdownShowFunction} recipes={this.state.recipes} recipe={recipe} onSelectCard={(id) => this.activePopup(id)} updateShoppingList={() => this.props.updateShoppingList()} />
                   )
                 })
               }
@@ -351,6 +357,8 @@ function myStashSearch(recipes, myStash) {
     tempRecipe.ingredients.forEach((ingredient) => {
       let isSimilar = false;
       myStash.forEach((stashIngredient) => {
+        // compareTwoStrings finds the degree of similarity between two strings based on Dice's coefficient.
+        // https://github.com/aceakash/string-similarity
         let similarity = compareTwoStrings(ingredient.title, stashIngredient.title);
 
         if (similarity >= 0.5 && isSimilar === false) {

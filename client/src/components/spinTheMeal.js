@@ -107,13 +107,13 @@ class SpinTheMeal extends React.Component {
       <div class="container">
         <div className="SpinTheMeal">
           <div class="spinTheMeal">
-            <h1><center>What's for dinner?</center></h1><br />
+            <h1><center>Spin The Meal</center></h1><br />
           </div>
           <div class="row">
             <div class="col-lg-4 mb-2">
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="">Price</span>
+                  <span class="input-group-text" id="">Pris</span>
                 </div>
                 <input type="number" class="form-control" placeholder="Min" id="min_price"
                   onChange={(evt) => { this.setMinPriceValue(evt) }} />
@@ -122,7 +122,7 @@ class SpinTheMeal extends React.Component {
               </div>
               <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={() => { this.myStashChanged() }} />
-                <label class="form-check-label" for="defaultCheck1">My stash</label>
+                <label class="form-check-label" for="defaultCheck1">My Stash</label>
               </div>
             </div>
             <div class="col-lg-8 bg-light border pt-5 pb-5">

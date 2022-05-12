@@ -1,0 +1,13 @@
+
+[{"recipe": {
+  "title": "Simpel wokret"},
+  "ingredients" : [
+                    {"kyllingebryst": 
+                                    {
+                                      "amount" : 1,
+                                      "unit": "stk"
+                                      },
+                      "title" :"Kyllingebryst",
+                      "price" : 10.00
+                                    },
+                   {"wokblanding": {"amount": 0.5,"unit": "stk"}, "title" :"Wokblanding", "price" : 10.00}]}]
