@@ -243,7 +243,7 @@ class HomePage extends React.Component {
               }
             </div>
             <div class="modal fade" id="homepagePopupModal" aria-labelledby="homepagePopupModal" aria-hidden="true">
-              {this.state.allRecipes !== [] && this.state.selectedRecipeID !== null ? <PopupRecipe items={this.state.allRecipes} selectedItem={this.state.selectedRecipeID} /> : ""}
+              {this.state.allRecipes !== [] && this.state.selectedRecipeID !== null ? <PopupRecipe dropdownShowFunction={this.props.dropdownShowFunction} updateShoppingList={() => this.props.updateShoppingList()} items={this.state.allRecipes} selectedItem={this.state.selectedRecipeID} /> : ""}
             </div>
           </div>
         </div>

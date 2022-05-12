@@ -18,7 +18,7 @@ function Recipe() {
   // HTML
   return (
     <div>
-      {id ? <RecipePage id={id} /> : errorMessage()}
+      {id ? <RecipePage id={id} dropdownShowFunction={this.props.dropdownShowFunction} updateShoppingList={() => this.props.updateShoppingList()} /> : errorMessage()}
     </div>
   );
 }

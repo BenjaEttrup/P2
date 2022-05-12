@@ -126,7 +126,7 @@ class SpinTheMeal extends React.Component {
               </div>
             </div>
             <div class="col-lg-8 bg-light border pt-5 pb-5">
-              <Spin recipes={this.state.recipes} />
+              <Spin recipes={this.state.recipes} dropdownShowFunction={this.props.dropdownShowFunction} updateShoppingList={() => this.props.updateShoppingList()} />
             </div>
           </div>
         </div>
