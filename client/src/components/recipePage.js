@@ -52,9 +52,13 @@ class RecipePage extends React.Component {
       },
       body: JSON.stringify(recipe),
     })
-      .catch((err) => {
-        console.error(err);
-      });
+    .then(() => {
+      this.props.updateShoppingList()
+      this.props.dropdownShowFunction(true);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   }
 
   // HTML

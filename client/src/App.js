@@ -95,10 +95,10 @@ class App extends React.Component {
               <MyStash updateNavFunction={(id) => { this.updateNav(id) }} />
             </Route>
             <Route path="/spinTheMeal">
-              <SpinTheMeal updateNavFunction={(id) => { this.updateNav(id) }} />
+              <SpinTheMeal updateNavFunction={(id) => { this.updateNav(id) }} dropdownShowFunction={(value) => {this.setDropdownShow(value)}} updateShoppingList={() => this.updateRecipes()} />
             </Route>
             <Route path="/recipe/:id">
-              <Recipe />
+              <Recipe dropdownShowFunction={(value) => {this.setDropdownShow(value)}} updateShoppingList={() => this.updateRecipes()} />
             </Route>
             <Route path="/">
               <HomePage dropdownShowFunction={(value) => {this.setDropdownShow(value)}} updateNavFunction={(id) => { this.updateNav(id) }} updateShoppingList={() => this.updateRecipes()} />

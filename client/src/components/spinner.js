@@ -33,7 +33,7 @@ export class Spin extends React.Component {
     return (
       <div className="Spin">
         {
-          this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={() => this.activePopup()} setStateFunction={this.setState} isSpinning={this.state.isSpinning} /> : ''
+          this.props.recipes ? <Wheel items={this.props.recipes} onSelectItem={() => this.activePopup()} setStateFunction={this.setState} isSpinning={this.state.isSpinning} dropdownShowFunction={this.props.dropdownShowFunction} updateShoppingList={() => this.props.updateShoppingList()} /> : ''
         }
       </div>
     );

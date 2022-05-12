@@ -74,7 +74,7 @@ export default class Wheel extends React.Component {
           ))}
         </div>
         <div class="modal fade" id="spinnerPopupModal" tabindex="-1" aria-labelledby="spinnerPopupModal" aria-hidden="true">
-          {items !== [] && selectedItem !== null ? < PopupRecipe items={items} selectedItem={selectedItem} /> : ""}
+          {items !== [] && selectedItem !== null ? < PopupRecipe items={items} selectedItem={selectedItem} dropdownShowFunction={this.props.dropdownShowFunction} updateShoppingList={() => this.props.updateShoppingList()} /> : ""}
         </div>
       </div>
     );
