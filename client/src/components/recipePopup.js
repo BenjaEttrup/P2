@@ -32,10 +32,12 @@ class PopupRecipe extends React.Component {
         Accept: "application/json",
       },
       body: JSON.stringify(recipe),
+    }).then(() => {
+      this.props.updateShoppingList()
+      this.props.dropdownShowFunction(true)
+    }).catch((err) => {
+      console.error(err);
     })
-      .catch((err) => {
-        console.error(err);
-      })
   }
 
   resetIndex() {
