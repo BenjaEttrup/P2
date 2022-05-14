@@ -24,8 +24,8 @@ class IngredientElement extends React.Component {
 
   componentDidMount() {
     if (this.props.hasOwnProperty('shoppingList') && !this.state.inited) {
-      let isHiddenOnInit = this.props.ingredientInStash(this, this.props.ingredientIndex);
-      this.initShoppingListElement(isHiddenOnInit);
+      // let isHiddenOnInit = this.props.ingredientInStash(this, this.props.ingredientIndex);
+      this.initShoppingListElement();
     }
 
     if (this.props.hasOwnProperty('passToStashComponents') && !this.state.inited) {

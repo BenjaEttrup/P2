@@ -97,13 +97,11 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
-              // let isHidden = this.initShoppingListIngredient(ingredient, ingredientIndex);
               return (
                 <IngredientElement
                   key={ingredientIndex}
                   ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
-                  // isHidden={isHidden}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
