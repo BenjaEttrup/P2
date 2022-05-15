@@ -355,12 +355,10 @@ class ShoppingList extends React.Component {
           // console.log(stashComponent.props.ingredient.title)
           // console.log(recipeIngredientComponent.props.ingredient.title)
           if (similarity >= 0.5) {
-            if ((!stashComponent.state.hide && stashComponent.state.boxChecked)) {
-              bestMatches.matches[scIndex] = recipeIngredientComponent;
-
-              recipeIngredientComponent.setState({
-                hide: true,
-              })
+            let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
+            if ((!stashComponent.state.hide && stashComponent.state.boxChecked) && (similarity > bestMatchSimilarity)) {
+              let match = {"component": recipeIngredientComponent, "similarity": similarity}
+              bestMatches.matches[scIndex] = match
             }
           }
         })
@@ -368,7 +366,14 @@ class ShoppingList extends React.Component {
       })
     })
 
-    console.log(bestMatches);
+    bestMatches.matches.forEach((match, mIndex) => {
+      console.log(match)
+      match.component.setState({
+        hide: true,
+      })
+    })
+
+    // this.updateRecipePrices(); 
   }
 
 
