@@ -344,16 +344,19 @@ class ShoppingList extends React.Component {
       "stashComponents": this.state.myStashComponents,
       "matches": []
     };
+    // TODO: Matches skal være et hashtable med indexes fra 0 - myStashComponents.length, så hvis et match ikke er fundet skal valuen være tom ud fra keyen (indexet (scIndex) 
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
-        this.state.myStashComponents.forEach((stashComponent, scIndex) => {
-          console.log(stashComponent.props.ingredient.title)
-          console.log(recipeIngredientComponent.props.ingredient.title)
+        bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
+
           let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
+          console.log(`similarity = ${similarity} comparing recipeIngredient ${recipeIngredientComponent.props.ingredient.title} to ${stashComponent.props.ingredient.title}`)
+          // console.log(stashComponent.props.ingredient.title)
+          // console.log(recipeIngredientComponent.props.ingredient.title)
           if (similarity >= 0.5) {
-            if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
-              bestMatches.matches.push(recipeIngredientComponent);
+            if ((!stashComponent.state.hide && stashComponent.state.boxChecked)) {
+              bestMatches.matches[scIndex] = recipeIngredientComponent;
 
               recipeIngredientComponent.setState({
                 hide: true,
