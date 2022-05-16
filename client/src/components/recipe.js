@@ -6,7 +6,7 @@ import RecipePage from './recipePage';
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
-function Recipe() {
+function Recipe() {  
   let { id } = useParams();
   function errorMessage() {
     return (
