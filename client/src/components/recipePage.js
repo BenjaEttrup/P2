@@ -35,6 +35,7 @@ class RecipePage extends React.Component {
 
   //Request back-end function findRecipe, to add the recipe respons to this.state.products.  
   componentDidMount() {
+    console.log(this.props.id)
     fetch(`/recipes/get/${this.props.id}`)
       .then((response) => response.json())
       .then((response) => {
@@ -52,62 +53,63 @@ class RecipePage extends React.Component {
       },
       body: JSON.stringify(recipe),
     })
-    .then(() => {
-      this.props.updateShoppingList()
-      this.props.dropdownShowFunction(true);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+      .then(() => {
+        this.props.updateShoppingList()
+        this.props.dropdownShowFunction(true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   // HTML
   render() {
+    console.log(this.props.id)
     return (
       <div>
-        <div class="card-recipe shadow bgcolor">
-          <div class="card-body-recipe shadow-rounded">
-            <img src={this.state.recipeData.recipe.image} alt={this.state.recipeData.recipe.title} class="card-popup-image" />
-            <div class="card-popup-content">
-              <div class="info-row">
-                <div class="info-display  info-title">
+        <div className="card-recipe shadow bgcolor">
+          <div className="card-body-recipe shadow-rounded">
+            <img src={this.state.recipeData.recipe.image} alt={this.state.recipeData.recipe.title} className="card-popup-image" />
+            <div className="card-popup-content">
+              <div className="info-row">
+                <div className="info-display  info-title">
                   <h3>{this.state.recipeData.recipe.title}</h3>
                 </div>
-                <div class="info-display">
-                  <i class="fa fa-user info-icons" aria-hidden="true"></i>
-                  <p class="info-text">{this.state.recipeData.recipe.size}</p>
+                <div className="info-display">
+                  <i className="fa fa-user info-icons" aria-hidden="true"></i>
+                  <p className="info-text">{this.state.recipeData.recipe.size}</p>
                 </div>
-                <div class="info-display info-duration">
-                  <i class="fa fa-clock-o info-icons" aria-hidden="true"></i>
-                  <p class="info-text">{this.state.recipeData.recipe.time + " min"} </p>
+                <div className="info-display info-duration">
+                  <i className="fa fa-clock-o info-icons" aria-hidden="true"></i>
+                  <p className="info-text">{this.state.recipeData.recipe.time + " min"} </p>
                 </div>
               </div>
-              <div class="description">
+              <div className="description">
                 <h6>Beskrivelse</h6>
-                <p class="word-break">
+                <p className="word-break">
                   {this.state.recipeData.recipe.description}
                 </p>
               </div>
-              <div class="row">
-                <div class="col">
+              <div className="row">
+                <div className="col">
                   <h6>Metode</h6>
-                  <div class="text-style">
+                  <div className="text-style">
                     {this.state.recipeData.recipe.method.map((step, index) => {
                       return (
-                        <div class="row">
-                          <div class="col-1 pr-0">
-                            <p class="step">{index + 1}</p>
+                        <div className="row">
+                          <div className="col-1 pr-0">
+                            <p className="step">{index + 1}</p>
                           </div>
-                          <div class="col-11 pl-0">
-                            <p class="step-text word-break">{step}</p>
+                          <div className="col-11 pl-0">
+                            <p className="step-text word-break">{step}</p>
                           </div>
                         </div>
                       );
                     })}
                   </div>
                 </div>
-                <div class="col">
-                  <table class="table table-striped table-borderless">
+                <div className="col">
+                  <table className="table table-striped table-borderless">
                     <thead>
                       <tr>
                         <th>
@@ -115,38 +117,38 @@ class RecipePage extends React.Component {
                         </th>
                       </tr>
                     </thead>
-                    <tbody class="text-style ">
+                    <tbody className="text-style ">
                       {this.state.recipeData.ingredients.map((ingredient, index) => {
                         return (
                           <tr >
                             <td>
-                              <p class="ingredientsTabelCol capitalize">{ingredient.title}</p>
+                              <p className="ingredientsTabelCol capitalize">{ingredient.title}</p>
                             </td>
                             <td>
-                              <p class="ingredientsTabelCol">{ingredient.amount + " " + ingredient.unit}</p>
+                              <p className="ingredientsTabelCol">{ingredient.amount + " " + ingredient.unit}</p>
                             </td>
                             <td>
-                              <p class="ingredientsTabelCol">{ingredient.price + " kr."}</p>
+                              <p className="ingredientsTabelCol">{ingredient.price + " kr."}</p>
                             </td>
                           </tr>
                         );
                       })}
                       <tr >
                         <td>
-                          <p class="ingredientsTabelCol capitalize">Pris i alt</p>
+                          <p className="ingredientsTabelCol capitalize">Pris i alt</p>
                         </td>
                         <td>
-                          <p class="ingredientsTabelCol"></p>
+                          <p className="ingredientsTabelCol"></p>
                         </td>
                         <td>
-                          <p class="ingredientsTabelCol">{this.state.recipeData.recipe.price + " kr."}</p>
+                          <p className="ingredientsTabelCol">{this.state.recipeData.recipe.price + " kr."}</p>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-buttons-recipe g-0 ">
-                    <div class="recipe-button" >
-                      <button type="button" class="btn card-button-recipe" onClick={() => { this.addRecipe(this.state.recipeData); }}>
+                  <div className="card-buttons-recipe g-0 ">
+                    <div className="recipe-button" >
+                      <button type="button" className="btn card-button-recipe" onClick={() => { this.addRecipe(this.state.recipeData); }}>
                         Tilføj til Shopping List
                       </button>
                     </div>
