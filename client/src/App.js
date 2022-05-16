@@ -9,7 +9,7 @@ import HomePage from "./components/homepage/homepage";
 import ShoppingList from "./components/shoppingList/shoppingList";
 import SpinTheMeal from "./components/spinTheMeal";
 import MyStash from "./components/myStash";
-import Recipe from "./components/recipe.js"
+import Recipe from "./components/recipePage";
 
 class App extends React.Component {
   constructor(props) {

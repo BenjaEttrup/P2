@@ -195,3 +195,7 @@ body {
 .capitalize {
   text-transform: capitalize;
 }
+
+.capitalize_first:first-letter {
+    text-transform: capitalize;
+}

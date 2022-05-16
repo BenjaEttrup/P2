@@ -1,17 +1,18 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 import '../stylesheets/recipe.css'
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
 //standart code in the React component
-class RecipePage extends React.Component {
+class Recipe extends React.Component {
   //This is a contructor this function gets called when a object gets created
   //from the App class. It is often used to set the values in the object
   constructor(props) {
+    super(props);
     //Super has to be called as the first thing
     //this says that the code from the React component
     //runs before our code in the contructor
-    super();
     this.state = {
       recipeData: {
         recipe: {
@@ -29,14 +30,13 @@ class RecipePage extends React.Component {
           recipeIndex: ""
         },
         ingredients: []
-      }
+      },
     };
   };
 
   //Request back-end function findRecipe, to add the recipe respons to this.state.products.  
   componentDidMount() {
-    console.log(this.props.id)
-    fetch(`/recipes/get/${this.props.id}`)
+    fetch(`/recipes/get/${this.props.match.params.id}`)
       .then((response) => response.json())
       .then((response) => {
         this.setState({ recipeData: { recipe: response.recipe, ingredients: response.ingredients } });
@@ -67,7 +67,7 @@ class RecipePage extends React.Component {
     console.log(this.props.id)
     return (
       <div>
-        <div className="card-recipe shadow bgcolor">
+        <div className="card-recipe bgcolor">
           <div className="card-body-recipe shadow-rounded">
             <img src={this.state.recipeData.recipe.image} alt={this.state.recipeData.recipe.title} className="card-popup-image" />
             <div className="card-popup-content">
@@ -122,7 +122,7 @@ class RecipePage extends React.Component {
                         return (
                           <tr >
                             <td>
-                              <p className="ingredientsTabelCol capitalize">{ingredient.title}</p>
+                              <p className="ingredientsTabelCol capitalize_first">{ingredient.title}</p>
                             </td>
                             <td>
                               <p className="ingredientsTabelCol">{ingredient.amount + " " + ingredient.unit}</p>
@@ -135,7 +135,7 @@ class RecipePage extends React.Component {
                       })}
                       <tr >
                         <td>
-                          <p className="ingredientsTabelCol capitalize">Pris i alt</p>
+                          <p className="ingredientsTabelCol">Pris i alt</p>
                         </td>
                         <td>
                           <p className="ingredientsTabelCol"></p>
@@ -163,4 +163,4 @@ class RecipePage extends React.Component {
   }
 }
 
-export default RecipePage;
+export default withRouter(Recipe);
