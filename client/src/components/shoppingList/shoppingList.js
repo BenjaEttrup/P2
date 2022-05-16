@@ -130,7 +130,6 @@ class ShoppingList extends React.Component {
   updateMyStashIngredients(shoppingListElement) {
     let myStashIngredients = this.state.myStashIngredients;
     let isDuplicate = false;
-    console.log(shoppingListElement)
 
     myStashIngredients.forEach((stashIngredient, index) => {
       if (Number(stashIngredient.prod_id) === Number(shoppingListElement.props.ingredient.prod_id)) {
@@ -182,6 +181,15 @@ class ShoppingList extends React.Component {
    */
   componentDidMatch(recipeComponent, stashIngredient) {
     let ingredientMatch = undefined
+    console.log(this.state.matchingIngredients)
+    console.log(stashIngredient);
+    this.state.matchingIngredients.stashComponents.forEach((stashComponent, scIndex) => {
+      if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
+        console.log("do something")
+      }
+      console.log(stashComponent)
+    })
+
     recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
       let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
 
@@ -333,8 +341,16 @@ class ShoppingList extends React.Component {
     })
   }
 
+  linkedListTailEnd (linkedListNode) {
+    let nextNode = linkedListNode;
+    while (nextNode.next !== undefined) {
+      nextNode = nextNode.next;
+    }
+    
+    return nextNode;
+  }
 
-  ingredientInStash() {
+  matchIngredients() {
     let bestMatches = {
       "stashComponents": this.state.myStashComponents,
       "matches": []
@@ -345,8 +361,6 @@ class ShoppingList extends React.Component {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
         bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
           let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
-          console.log(`similarity = ${similarity} comparing recipeIngredient ${recipeIngredientComponent.props.ingredient.title} to ${stashComponent.props.ingredient.title}`)
-
           if (similarity >= 0.5) {
             let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
             // maybe first part of if is redundant in this case
@@ -357,12 +371,9 @@ class ShoppingList extends React.Component {
                 return;
               }
 
-              // The case where more ingredients contain the same ingredient. Therefore an equally similar match.
-              let nextMatch = bestMatches.matches[scIndex].next;
-              while (nextMatch !== undefined) {
-                nextMatch = nextMatch.next;
-              }
-              bestMatches.matches[scIndex].next = match;
+              let tailEnd = this.linkedListTailEnd(bestMatches.matches[scIndex]);
+              tailEnd.next = match;
+              console.log(tailEnd)
             }
           }
         })
@@ -372,18 +383,24 @@ class ShoppingList extends React.Component {
     this.setState({
       matchingIngredients: bestMatches
     })
+    console.log(bestMatches)
+    return bestMatches;
+  }
 
+  ingredientInStash() {
+    let bestMatches = this.matchIngredients();
+    
     for (let match of bestMatches.matches) {
       let nextMatch = match.next;
       while (nextMatch !== undefined) {
         nextMatch.component.setState({
           hide: true,
-        }, () => {})
+        }, () => { })
         nextMatch = nextMatch.next;
       }
       match.component.setState({
         hide: true,
-      }, () => {this.updateRecipePrices()})
+      }, () => { this.updateRecipePrices() })
     }
   }
 
