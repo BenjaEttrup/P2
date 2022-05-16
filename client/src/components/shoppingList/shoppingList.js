@@ -3,7 +3,6 @@ import '../../stylesheets/shoppingList.css'
 import ShoppingListRecipe from './shoppingListRecipe';
 import IngredientElement from './ingredientElement';
 import { compareTwoStrings } from 'string-similarity';
-import { param } from 'jquery';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -25,7 +24,7 @@ class ShoppingList extends React.Component {
       myStashComponents: [],
       shoppingListRecipeComponents: [],
       filteredStash: false,
-      matchingIngredients: [],
+      matchingIngredients: undefined,
     };
   }
 
@@ -345,49 +344,47 @@ class ShoppingList extends React.Component {
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
         bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
-
           let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
           console.log(`similarity = ${similarity} comparing recipeIngredient ${recipeIngredientComponent.props.ingredient.title} to ${stashComponent.props.ingredient.title}`)
 
           if (similarity >= 0.5) {
             let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
             // maybe first part of if is redundant in this case
-            if ((!stashComponent.state.hide && stashComponent.state.boxChecked) && (similarity >= bestMatchSimilarity)) {
+            if (similarity >= bestMatchSimilarity) {
               let match = { "component": recipeIngredientComponent, "similarity": similarity, "next": undefined }
               if ((bestMatches.matches[scIndex] === undefined) || (similarity > bestMatchSimilarity)) {
                 bestMatches.matches[scIndex] = match;
                 return;
-              } 
-
-              // The case where more ingredients contain the same ingredient. Therefore an equally similar match.
-              let linkedElement = 0;
-              let linkIndex = bestMatches.matches[scIndex].next;
-              while (!linkedElement) {
-                if (linkIndex === undefined) {
-                  bestMatches.matches[scIndex].next = match;
-                  linkedElement = 1;
-                }
-                else {
-                  linkIndex = linkIndex.next;
-                }
               }
 
+              // The case where more ingredients contain the same ingredient. Therefore an equally similar match.
+              let nextMatch = bestMatches.matches[scIndex].next;
+              while (nextMatch !== undefined) {
+                nextMatch = nextMatch.next;
+              }
+              bestMatches.matches[scIndex].next = match;
             }
           }
         })
-
       })
     })
 
-    console.log(bestMatches.matches)
+    this.setState({
+      matchingIngredients: bestMatches
+    })
+
     for (let match of bestMatches.matches) {
-      console.log(`setting ${match.component.props.ingredient.title} with recipeID ${match.component.props.recipeID} hide to true`)
+      let nextMatch = match.next;
+      while (nextMatch !== undefined) {
+        nextMatch.component.setState({
+          hide: true,
+        }, () => {})
+        nextMatch = nextMatch.next;
+      }
       match.component.setState({
         hide: true,
-      }, () => { return })
+      }, () => {this.updateRecipePrices()})
     }
-    this.updateRecipePrices();
-
   }
 
 
@@ -409,9 +406,6 @@ class ShoppingList extends React.Component {
 
   trackShoppingListRecipeComponent(shoppingListRecipeInstance) {
     let shoppingListComponents = this.state.shoppingListRecipeComponents;
-
-
-
     shoppingListComponents.push(shoppingListRecipeInstance);
 
     this.setState({
