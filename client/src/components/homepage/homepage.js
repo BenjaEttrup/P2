@@ -186,7 +186,7 @@ class HomePage extends React.Component {
           <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
               <div class="form shadow-rounded"><i class="fa fa-search"></i>
-                <input type="text" class="form-control form-input" placeholder="Search recipe..." onChange={this.state.recipes ? (evt) => { this.setSearchValue(evt) } : ''} />
+                <input type="text" class="form-control form-input" placeholder="Søg opskrift..." onChange={this.state.recipes ? (evt) => { this.setSearchValue(evt) } : ''} />
               </div>
             </div>
           </div>

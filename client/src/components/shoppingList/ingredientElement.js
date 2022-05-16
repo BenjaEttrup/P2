@@ -153,10 +153,10 @@ class IngredientElement extends React.Component {
       }
       return (
         <tr>
-          <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
+          <td class="capitalize_first">{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
           <td className="right-align">
-            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/shoppinglist/remove/ingredient/') }}>
+            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/shoppinglist/remove/ingredient/') }} className="deleteButton">
               <i className="fa fa-trash"></i></button>
           </td>
           <td className="right-align center" width="2%">
@@ -175,7 +175,7 @@ class IngredientElement extends React.Component {
           <td>{this.props.ingredient ? this.props.ingredient.title : ""}</td>
           <td className="right-align">{this.props.ingredient ? this.props.ingredient.amount : ""} {this.props.ingredient ? this.props.ingredient.unit : ""}</td>
           <td className="right-align">
-            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/stash/remove/') }}>
+            <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/stash/remove/') }} className="deleteButton">
               <i className="fa fa-trash"></i>
             </button>
           </td>

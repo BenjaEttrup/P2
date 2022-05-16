@@ -1,8 +1,15 @@
-#totalPrice p {
-  font-weight: bold;
-  text-align: right;
-  color: rgb(18, 212, 154);
+#totalPrice {
+  font-weight: 600;
+  text-align: left;
+  color: 000;
 
+}
+
+#emptyList {
+  text-align: center;
+  font-weight: 600; 
+  padding: 2rem;
+  color:rgb(92, 92, 92);
 }
 
 .shadow {
@@ -14,7 +21,7 @@ h5.title {
   margin-top: 15px;
 }
 
-.text-success {
+.recipe-price {
   padding: 0;
   margin: 0;
   text-align: right;
@@ -35,7 +42,7 @@ h5.title {
 }
 
 .shoppingList-card-body {
-  margin-bottom: 10rem;
+  margin-bottom: 0rem;
   padding: 3rem;
 }
 

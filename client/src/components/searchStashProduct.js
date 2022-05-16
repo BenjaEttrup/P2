@@ -122,7 +122,7 @@ class SearchStashProduct extends React.Component {
               type="search"
               class="form-control rounded search-bar"
               value={this.state.searchValue}
-              placeholder="Add item to my stash..."
+              placeholder="Søg ingredienser..."
               aria-label="Search"
               aria-describedby="search-addon"
               onChange={(evt) => {

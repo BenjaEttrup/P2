@@ -40,7 +40,7 @@ class Dropdown extends React.Component {
               {this.props.recipes.map((recipe) => {
                 return (
                   <tr class="table-content  table-rounded">
-                    <td>{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</td>
+                    <td><Link to={`recipe/${recipe.recipe.recipeID}`} className="recipeLink">{recipe.recipe.title.length > 18 ? recipe.recipe.title.substring(0, 18) + '...' : recipe.recipe.title}</ Link></td>
                     <td class="table-content-secondary">
                       {recipe.recipe.price + ' DKK'}
                     </td>

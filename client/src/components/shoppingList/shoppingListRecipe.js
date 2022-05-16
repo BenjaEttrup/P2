@@ -1,5 +1,6 @@
 import React from 'react';
 import IngredientElement from './ingredientElement';
+import { Link } from 'react-router-dom';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -82,16 +83,18 @@ class ShoppingListRecipe extends React.Component {
     }
     if (this.state.hide) return null;
     return (
-      <table className="table table-striped">
+      <table className="table table-striped table-borderless">
         <thead>
           <tr>
-            <th className='col-8' scope='col'>{this.props.recipe.recipe.title}</th>
-            <th className="col-4 text-success">Opskrift pris: {this.state.price} kr.</th>
+            <th className='col-8' scope='col'><Link to={`/recipe/${this.props.recipe.recipe.recipeID}`} className="recipeLink">{this.props.recipe.recipe.title}</ Link></th>
+            <th className="col-4 recipe-price">{this.state.price} kr.</th>
             <th>
-              <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }}>
+              <button type="button" onClick={() => { this.hideRecipe(this.props.recipe.recipe) }} className="deleteButton">
                 <i className="fa fa-trash"></i></button>
             </th>
-            <th></th>
+            <th>
+              <i class="fa fa-inbox" aria-hidden="true"></i>
+            </th>
           </tr>
         </thead>
         <tbody>
