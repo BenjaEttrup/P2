@@ -25,6 +25,7 @@ class ShoppingList extends React.Component {
       myStashComponents: [],
       shoppingListRecipeComponents: [],
       filteredStash: false,
+      matchingIngredients: [],
     };
   }
 
@@ -226,10 +227,6 @@ class ShoppingList extends React.Component {
 
   updateRecipePrices() {
     let totalRecipeSum = 0;
-    let bestMatches = {
-      "stashComponents": this.state.myStashComponents,
-      "matches": []
-    };
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       let recipeSum = 0;
@@ -244,21 +241,21 @@ class ShoppingList extends React.Component {
         if (recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed) {
           tempIngredientPrice = 0;
         }
-        else {
-          this.state.myStashComponents.forEach((stashComponent, scIndex) => {
-            let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
-            if (similarity >= 0.5) {
-              if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
-                tempIngredientPrice = 0;
-                bestMatches.matches.push(recipeComponent);
+        // else {
+        //   this.state.myStashComponents.forEach((stashComponent, scIndex) => {
+        //     let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
+        //     if (similarity >= 0.5) {
+        //       if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
+        //         tempIngredientPrice = 0;
+        //         bestMatches.matches.push(recipeComponent);
 
-                recipeIngredientComponent.setState({
-                  hide: true,
-                })
-              }
-            }
-          })
-        }
+        //         recipeIngredientComponent.setState({
+        //           hide: true,
+        //         })
+        //       }
+        //     }
+        //   })
+        // }
 
         recipeSum = Number(+recipeSum + +tempIngredientPrice).toFixed(2)
         recipeComponent.setState({
@@ -269,7 +266,6 @@ class ShoppingList extends React.Component {
       totalRecipeSum = Number(+totalRecipeSum + +recipeSum).toFixed(2);
     })
 
-    console.log(bestMatches);
 
     this.updateTotalRecipePrice(totalRecipeSum);
   }
@@ -352,13 +348,30 @@ class ShoppingList extends React.Component {
 
           let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
           console.log(`similarity = ${similarity} comparing recipeIngredient ${recipeIngredientComponent.props.ingredient.title} to ${stashComponent.props.ingredient.title}`)
-          // console.log(stashComponent.props.ingredient.title)
-          // console.log(recipeIngredientComponent.props.ingredient.title)
+
           if (similarity >= 0.5) {
             let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
-            if ((!stashComponent.state.hide && stashComponent.state.boxChecked) && (similarity > bestMatchSimilarity)) {
-              let match = {"component": recipeIngredientComponent, "similarity": similarity}
-              bestMatches.matches[scIndex] = match
+            // maybe first part of if is redundant in this case
+            if ((!stashComponent.state.hide && stashComponent.state.boxChecked) && (similarity >= bestMatchSimilarity)) {
+              let match = { "component": recipeIngredientComponent, "similarity": similarity, "next": undefined }
+              if ((bestMatches.matches[scIndex] === undefined) || (similarity > bestMatchSimilarity)) {
+                bestMatches.matches[scIndex] = match;
+                return;
+              } 
+
+              // The case where more ingredients contain the same ingredient. Therefore an equally similar match.
+              let linkedElement = 0;
+              let linkIndex = bestMatches.matches[scIndex].next;
+              while (!linkedElement) {
+                if (linkIndex === undefined) {
+                  bestMatches.matches[scIndex].next = match;
+                  linkedElement = 1;
+                }
+                else {
+                  linkIndex = linkIndex.next;
+                }
+              }
+
             }
           }
         })
@@ -366,14 +379,15 @@ class ShoppingList extends React.Component {
       })
     })
 
-    bestMatches.matches.forEach((match, mIndex) => {
-      console.log(match)
+    console.log(bestMatches.matches)
+    for (let match of bestMatches.matches) {
+      console.log(`setting ${match.component.props.ingredient.title} with recipeID ${match.component.props.recipeID} hide to true`)
       match.component.setState({
         hide: true,
-      })
-    })
+      }, () => { return })
+    }
+    this.updateRecipePrices();
 
-    // this.updateRecipePrices(); 
   }
 
 

@@ -49,7 +49,105 @@
                 "rating": 5,
                 "image": "https://madenimitliv.dk/wp-content/uploads/2013/07/Koldskaal-med-citron-og-vanilje-150x150.jpg",
                 "url": "https://madenimitliv.dk/2013/07/koldskal-vanille-uden-aeg/",
-                "price": 38.6
+                "price": 46.75
+            },
+            "ingredients": [
+                {
+                    "id": 93200900002,
+                    "prod_id": 19821,
+                    "title": "Tykmælk 3,5% fedt",
+                    "description": "Tykmælk 3,5% fedt",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=19821&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/19821",
+                    "price": 13.95
+                },
+                {
+                    "id": 93003100002,
+                    "prod_id": 19685,
+                    "title": "Kærnemælk 0,5% fedt",
+                    "description": "Kærnemælk 0,5% fedt",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=19685&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/19685",
+                    "price": 10.95
+                },
+                {
+                    "id": 91225291,
+                    "prod_id": 81992,
+                    "title": "Sukker",
+                    "description": "Sukker",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81992&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/81992",
+                    "price": 8.15
+                },
+                {
+                    "id": 90308831,
+                    "prod_id": 81929,
+                    "title": "Vaniljesukker",
+                    "description": "Vaniljesukker",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=81929&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/81929",
+                    "price": 9.7
+                },
+                {
+                    "id": 89452500025,
+                    "prod_id": 38636,
+                    "title": "Citroner",
+                    "description": "Citroner",
+                    "img": "https://image.prod.iposeninfra.com/bilkaimg.php?pid=38636&imgType=jpeg",
+                    "link": "https://www.bilkatogo.dk/p/38636",
+                    "price": 4
+                }
+            ]
+        },
+        {
+            "recipe": {
+                "recipeID": 6,
+                "title": "koldskål",
+                "description": "En rigtig lækker sommer klassiker. Spis evt sammen med jordbær eller tilføj ekstra citron",
+                "size": 1,
+                "ingredients": [
+                    {
+                        "tykmælk": {
+                            "amount": 0.25,
+                            "unit": "l"
+                        }
+                    },
+                    {
+                        "kærnemælk": {
+                            "amount": 0.25,
+                            "unit": "l"
+                        }
+                    },
+                    {
+                        "sukker": {
+                            "amount": 1,
+                            "unit": "spsk"
+                        }
+                    },
+                    {
+                        "vaniljesukker": {
+                            "amount": 1,
+                            "unit": "tsk"
+                        }
+                    },
+                    {
+                        "citron": {
+                            "amount": "1",
+                            "unit": "tsk"
+                        }
+                    }
+                ],
+                "time": 10,
+                "method": [
+                    "Hæld tykmælken i en stor skål.",
+                    "Tilsæt sukker, vaniljesukker og citronsaft og rør godt rundt, indtil sukkeret er opløst.",
+                    "Tilsæt kærnemælk og pisk sammen til en lækker og cremet koldskål. Smag til med sukker og citron.",
+                    "Opbevar koldskålen til køl indtil servering. Server med kammerjunkere og evt. friske jordbær."
+                ],
+                "rating": 5,
+                "image": "https://madenimitliv.dk/wp-content/uploads/2013/07/Koldskaal-med-citron-og-vanilje-150x150.jpg",
+                "url": "https://madenimitliv.dk/2013/07/koldskal-vanille-uden-aeg/",
+                "price": 46.75
             },
             "ingredients": [
                 {
