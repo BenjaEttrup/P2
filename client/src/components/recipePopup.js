@@ -92,7 +92,7 @@ class PopupRecipe extends React.Component {
                         this.addToIndex()
                         return (
                           <tr>
-                            <td class="capitalize"> {Object.keys(ingredient)[0]}</td>
+                            <td class="capitalize_first"> {Object.keys(ingredient)[0]}</td>
                             <td>{ingredient[Object.keys(ingredient)[0]].amount} {ingredient[Object.keys(ingredient)[0]].unit}</td>
                             <td>{this.props.items[this.props.selectedItem].ingredients[currentIndex].price ? this.props.items[this.props.selectedItem].ingredients[currentIndex].price + ' DKK' : ''}</td>
                           </tr>
