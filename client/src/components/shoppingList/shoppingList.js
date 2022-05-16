@@ -109,6 +109,7 @@ class ShoppingList extends React.Component {
   unHideStashElement(shoppingListElement) {
     let myStashComponents = this.state.myStashComponents;
 
+    // should work on this.state.matchingIngredients?
     myStashComponents.forEach(component => {
       let similarity = compareTwoStrings(component.props.ingredient.title, shoppingListElement.props.ingredient.title);
 
@@ -172,6 +173,25 @@ class ShoppingList extends React.Component {
 
   }
 
+
+  findBestMatchingIngredient(recipeComponent, stashIngredient) {
+    let ingredientMatch = undefined;
+    let highestSimilarity = 0;
+    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
+      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
+
+      if ((similarity >= 0.5) && (similarity >= highestSimilarity)) {
+        ingredientMatch = ingredientComponent;
+      }
+    })
+
+    // TODO should have a function that inserts this match into the this.state.matchingIngredients.matches hashtable.
+    console.log("")
+    console.log("findBestMatchingIngredient best match = ")
+    console.log(ingredientMatch)
+    return ingredientMatch;
+  }
+
   /**
    * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
    * the stashIngredient.
@@ -181,23 +201,30 @@ class ShoppingList extends React.Component {
    */
   componentDidMatch(recipeComponent, stashIngredient) {
     let ingredientMatch = undefined
-    console.log(this.state.matchingIngredients)
-    console.log(stashIngredient);
+    console.log(``)
+    console.log(`componentDidMatch call with`)
+    console.log(recipeComponent)
+    console.log(stashIngredient)
+
     this.state.matchingIngredients.stashComponents.forEach((stashComponent, scIndex) => {
       if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
-        console.log("do something")
+        if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
+          console.log("The match that was found is")
+          console.log(this.state.matchingIngredients.matches[scIndex])
+          ingredientMatch = this.state.matchingIngredients.matches[scIndex]
+          return ingredientMatch;
+        }
+        else {
+          ingredientMatch = this.findBestMatchingIngredient(recipeComponent, stashIngredient);
+          return ingredientMatch;
+        }
       }
-      console.log(stashComponent)
     })
 
-    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
-      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
-
-      if (similarity >= 0.5) {
-        ingredientMatch = ingredientComponent
-        return ingredientComponent;
-      }
-    })
+    // Should probably return an array (this.state.matchingIngredients.matches[scIndex])
+    // As there can be multiple matches over multiple recipes which would be found in this.state.matchingIngredients.matches[scIndex].next
+    console.log(`returning`)
+    console.log(ingredientMatch)
     return ingredientMatch;
   }
 
@@ -305,6 +332,7 @@ class ShoppingList extends React.Component {
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
+      // TODO MAKE IT HANDLE OBJECT WITH NEXT MATECHES
       ingredientComponent = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
       if (ingredientComponent) {
         // The case where the trash can on the stashRowElement was pushed
@@ -329,24 +357,15 @@ class ShoppingList extends React.Component {
         })
 
       }
-
-      // If no matching ingredient component was found.
-      else {
-        // IS this every reachable?
-        console.log("INITING RECIPECOMPONENT")
-        recipeComponent.setState({
-          inited: true,
-        })
-      }
     })
   }
 
-  linkedListTailEnd (linkedListNode) {
+  linkedListTailEnd(linkedListNode) {
     let nextNode = linkedListNode;
     while (nextNode.next !== undefined) {
       nextNode = nextNode.next;
     }
-    
+
     return nextNode;
   }
 
@@ -373,7 +392,6 @@ class ShoppingList extends React.Component {
 
               let tailEnd = this.linkedListTailEnd(bestMatches.matches[scIndex]);
               tailEnd.next = match;
-              console.log(tailEnd)
             }
           }
         })
@@ -389,7 +407,7 @@ class ShoppingList extends React.Component {
 
   ingredientInStash() {
     let bestMatches = this.matchIngredients();
-    
+
     for (let match of bestMatches.matches) {
       let nextMatch = match.next;
       while (nextMatch !== undefined) {
