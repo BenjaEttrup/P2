@@ -492,6 +492,7 @@ class ShoppingList extends React.Component {
 
   //This is the render function. This is where the
   //html is.
+  // TODO snak om ændringer fra https://github.com/BenjaEttrup/P2/pull/75/files#diff-871a7a54ab58e14092a8da12311a84576266342addeea837009e94a3a173258d
   render() {
     console.log(this.state.filteredStash)
     return (

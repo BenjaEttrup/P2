@@ -136,7 +136,6 @@ class IngredientElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    // TODO FIX BUG WHERE LOADING THE SHOPPING LIST WITH INGREDIENTS IN MY STASH DOES NOT HIDE THE INGREDIENTS IN THE RECIPES.
     if (this.state.hide || this.state.wasTrashed) {
       return null;
     }
