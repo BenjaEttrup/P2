@@ -43,3 +43,8 @@
 .dropdown-title {
   padding-left: .5rem;
 }
+
+.recipeLink {
+  text-decoration: none;
+  color: black;
+}

@@ -3,7 +3,7 @@ import '../../stylesheets/shoppingList.css'
 import ShoppingListRecipe from './shoppingListRecipe';
 import IngredientElement from './ingredientElement';
 import { compareTwoStrings } from 'string-similarity';
-import { param } from 'jquery';
+import { Link } from 'react-router-dom';
 
 //This is a React class it extends a React component which 
 //means that you can use all the code from the React component and it runs the
@@ -62,7 +62,7 @@ class ShoppingList extends React.Component {
       .then((res) => {
         this.setState({
           shoppingListRecipes: res,
-        }, () => {this.filterStashItems()});
+        }, () => { this.filterStashItems() });
       }).catch(err => {
         console.error(err);
       });
@@ -319,7 +319,7 @@ class ShoppingList extends React.Component {
         })
 
       }
-      
+
       // If no matching ingredient component was found.
       else {
         // IS this every reachable?
@@ -408,13 +408,14 @@ class ShoppingList extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
+    console.log(this.state.filteredStash)
     return (
       <div className="ShoppingList">
         <div className="card shadow shoppingList">
           <div className="card-body shoppingList-card-body">
             <div className="">
               <h4>
-                Shoppinglist
+                Shopping List
               </h4>
               {
                 this.state.shoppingListRecipes.map((recipe, index) => {
@@ -436,22 +437,22 @@ class ShoppingList extends React.Component {
                   )
                 })
               }
-              <div id="totalPrice">
-                <p> Pris i alt: {
+              <div>
+                {this.state.recipeSum > 0 ? <p id="totalPrice"> Den samlet pris er {
                   this.state.recipeSum
-                } kr.</p>
+                } kr.</p>: <p id="emptyList">Shoppinglisten er tom.</p>}
               </div>
-              <table className="table table-striped">
+              <table className="table table-striped table-borderless">
                 <thead>
                   <tr>
-                    <th className='col-9' scope='col'>My Stash</th>
+                    <th className='col-9' scope='col'><Link to='/myStash' className='recipeLink'>My Stash</Link></th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {
                     this.state.myStashIngredients.map((ingredient) => {
-                      if(this.state.filteredStash){
+                      if (this.state.filteredStash) {
                         return (
                           <IngredientElement
                             matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
@@ -463,7 +464,7 @@ class ShoppingList extends React.Component {
                           />
                         )
                       }
-                      else{
+                      else {
                         return null;
                       }
                     })
