@@ -124,13 +124,9 @@ class IngredientElement extends React.Component {
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
-        console.log("")
-        console.log("BoxChecked")
         this.props.matchIngredient(this, true, false);
       }
       else {
-        console.log("")
-        console.log("boxUnchecked")
         this.props.matchIngredient(this, false, false);
       }
     });
