@@ -250,6 +250,7 @@ class ShoppingList extends React.Component {
   }
 
   findBestMatchingIngredient(recipeComponent, stashIngredient) {
+    // TODO DEBUG THIS
     let ingredientMatch = undefined;
     let highestSimilarity = 0;
     recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
@@ -280,11 +281,13 @@ class ShoppingList extends React.Component {
     console.log(`componentDidMatch call with`)
     console.log(recipeComponent)
     console.log(stashIngredient)
+    // TODO DEBUG THIS
+    console.log(``)
 
     this.state.matchingIngredients.stashComponents.forEach((stashComponent, scIndex) => {
       if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
         if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
-          console.log("The match that was found is")
+          console.log(`matchingIngredients.stashComponents.forEach ${scIndex}`);
           console.log(this.state.matchingIngredients.matches[scIndex])
           ingredientMatch = this.state.matchingIngredients.matches[scIndex]
           return ingredientMatch;
@@ -298,13 +301,16 @@ class ShoppingList extends React.Component {
 
     // Should probably return an array (this.state.matchingIngredients.matches[scIndex])
     // As there can be multiple matches over multiple recipes which would be found in this.state.matchingIngredients.matches[scIndex].next
-    console.log(`returning`)
+    console.log(`The match that was found is`)
     console.log(ingredientMatch)
     return ingredientMatch;
   }
 
   updateMatchState(ingredientMatch, stashIngredient, wasTrashed, addedToStash) {
     if (ingredientMatch) {
+      
+      console.log("")
+      console.log("Updating state on match")
       console.log(ingredientMatch)
       // The case where the trash can on the stashRowElement was pushed
       if (wasTrashed) {
@@ -355,13 +361,15 @@ class ShoppingList extends React.Component {
    */
   matchIngredient(stashIngredient, subtract, wasTrashed = false, addedToStash = false) {
     let match = undefined;
+    let nextMatch = undefined;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      // TODO MAKE IT HANDLE OBJECT WITH NEXT MATECHES
       match = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
       this.updateMatchState(match, stashIngredient, wasTrashed, addedToStash);
-      let nextMatch = match.next;
+      if(match){
+        nextMatch = match.next;
+      }
       while (nextMatch !== undefined) {
         this.updateMatchState(nextMatch, stashIngredient, wasTrashed, addedToStash);
         nextMatch = nextMatch.next;
@@ -383,7 +391,6 @@ class ShoppingList extends React.Component {
       "stashComponents": this.state.myStashComponents,
       "matches": []
     };
-    // TODO: Matches skal være et hashtable med indexes fra 0 - myStashComponents.length, så hvis et match ikke er fundet skal valuen være tom ud fra keyen (indexet (scIndex) 
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
@@ -391,7 +398,6 @@ class ShoppingList extends React.Component {
           let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
           if (similarity >= 0.5) {
             let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
-            // maybe first part of if is redundant in this case
             if (similarity >= bestMatchSimilarity) {
               let match = { "component": recipeIngredientComponent, "similarity": similarity, "next": undefined }
               if ((bestMatches.matches[scIndex] === undefined) || (similarity > bestMatchSimilarity)) {
