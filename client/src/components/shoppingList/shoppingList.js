@@ -523,7 +523,7 @@ class ShoppingList extends React.Component {
                 })
               }
               <div>
-                {this.state.recipeSum > 0 ? <p id="totalPrice"> Den samlet pris er {
+                {this.state.recipeSum > 0 ? <p id="totalPrice"> Den samlede pris er {
                   this.state.recipeSum
                 } kr.</p>: <p id="emptyList">Shoppinglisten er tom.</p>}
               </div>
