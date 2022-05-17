@@ -64,7 +64,6 @@ class Recipe extends React.Component {
 
   // HTML
   render() {
-    console.log(this.props.id)
     return (
       <div>
         <div className="card-recipe bgcolor">
