@@ -121,7 +121,7 @@ class ShoppingList extends React.Component {
     }
 
     myStashComponents.forEach((component, cIndex) => {
-      // This should be its own function as it is also used in matchIngredients.
+      // TODO This should be its own function as it is also used in matchIngredients.
       let similarity = compareTwoStrings(component.props.ingredient.title, shoppingListElement.props.ingredient.title);
       if (similarity >= 0.5) {
         let bestMatchSimilarity = bestMatches.matches[cIndex] ? bestMatches.matches[cIndex].similarity : 0;
