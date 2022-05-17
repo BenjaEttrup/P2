@@ -6,6 +6,8 @@
     "jest": "^28.0.3"
   },
   "scripts": {
+    "start-client": "cd client && npm start",
+    "start-server": "cd server && nodemon index.js",
     "test-server": "jest server/",
     "test-react": "cd client && npm test"
   }
