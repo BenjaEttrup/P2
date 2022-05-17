@@ -220,21 +220,6 @@ class ShoppingList extends React.Component {
         if (recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed) {
           tempIngredientPrice = 0;
         }
-        // else {
-        //   this.state.myStashComponents.forEach((stashComponent, scIndex) => {
-        //     let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
-        //     if (similarity >= 0.5) {
-        //       if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
-        //         tempIngredientPrice = 0;
-        //         bestMatches.matches.push(recipeComponent);
-
-        //         recipeIngredientComponent.setState({
-        //           hide: true,
-        //         })
-        //       }
-        //     }
-        //   })
-        // }
 
         recipeSum = Number(+recipeSum + +tempIngredientPrice).toFixed(2)
         recipeComponent.setState({
@@ -284,7 +269,7 @@ class ShoppingList extends React.Component {
     // TODO DEBUG THIS
     console.log(``)
 
-    this.state.matchingIngredients.stashComponents.forEach((stashComponent, scIndex) => {
+    this.state.matchingIngredients?.stashComponents.forEach((stashComponent, scIndex) => {
       if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
         if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
           console.log(`matchingIngredients.stashComponents.forEach ${scIndex}`);
@@ -391,6 +376,8 @@ class ShoppingList extends React.Component {
       "stashComponents": this.state.myStashComponents,
       "matches": []
     };
+
+    // TODO when initializing with kærne og tykmælk in stash and having 2 koldskål. only 1 match is found for kærnemælk. 
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
