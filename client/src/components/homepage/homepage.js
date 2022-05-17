@@ -186,7 +186,7 @@ class HomePage extends React.Component {
           <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
               <div class="form shadow-rounded"><i class="fa fa-search"></i>
-                <input type="text" class="form-control form-input" placeholder="Search recipe..." onChange={this.state.recipes ? (evt) => { this.setSearchValue(evt) } : ''} />
+                <input type="text" class="form-control form-input" placeholder="Søg opskrift..." onChange={this.state.recipes ? (evt) => { this.setSearchValue(evt) } : ''} />
               </div>
             </div>
           </div>
@@ -203,10 +203,10 @@ class HomePage extends React.Component {
                   </label>
                 </div>
                 <button type="button" id="filterButton" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                  aria-expanded="false" onClick={() => {this.togglePricePopup()}}>Price</button>
+                  aria-expanded="false" onClick={() => {this.togglePricePopup()}}>Pris</button>
                 <ul class={this.state.priceToggle ? "dropdown-menu show" : "dropdown-menu"} id="price-dropdown">
                   <li>
-                    <h6>Price range</h6>
+                    <h6>Pris</h6>
                     <div class="max-min-price">
                       <div class="input-group">
                         <span class="input-group-text" id="min-input-left">Min</span>
@@ -226,9 +226,9 @@ class HomePage extends React.Component {
               </div>
               <div class="col-3 btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value='1' onClick={(evt) => { this.changeCategory(evt) }} checked={this.state.categoryID === '1' ? true : false} />
-                <label class="btn btn-outline-primary" for="btnradio1">Price</label>
+                <label class="btn btn-outline-primary" for="btnradio1">Pris</label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value='2' onClick={(evt) => { this.changeCategory(evt) }} checked={this.state.categoryID === '2' ? true : false} />
-                <label class="btn btn-outline-primary" for="btnradio2">Rating</label>
+                <label class="btn btn-outline-primary" for="btnradio2">Sværhedsgrad</label>
               </div>
             </div>
           </div>
