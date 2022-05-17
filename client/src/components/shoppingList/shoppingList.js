@@ -173,61 +173,6 @@ class ShoppingList extends React.Component {
 
   }
 
-
-  findBestMatchingIngredient(recipeComponent, stashIngredient) {
-    let ingredientMatch = undefined;
-    let highestSimilarity = 0;
-    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
-      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
-
-      if ((similarity >= 0.5) && (similarity >= highestSimilarity)) {
-        ingredientMatch = ingredientComponent;
-      }
-    })
-
-    // TODO should have a function that inserts this match into the this.state.matchingIngredients.matches hashtable.
-    console.log("")
-    console.log("findBestMatchingIngredient best match = ")
-    console.log(ingredientMatch)
-    return ingredientMatch;
-  }
-
-  /**
-   * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
-   * the stashIngredient.
-   * @param recipeComponent - The component that contains the recipe ingredients
-   * @param stashIngredient - is the ingredient that is being dragged
-   * @returns The ingredientComponent that matches the stashIngredient.
-   */
-  componentDidMatch(recipeComponent, stashIngredient) {
-    let ingredientMatch = undefined
-    console.log(``)
-    console.log(`componentDidMatch call with`)
-    console.log(recipeComponent)
-    console.log(stashIngredient)
-
-    this.state.matchingIngredients.stashComponents.forEach((stashComponent, scIndex) => {
-      if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
-        if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
-          console.log("The match that was found is")
-          console.log(this.state.matchingIngredients.matches[scIndex])
-          ingredientMatch = this.state.matchingIngredients.matches[scIndex]
-          return ingredientMatch;
-        }
-        else {
-          ingredientMatch = this.findBestMatchingIngredient(recipeComponent, stashIngredient);
-          return ingredientMatch;
-        }
-      }
-    })
-
-    // Should probably return an array (this.state.matchingIngredients.matches[scIndex])
-    // As there can be multiple matches over multiple recipes which would be found in this.state.matchingIngredients.matches[scIndex].next
-    console.log(`returning`)
-    console.log(ingredientMatch)
-    return ingredientMatch;
-  }
-
   /**
    * 
    * @param {*} priceElement Ingredient object
@@ -304,6 +249,87 @@ class ShoppingList extends React.Component {
     this.updateTotalRecipePrice(totalRecipeSum);
   }
 
+  findBestMatchingIngredient(recipeComponent, stashIngredient) {
+    let ingredientMatch = undefined;
+    let highestSimilarity = 0;
+    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
+      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
+
+      if ((similarity >= 0.5) && (similarity >= highestSimilarity)) {
+        highestSimilarity = similarity
+        ingredientMatch = { "component": ingredientComponent, "similarity": highestSimilarity, "next": undefined };
+      }
+    })
+
+    // TODO should have a function that inserts this match into the this.state.matchingIngredients.matches hashtable.
+    console.log("")
+    console.log("findBestMatchingIngredient best match = ")
+    return ingredientMatch;
+  }
+
+  /**
+   * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
+   * the stashIngredient.
+   * @param recipeComponent - The component that contains the recipe ingredients
+   * @param stashIngredient - is the ingredient that is being dragged
+   * @returns The ingredientComponent that matches the stashIngredient.
+   */
+   componentDidMatch(recipeComponent, stashIngredient) {
+    let ingredientMatch = undefined
+    console.log(``)
+    console.log(`componentDidMatch call with`)
+    console.log(recipeComponent)
+    console.log(stashIngredient)
+
+    this.state.matchingIngredients.stashComponents.forEach((stashComponent, scIndex) => {
+      if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
+        if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
+          console.log("The match that was found is")
+          console.log(this.state.matchingIngredients.matches[scIndex])
+          ingredientMatch = this.state.matchingIngredients.matches[scIndex]
+          return ingredientMatch;
+        }
+        else {
+          ingredientMatch = this.findBestMatchingIngredient(recipeComponent, stashIngredient);
+          return ingredientMatch;
+        }
+      }
+    })
+
+    // Should probably return an array (this.state.matchingIngredients.matches[scIndex])
+    // As there can be multiple matches over multiple recipes which would be found in this.state.matchingIngredients.matches[scIndex].next
+    console.log(`returning`)
+    console.log(ingredientMatch)
+    return ingredientMatch;
+  }
+
+  updateMatchState(ingredientMatch, stashIngredient, wasTrashed, addedToStash) {
+    if (ingredientMatch) {
+      console.log(ingredientMatch)
+      // The case where the trash can on the stashRowElement was pushed
+      if (wasTrashed) {
+        ingredientMatch.component.setState({
+          hide: false,
+          boxChecked: true,
+          wasTrashed: false,
+        }, () => {
+          this.updateRecipePrices();
+        })
+        return;
+      }
+
+      // Two cases: the recipeIngredient was added to stash or it wasn't
+      let hide = addedToStash ? true : stashIngredient.state.boxChecked;
+      ingredientMatch.component.setState({
+        hide: hide,
+        boxChecked: true,
+      }, () => {
+        this.updateRecipePrices();
+      })
+
+    }
+  }
+
   /**
    * The function is called when a user checks or unchecks a checkbox on a stashRowElement component. 
    * 
@@ -328,34 +354,17 @@ class ShoppingList extends React.Component {
    * @param [wasTrashed=false] - boolean
    */
   matchIngredient(stashIngredient, subtract, wasTrashed = false, addedToStash = false) {
-    let ingredientComponent = undefined;
+    let match = undefined;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       // TODO MAKE IT HANDLE OBJECT WITH NEXT MATECHES
-      ingredientComponent = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
-      if (ingredientComponent) {
-        // The case where the trash can on the stashRowElement was pushed
-        if (wasTrashed) {
-          ingredientComponent.setState({
-            hide: false,
-            boxChecked: true,
-            wasTrashed: false,
-          }, () => {
-            this.updateRecipePrices();
-          })
-          return;
-        }
-
-        // Two cases: the recipeIngredient was added to stash or it wasn't
-        let hide = addedToStash ? true : stashIngredient.state.boxChecked;
-        ingredientComponent.setState({
-          hide: hide,
-          boxChecked: true,
-        }, () => {
-          this.updateRecipePrices();
-        })
-
+      match = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
+      this.updateMatchState(match, stashIngredient, wasTrashed, addedToStash);
+      let nextMatch = match.next;
+      while (nextMatch !== undefined) {
+        this.updateMatchState(nextMatch, stashIngredient, wasTrashed, addedToStash);
+        nextMatch = nextMatch.next;
       }
     })
   }
