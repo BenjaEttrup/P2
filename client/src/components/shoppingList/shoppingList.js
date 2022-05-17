@@ -62,7 +62,7 @@ class ShoppingList extends React.Component {
       .then((res) => {
         this.setState({
           shoppingListRecipes: res,
-        }, () => { this.filterStashItems() });
+        }, () => { console.log(this.state.shoppingListRecipes); this.filterStashItems() });
       }).catch(err => {
         console.error(err);
       });
@@ -235,7 +235,6 @@ class ShoppingList extends React.Component {
   }
 
   findBestMatchingIngredient(recipeComponent, stashIngredient) {
-    // TODO DEBUG THIS
     let ingredientMatch = undefined;
     let highestSimilarity = 0;
     recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
@@ -247,7 +246,6 @@ class ShoppingList extends React.Component {
       }
     })
 
-    // TODO should have a function that inserts this match into the this.state.matchingIngredients.matches hashtable.
     console.log("")
     console.log("findBestMatchingIngredient best match = ")
     return ingredientMatch;
@@ -377,9 +375,10 @@ class ShoppingList extends React.Component {
       "matches": []
     };
 
-    // TODO when initializing with kærne og tykmælk in stash and having 2 koldskål. only 1 match is found for kærnemælk. 
+    // TODO when initializing with kærne og tykmælk in stash and having 2 koldskål. only 1 match is found for kærnemælk if kærnemælk has been removed from one recipe.. 
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
+      console.log(recipeComponent)
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
         bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
           let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
