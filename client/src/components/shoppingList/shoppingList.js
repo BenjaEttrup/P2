@@ -132,13 +132,13 @@ class ShoppingList extends React.Component {
 
   unHideStashElement(shoppingListElement) {
     let bestMatches = this.state.matchingIngredients;
-    console.log(bestMatches);
-    let matchingStashIngredient = undefined; //could use a better name
+    let matchingStashIngredient = undefined; 
     let highestSimilarity = 0;
 
-    bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
+    // Optional chaining operator is used, as this function ca be called when this.state.matchingIngredients is undefined
+    bestMatches?.stashComponents.forEach((stashComponent, scIndex) => {
       let match = this.stashIngredientToRecipeIngredient(stashComponent, shoppingListElement, scIndex, bestMatches);
-      // Have to handle situations where no match was found (similarity was < 0.5)
+      // Handles situations where no match was found (similarity was < 0.5)
       if (match?.similarity >= highestSimilarity) {
         highestSimilarity = match.similarity;
         matchingStashIngredient = stashComponent;
