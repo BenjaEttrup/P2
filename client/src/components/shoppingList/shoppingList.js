@@ -111,39 +111,46 @@ class ShoppingList extends React.Component {
     }));
   }
 
-  unHideStashElement(shoppingListElement) {
-    let myStashComponents = this.state.matchingIngredients?.stashComponents;
-    let bestMatches = this.state.matchingIngredients;
-    let mostSimilarComponent = undefined; //could use a better name
-
-    // if myStashComponents is undefined it is because this.state.matchingIngredients has not been intialized yet.
-    if (!myStashComponents) {
-      return;
-    }
-
-    myStashComponents.forEach((component, cIndex) => {
-      // TODO This should be its own function as it is also used in matchIngredients.
-      let similarity = compareTwoStrings(component.props.ingredient.title, shoppingListElement.props.ingredient.title);
-      if (similarity >= 0.5) {
-        let bestMatchSimilarity = bestMatches.matches[cIndex] ? bestMatches.matches[cIndex].similarity : 0;
-        if (similarity >= bestMatchSimilarity) {
-          let match = { "component": shoppingListElement, "similarity": similarity, "next": undefined }
-          mostSimilarComponent = component;
-
-          if ((bestMatches.matches[cIndex] === undefined) || (similarity > bestMatchSimilarity)) {
-            bestMatches.matches[cIndex] = match;
-            return;
-          }
-
-          let tailEnd = this.linkedListTailEnd(bestMatches.matches[cIndex]);
-          tailEnd.next = match;
+  stashIngredientToRecipeIngredient(stashComponent, recipeIngredientComponent, scIndex, bestMatches) {
+    let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
+    if (similarity >= 0.5) {
+      let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
+      if (similarity >= bestMatchSimilarity) {
+        let match = { "component": recipeIngredientComponent, "similarity": similarity, "next": undefined }
+        if ((bestMatches.matches[scIndex] === undefined) || (similarity > bestMatchSimilarity)) {
+          bestMatches.matches[scIndex] = match;
+          return match;
         }
+
+        let tailEnd = this.linkedListTailEnd(bestMatches.matches[scIndex]);
+        tailEnd.next = match;
+        return match;
+      }
+    }
+  }
+
+
+  unHideStashElement(shoppingListElement) {
+    let bestMatches = this.state.matchingIngredients;
+    console.log(bestMatches);
+    let matchingStashIngredient = undefined; //could use a better name
+    let highestSimilarity = 0;
+
+    bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
+      let match = this.stashIngredientToRecipeIngredient(stashComponent, shoppingListElement, scIndex, bestMatches);
+      // Have to handle situations where no match was found (similarity was < 0.5)
+      if (match?.similarity >= highestSimilarity) {
+        highestSimilarity = match.similarity;
+        matchingStashIngredient = stashComponent;
       }
     })
 
-    // Updates the state of the stash ingredient that matched the shoppingListElement(ingredient)
-    if (mostSimilarComponent !== undefined) {
-      mostSimilarComponent.setState({
+    this.setState({
+      matchingIngredients: bestMatches,
+    })
+
+    if (matchingStashIngredient !== undefined) {
+      matchingStashIngredient.setState({
         hide: false,
         boxChecked: true,
         wasTrashed: false
@@ -206,7 +213,7 @@ class ShoppingList extends React.Component {
   */
   updateTotalRecipePrice(totalRecipeSum = undefined) {
     // If totalRecipeSum is not undefined then this would be the sum of the recipes else we must iterate over the price of each recipe.
-    let tempRecipeSum = totalRecipeSum? totalRecipeSum : 0;
+    let tempRecipeSum = totalRecipeSum ? totalRecipeSum : 0;
 
     if (totalRecipeSum === undefined) {
       this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
@@ -262,8 +269,6 @@ class ShoppingList extends React.Component {
       }
     })
 
-    console.log("")
-    console.log("findBestMatchingIngredient best match = ")
     return ingredientMatch;
   }
 
@@ -285,55 +290,35 @@ class ShoppingList extends React.Component {
         }
         else {
           ingredientMatch = this.findBestMatchingIngredient(recipeComponent, stashIngredient);
+          // TODO should add best match to matchingIngredients matches
           return ingredientMatch;
         }
       }
     })
 
-    // Should probably return an array (this.state.matchingIngredients.matches[scIndex])
-    // As there can be multiple matches over multiple recipes which would be found in this.state.matchingIngredients.matches[scIndex].next
-    console.log(`The match that was found is`)
-    console.log(ingredientMatch)
     return ingredientMatch;
   }
 
   updateMatchState(ingredientMatch, stashIngredient, wasTrashed, addedToStash) {
     if (ingredientMatch) {
-
-      console.log("Updating state on match")
-      // The case where the trash can on the stashRowElement was pushed
+      // The case where the ingredientElement was removed
       if (wasTrashed) {
-        // console.log(ingredientMatch.component.props.ingredient.title)
-        // console.log(ingredientMatch)
-        // console.log("changing boxChecked to True")
         ingredientMatch.component.setState({
           hide: false,
           boxChecked: true,
           wasTrashed: false,
         }, () => {
-          // this.state.myStashComponents.forEach(component => {
-          //   console.log(`component ${component.props.ingredient.title} boxchecked = ${component.state.boxChecked}`)
-          // })
           this.updateRecipePrices();
         })
         return;
       }
-
       // Two cases: the recipeIngredient was added to stash or it wasn't
       let hide = addedToStash ? true : stashIngredient.state.boxChecked;
 
-      // console.log("")
-      // console.log("After ternary statement")
-      // console.log(ingredientMatch.component.props.ingredient.title)
-      // console.log(ingredientMatch)
-      // console.log("changing boxChecked to True")
       ingredientMatch.component.setState({
         hide: hide,
         boxChecked: true,
       }, () => {
-        // this.state.myStashComponents.forEach(component => {
-        //   console.log(`component ${component.props.ingredient.title} boxchecked = ${component.state.boxChecked}`)
-        // })
         this.updateRecipePrices();
       })
 
@@ -390,6 +375,7 @@ class ShoppingList extends React.Component {
     return nextNode;
   }
 
+  // Find matches on init mapStashToShoppingList
   matchIngredients() {
     let bestMatches = {
       "stashComponents": this.state.myStashComponents,
@@ -399,28 +385,15 @@ class ShoppingList extends React.Component {
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
         bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
-          let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
-          if (similarity >= 0.5) {
-            let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
-            if (similarity >= bestMatchSimilarity) {
-              let match = { "component": recipeIngredientComponent, "similarity": similarity, "next": undefined }
-              if ((bestMatches.matches[scIndex] === undefined) || (similarity > bestMatchSimilarity)) {
-                bestMatches.matches[scIndex] = match;
-                return;
-              }
-
-              let tailEnd = this.linkedListTailEnd(bestMatches.matches[scIndex]);
-              tailEnd.next = match;
-            }
-          }
+          this.stashIngredientToRecipeIngredient(stashComponent, recipeIngredientComponent, scIndex, bestMatches);
         })
       })
+
     })
 
     this.setState({
       matchingIngredients: bestMatches
     })
-    console.log(bestMatches)
     return bestMatches;
   }
 
@@ -494,7 +467,6 @@ class ShoppingList extends React.Component {
   //html is.
   // TODO snak om ændringer fra https://github.com/BenjaEttrup/P2/pull/75/files#diff-871a7a54ab58e14092a8da12311a84576266342addeea837009e94a3a173258d
   render() {
-    console.log(this.state.filteredStash)
     return (
       <div className="ShoppingList">
         <div className="card shadow shoppingList">
@@ -526,7 +498,7 @@ class ShoppingList extends React.Component {
               <div>
                 {this.state.recipeSum > 0 ? <p id="totalPrice"> Den samlede pris er {
                   this.state.recipeSum
-                } kr.</p>: <p id="emptyList">Shoppinglisten er tom.</p>}
+                } kr.</p> : <p id="emptyList">Shoppinglisten er tom.</p>}
               </div>
               <table className="table table-striped table-borderless">
                 <thead>

@@ -149,7 +149,7 @@ class IngredientElement extends React.Component {
       return (
         <tr>
           <td class="capitalize_first">{this.props.ingredient ? this.props.ingredient.title : ""}</td>
-          <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
+          <td className="right-align">{this.props.ingredient ? Number(this.props.ingredient.price).toFixed(2) : ""} kr.</td>
           <td className="right-align">
             <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/shoppinglist/remove/ingredient/') }} className="deleteButton">
               <i className="fa fa-trash"></i></button>
