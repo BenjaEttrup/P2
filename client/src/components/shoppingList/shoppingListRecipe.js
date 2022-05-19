@@ -25,6 +25,9 @@ class ShoppingListRecipe extends React.Component {
 
   }
 
+  /**
+   * @function is called on initialization and lets shoppingList component track this recipe component.
+   */
   initShoppingListRecipe() {
     this.setState({
       inited: true,
