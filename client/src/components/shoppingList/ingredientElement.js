@@ -33,7 +33,7 @@ class IngredientElement extends React.Component {
   }
 
   /**
-   * @function initializes this shopping ingredient and calls a function that lets the recipe track this component
+   * initializes this shopping ingredient and calls a function that lets the recipe track this component
    * @param {*} hide whether this ingredient should be hidden initially
    */
   initShoppingListElement(hide) {
@@ -48,7 +48,7 @@ class IngredientElement extends React.Component {
   }
 
   /**
-   * @function Initializes a stash ingredient and calls a function, that lets shoppingList component track it.
+   * Initializes a stash ingredient and calls a function, that lets shoppingList component track it.
    */
   initStashElement() {
     this.setState({
@@ -62,7 +62,7 @@ class IngredientElement extends React.Component {
 
 
   /**
-   * 
+   * Removes a recipe or stash ingredient
    * @param {*} stashRowElement 
    * @param {*} endPoint the endpoint that we want to access when removing this ingredientElement 
    * as it could either be a recipe ingredient or stash ingredient. 
@@ -99,7 +99,7 @@ class IngredientElement extends React.Component {
   }
 
   /**
-   * @function sets boxChecked as false and hides the shopping list ingredient.
+   * Sets boxChecked as false and hides the shopping list ingredient.
    * The shopping list ingredient will be added to the stash. 
    * @param {*} evt 
    */
@@ -128,7 +128,7 @@ class IngredientElement extends React.Component {
   }
 
   /**
-   * @function changes the state of the checkbox in a stash ingredient and updates the state on all matching ingredients from recipes.
+   * Changes the state of the checkbox in a stash ingredient and updates the state on all matching ingredients from recipes.
    */
   checkCheckBox() {
     this.setState((prevState) => ({

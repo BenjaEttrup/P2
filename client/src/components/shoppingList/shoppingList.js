@@ -103,7 +103,7 @@ class ShoppingList extends React.Component {
 
 
   /**
-   * @function Updates the sum of the recipes by adding all recipe prices together
+   * Updates the sum of the recipes by adding all recipe prices together
    */
   calculateTotalRecipePrice(recipePrice) {
     this.setState((prevState) => ({
@@ -113,7 +113,7 @@ class ShoppingList extends React.Component {
 
 
   /**
-   * 
+   * Finds the recipe ingredient that best matches the stash ingredient above a similarity of 0.5
    * @param {*} stashComponent an ingredient in the user's stash
    * @param {*} recipeIngredientComponent an ingredient in the user's recipes
    * @param {*} scIndex the index of an ingredient in bestMatches.stashComponents 
@@ -142,7 +142,7 @@ class ShoppingList extends React.Component {
 
 
   /**
-   * @function updates the state of the stash ingredient, as the shoppingListElement was added to stash.
+   * Updates the state of the now matching stash ingredient, as the shoppingListElement was added to stash.
    * @param {*} shoppingListElement the ingredient from a shopping list
    */
   unHideStashElement(shoppingListElement) {
@@ -175,7 +175,7 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * @function updates the state of myStashIngredients to add the new ingredient
+   * Updates the state of myStashIngredients to add the new ingredient
    * @param {*} shoppingListElement an ingredient in a shopping list
    */
   updateMyStashIngredients(shoppingListElement) {
@@ -206,8 +206,8 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * 
-   * @param {*} stashRowElement an ingredient from the users stash or shopping list
+   * Removes a recipe or stash ingredient from the user
+   * @param {*} stashRowElement an ingredient from the user's stash or shopping list
    * @param {*} params an object that contains the members recipeId and an endpoint (the url to access)
    */
   removeIngredient(stashRowElement, params) {
@@ -224,9 +224,8 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * 
+   * Updates the total sum of all the recipes
    * @param {*} totalRecipeSum the total sum of the recipes
-   * @function updates the total sum of all the recipes
    */
   updateTotalRecipePrice(totalRecipeSum = undefined) {
     // If totalRecipeSum is not undefined then this would be the sum of the recipes else we must iterate over the price of each recipe.
@@ -244,7 +243,7 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * @function updates the prices of the recipes by seeing which ingredients are hidden or removed.
+   * Updates the prices of the recipes by seeing which ingredients are hidden or removed.
    */
   updateRecipePrices() {
     let totalRecipeSum = 0;
@@ -278,7 +277,7 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * 
+   * Finds the recipe ingredient that matches the stash ingredient the best above a similarity of 0.5 
    * @param {*} recipeComponent an instance of a shopingListRecipe component
    * @param {*} stashIngredient an instance of a ingredient in
    * @returns the ingredient from a recipe that corresponds best to the stashIngredient
@@ -315,9 +314,10 @@ class ShoppingList extends React.Component {
           ingredientMatch = this.state.matchingIngredients.matches[scIndex]
           return ingredientMatch;
         }
+        // Never seems to reach this else.
         else {
+          console.log(this.state.matchingIngredients.matches[scIndex])
           ingredientMatch = this.findBestMatchingIngredient(recipeComponent, stashIngredient);
-          // TODO should add best match to matchingIngredients matches
           return ingredientMatch;
         }
       }
@@ -328,7 +328,7 @@ class ShoppingList extends React.Component {
 
 
   /**
-   * @function updates the state of ingredientMatch accordingly based on state changes in stashIngredient 
+   * Updates the state of ingredientMatch accordingly based on state changes in stashIngredient 
    * and updates the price of recipes
    * @param {*} ingredientMatch the matching ingredient
    * @param {*} stashIngredient the stash ingredient
@@ -364,35 +364,17 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * The function is called when a user checks or unchecks a checkbox on a stashRowElement component. 
-   * 
-   * The function is supposed to update the hide state of the recipeIngredient component that matches
-   * the stashRowElement component. 
-   * 
-   * The function is also supposed to update the boxChecked state of the recipeIngredient component
-   * that matches the stashRowElement component. 
-   * 
-   * The function is also supposed to update the hide state of the stashRowElement component that
-   * matches the recipeIngredient component. 
-   * 
-   * The function is also supposed to update the boxChecked state of the stashRowElement component that
-   * matches the recipeIngredient component. 
-   * 
-   * The function is also supposed to update the hide state of the recipeIngredient component that
-   * matches the stashRowElement component. 
-   * 
-   * The function is also supposed to update the boxChecked state of the recipeIng
-   * @param stashIngredient - the stashRowElement component that was just checked/unchecked
-   * @param subtract - boolean
-   * @param [wasTrashed=false] - boolean
+   * Is called when a stash/recipe ingredient is removed and updates the states of all matching ingredients
+   * @param stashIngredient - the stashRowElement component that had its box checked/unchecked or was removed
+   * @param [wasTrashed=false] - if the ingredient was removed
    */
-  matchIngredient(stashIngredient, subtract, wasTrashed = false, addedToStash = false) {
+  matchIngredient(stashIngredient, wasTrashed = false, addedToStash = false) {
     let match = undefined;
     let nextMatch = undefined;
 
     // Updates the hide state of the recipeIngredient/stashRowElement component.
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      match = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
+      match = this.componentDidMatch(recipeComponent, stashIngredient);
       this.updateMatchState(match, stashIngredient, wasTrashed, addedToStash);
 
       // If a match was found, we should see if other recipes have the same ingredient
@@ -408,7 +390,7 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * 
+   * Finds the tail of a linked list
    * @param {*} linkedListNode a node/element in a linked list 
    * @returns the linkedList element, that points to undefined and is therefore the tail.
    */
@@ -422,10 +404,11 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * TODO
-   * @returns 
+   * Maps the user's stash ingredients to recipe ingredients 
+   * @returns an object containing all the stashComponents, and all the recipe ingredients 
+   * (ingredientElement instances) that matched a stash ingredient
    */
-  // Find matches on init mapStashToShoppingList
+
   matchIngredients() {
     let bestMatches = {
       "stashComponents": this.state.myStashComponents,
@@ -448,13 +431,17 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * TODO
+   * @function hides every recipe ingredient that was matched to an ingredient in the user's stash.
+   * and updates the prices of the recipes
    */
   ingredientInStash() {
     let bestMatches = this.matchIngredients();
 
+    // Iterates all the matching recipe ingredients found
     for (let match of bestMatches.matches) {
       let nextMatch = match.next;
+
+      // hides every recipe ingredient that matched a stash ingredient
       while (nextMatch !== undefined) {
         nextMatch.component.setState({
           hide: true,
@@ -468,8 +455,8 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * TODO 
-   * @param {*} recipe 
+   * @function removes a recipe by the endpoint /shoppinglist/remove/recipe/:ID and updates the total sum of the recipes
+   * @param {*} recipe a recipe from the user's shopping list
    */
   removeRecipe(recipe) {
     fetch(`/shoppinglist/remove/recipe/${recipe.recipeID}`, {
@@ -498,9 +485,8 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * TODO
-   * @param {*} stashRowElementInstance 
-   * @returns 
+   * @function tracks an ingredient component from the user's stash
+   * @param {*} stashRowElementInstance the component instance of ingredientElement. 
    */
   trackStashElement(stashRowElementInstance) {
     let myStashComponents = this.state.myStashComponents;
