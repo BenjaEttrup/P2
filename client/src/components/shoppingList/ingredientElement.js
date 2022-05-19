@@ -99,7 +99,8 @@ class IngredientElement extends React.Component {
   }
 
   /**
-   * TODO
+   * @function sets boxChecked as false and hides the shopping list ingredient.
+   * The shopping list ingredient will be added to the stash. 
    * @param {*} evt 
    */
   addItemToStash(evt) {
@@ -107,9 +108,8 @@ class IngredientElement extends React.Component {
       boxChecked: false,
       hide: true,
     }), () => {
-      console.log("")
-      console.log("Adding recipeIngredient to Stash")
       let stashRowElement = this;
+      // Used to format the shopping list ingredient as a stash ingredient. 
       let ingredient = this.props.ingredient;
       ingredient["amount"] = 1;
       ingredient["unit"] = "stk";
@@ -120,16 +120,17 @@ class IngredientElement extends React.Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(this.props.ingredient)
+        // updates the user's stash
       }).then(stashRowElement.props.updateMyStashIngredients(stashRowElement))
+        // Finds all the other ingredients matching this ingredient and updates the states. 
         .then(this.props.matchIngredient(this, true, false, true))
     });
   }
 
   /**
-   * TODO
-   * @param {*} evt 
+   * @function changes the state of the checkbox in a stash ingredient and updates the state on all matching ingredients from recipes.
    */
-  checkCheckBox(evt) {
+  checkCheckBox() {
     this.setState((prevState) => ({
       boxChecked: !prevState.boxChecked
     }), () => {
@@ -166,7 +167,7 @@ class IngredientElement extends React.Component {
           </td>
           <td className="right-align center" width="2%">
             <div className="form-check align-middle">
-              <input className="form-check-input" type="checkbox" onChange={(evt) => this.addItemToStash(evt)}
+              <input className="form-check-input" type="checkbox" onChange={() => this.addItemToStash()}
                 id="flexCheckChecked" checked={!this.state.boxChecked}>
               </input>
             </div>
