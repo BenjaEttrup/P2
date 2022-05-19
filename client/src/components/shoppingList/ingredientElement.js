@@ -24,18 +24,20 @@ class IngredientElement extends React.Component {
 
   componentDidMount() {
     if (this.props.hasOwnProperty('shoppingList') && !this.state.inited) {
-      // let isHiddenOnInit = this.props.ingredientInStash(this, this.props.ingredientIndex);
       this.initShoppingListElement();
     }
 
     if (this.props.hasOwnProperty('passToStashComponents') && !this.state.inited) {
-      this.initStashElement(false);
+      this.initStashElement();
     }
   }
 
-  //Functions go here
+  /**
+   * @function initializes this shopping ingredient and calls a function that lets the recipe track this component
+   * @param {*} hide whether this ingredient should be hidden initially
+   */
   initShoppingListElement(hide) {
-    if (hide) {
+    if (!this.state.inited) {
       this.setState({
         inited: true,
         hide: hide,
@@ -43,42 +45,41 @@ class IngredientElement extends React.Component {
         this.props.trackShoppingListElement(this, hide)
       });
     }
-    else {
-      if (!this.state.inited) {
-        this.setState({
-          inited: true,
-          hide: hide,
-        }, () => {
-          this.props.trackShoppingListElement(this, hide)
-        });
-      }
-    }
   }
 
-  initStashElement(hide) {
+  /**
+   * @function Initializes a stash ingredient and calls a function, that lets shoppingList component track it.
+   */
+  initStashElement() {
     this.setState({
       inited: true,
-      hide: hide,
+      hide: false,
     }, () => {
-      this.props.trackStashElement(this, hide)
+      this.props.trackStashElement(this)
     })
   }
 
 
 
+  /**
+   * 
+   * @param {*} stashRowElement 
+   * @param {*} endPoint the endpoint that we want to access when removing this ingredientElement 
+   * as it could either be a recipe ingredient or stash ingredient. 
+   */
   hideStashRowElement(stashRowElement, endPoint) {
+    // Updates the state to match a "removed" ingredient.
     this.setState({
       wasTrashed: true,
       boxChecked: false,
       hide: true,
-    }, () => {
-
     })
 
     let params = {
       endPoint: endPoint
     };
 
+    // If it is a recipe ingredient, the endpoint will be '/shoppinglist/remove/ingredient/'
     if (this.props.hasOwnProperty('recipeID')) {
       this.setState({
         hide: !this.state.hide,
@@ -89,6 +90,7 @@ class IngredientElement extends React.Component {
         this.props.updateRecipePrice()
       })
     }
+    // If it is a stash ingredient, the endpoint will be '/stash/remove/'
     else {
       params['recipeID'] = false;
       this.props.matchIngredient(this, false, true);
@@ -96,8 +98,12 @@ class IngredientElement extends React.Component {
     }
   }
 
+  /**
+   * TODO
+   * @param {*} evt 
+   */
   addItemToStash(evt) {
-    this.setState((prevState) => ({
+    this.setState(() => ({
       boxChecked: false,
       hide: true,
     }), () => {
@@ -119,6 +125,10 @@ class IngredientElement extends React.Component {
     });
   }
 
+  /**
+   * TODO
+   * @param {*} evt 
+   */
   checkCheckBox(evt) {
     this.setState((prevState) => ({
       boxChecked: !prevState.boxChecked
