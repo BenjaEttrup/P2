@@ -283,7 +283,7 @@ class ShoppingList extends React.Component {
    * @param stashIngredient - is the ingredient that is being dragged
    * @returns The ingredientComponent that matches the stashIngredient.
    */
-  componentDidMatch(recipeComponent, stashIngredient) {
+  componentDidMatch(stashIngredient) {
     let ingredientMatch = undefined
 
     // Optional chaining operator used, as matchingIngredients might be undefined.
@@ -345,21 +345,19 @@ class ShoppingList extends React.Component {
     let match = undefined;
     let nextMatch = undefined;
 
-    // Updates the hide state of the recipeIngredient/stashRowElement component.
-    this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      match = this.componentDidMatch(recipeComponent, stashIngredient);
-      this.updateMatchState(match, stashIngredient, wasTrashed, addedToStash);
+    // Finds a match and updates the hide state of the recipeIngredient/stashRowElement component.
+    match = this.componentDidMatch(stashIngredient);
+    this.updateMatchState(match, stashIngredient, wasTrashed, addedToStash);
 
-      // If a match was found, we should see if other recipes have the same ingredient
-      // these matches would be in match.next. 
-      if (match) {
-        nextMatch = match.next;
-      }
-      while (nextMatch !== undefined) {
-        this.updateMatchState(nextMatch, stashIngredient, wasTrashed, addedToStash);
-        nextMatch = nextMatch.next;
-      }
-    })
+    // If a match was found, we should see if other recipes have the same ingredient
+    // these matches would be in match.next. 
+    if (match) {
+      nextMatch = match.next;
+    }
+    while (nextMatch !== undefined) {
+      this.updateMatchState(nextMatch, stashIngredient, wasTrashed, addedToStash);
+      nextMatch = nextMatch.next;
+    }
   }
 
   /**
@@ -506,9 +504,7 @@ class ShoppingList extends React.Component {
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
                       calculateTotalRecipePrice={(recipePrice) => this.calculateTotalRecipePrice(recipePrice)}
                       recipe={recipe}
-                      ingredientInStash={(ingredient, ingredientIndex) => this.ingredientInStash(ingredient, ingredientIndex)}
                       recipeIndex={index}
-                      updateTotalRecipePrice={(stashRowElement, subtract) => this.updateTotalRecipePrice(stashRowElement, subtract)}
                       updateMyStashIngredients={(stashIngredient) => this.updateMyStashIngredients(stashIngredient)}
                       updateRecipePrices={() => this.updateRecipePrices()}
                     />
@@ -535,10 +531,10 @@ class ShoppingList extends React.Component {
                           <IngredientElement
                             matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
                             key={this.state.myStashIngredients.indexOf(ingredient)}
-                            ingredient={ingredient} myStash={true}
+                            ingredient={ingredient}
+                            myStash={true}
                             removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                             trackStashElement={(stashRowElementInstance) => this.trackStashElement(stashRowElementInstance)}
-                            passToStashComponents={true}
                           />
                         )
                       }

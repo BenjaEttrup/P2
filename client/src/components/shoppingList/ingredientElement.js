@@ -27,7 +27,7 @@ class IngredientElement extends React.Component {
       this.initShoppingListElement();
     }
 
-    if (this.props.hasOwnProperty('passToStashComponents') && !this.state.inited) {
+    if (this.props.hasOwnProperty('myStash') && !this.state.inited) {
       this.initStashElement();
     }
   }
@@ -93,7 +93,7 @@ class IngredientElement extends React.Component {
     // If it is a stash ingredient, the endpoint will be '/stash/remove/'
     else {
       params['recipeID'] = false;
-      this.props.matchIngredient(this, false, true);
+      this.props.matchIngredient(this, true, false);
       this.props.removeIngredient(stashRowElement, params);
     }
   }
@@ -123,7 +123,7 @@ class IngredientElement extends React.Component {
         // updates the user's stash
       }).then(stashRowElement.props.updateMyStashIngredients(stashRowElement))
         // Finds all the other ingredients matching this ingredient and updates the states. 
-        .then(this.props.matchIngredient(this, true, false, true))
+        .then(this.props.matchIngredient(this, false, true))
     });
   }
 
