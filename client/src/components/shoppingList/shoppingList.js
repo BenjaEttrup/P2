@@ -277,27 +277,6 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * Finds the recipe ingredient that matches the stash ingredient the best above a similarity of 0.5 
-   * @param {*} recipeComponent an instance of a shopingListRecipe component
-   * @param {*} stashIngredient an instance of a ingredient in
-   * @returns the ingredient from a recipe that corresponds best to the stashIngredient
-   */
-  findBestMatchingIngredient(recipeComponent, stashIngredient) {
-    let ingredientMatch = undefined;
-    let highestSimilarity = 0;
-    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
-      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
-
-      if ((similarity >= 0.5) && (similarity >= highestSimilarity)) {
-        highestSimilarity = similarity
-        ingredientMatch = { "component": ingredientComponent, "similarity": highestSimilarity, "next": undefined };
-      }
-    })
-
-    return ingredientMatch;
-  }
-
-  /**
    * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
    * the stashIngredient.
    * @param recipeComponent - The component that contains the recipe ingredients
@@ -312,12 +291,6 @@ class ShoppingList extends React.Component {
       if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
         if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
           ingredientMatch = this.state.matchingIngredients.matches[scIndex]
-          return ingredientMatch;
-        }
-        // Never seems to reach this else.
-        else {
-          console.log(this.state.matchingIngredients.matches[scIndex])
-          ingredientMatch = this.findBestMatchingIngredient(recipeComponent, stashIngredient);
           return ingredientMatch;
         }
       }
