@@ -1,3 +1,8 @@
+/*
+Elements in this file is from https://codesandbox.io/s/github/hadriengerard/spinning-wheel-game-react/tree/master/
+and is written by @hadriengerard on github
+*/
+
 :root {
   --wheel-font: 'Lato', 'Quicksand', sans-serif;
   --wheel-size: 450px;

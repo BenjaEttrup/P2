@@ -4,6 +4,11 @@ import PopupRecipe from './recipePopup';
 import '../stylesheets/wheel.css';
 import '../stylesheets/popupRecipe.css';
 
+/*
+Elements in this file is from https://codesandbox.io/s/github/hadriengerard/spinning-wheel-game-react/tree/master/
+and is written by @hadriengerard on github
+*/
+
 export default class Wheel extends React.Component {
   constructor(props) {
     super(props);
