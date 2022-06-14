@@ -93,17 +93,16 @@ class IngredientElement extends React.Component {
     // If it is a stash ingredient, the endpoint will be '/stash/remove/'
     else {
       params['recipeID'] = false;
-      this.props.matchIngredient(this, true, false);
       this.props.removeIngredient(stashRowElement, params);
+      this.props.matchIngredient(this, true, false);
     }
   }
 
   /**
    * Sets boxChecked as false and hides the shopping list ingredient.
    * The shopping list ingredient will be added to the stash. 
-   * @param {*} evt 
    */
-  addItemToStash(evt) {
+  addItemToStash() {
     this.setState(() => ({
       boxChecked: false,
       hide: true,

@@ -150,7 +150,7 @@ class ShoppingList extends React.Component {
     let matchingStashIngredient = undefined;
     let highestSimilarity = 0;
 
-    // Optional chaining operator is used, as this function ca be called when this.state.matchingIngredients is undefined
+    // Optional chaining operator is used, as this function can be called when this.state.matchingIngredients is undefined
     bestMatches?.stashComponents.forEach((stashComponent, scIndex) => {
       let match = this.stashIngredientToRecipeIngredient(stashComponent, shoppingListElement, scIndex, bestMatches);
       // Handles situations where no match was found (similarity was < 0.5)
@@ -165,13 +165,11 @@ class ShoppingList extends React.Component {
     })
 
     // If a matching stash ingredient was found
-    if (matchingStashIngredient !== undefined) {
-      matchingStashIngredient.setState({
-        hide: false,
-        boxChecked: true,
-        wasTrashed: false
-      })
-    }
+    matchingStashIngredient?.setState({
+      hide: false,
+      boxChecked: true,
+      wasTrashed: false
+    })
   }
 
   /**
@@ -179,7 +177,7 @@ class ShoppingList extends React.Component {
    * @param {*} shoppingListElement an ingredient in a shopping list
    */
   updateMyStashIngredients(shoppingListElement) {
-    let myStashIngredients = this.state.myStashIngredients;
+    let myStashIngredients = this.state.myStashIngredients;  
     let isDuplicate = false;
 
     myStashIngredients.forEach((stashIngredient, index) => {
@@ -200,9 +198,9 @@ class ShoppingList extends React.Component {
 
     myStashIngredients.push(shoppingListElement.props.ingredient);
 
-    this.setState((prevState) => ({
+    this.setState({
       myStashIngredients: myStashIngredients
-    }))
+    })
   }
 
   /**
@@ -221,6 +219,8 @@ class ShoppingList extends React.Component {
       console.error(err);
     })
 
+    // IT SHOULD UPDATE state.matchingIngredients. E.g. when adding, then removing an ingredient and adding another ingredient to stash,
+    // price from previously removed stashingredient is alos subtracted
   }
 
   /**
@@ -402,7 +402,7 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * @function hides every recipe ingredient that was matched to an ingredient in the user's stash.
+   * hides every recipe ingredient that was matched to an ingredient in the user's stash.
    * and updates the prices of the recipes
    */
   ingredientInStash() {
@@ -475,7 +475,8 @@ class ShoppingList extends React.Component {
     this.setState({
       myStashComponents: myStashComponents
     }, () => {
-      // If all ingredients have been instanced as ingredientElement components, then we should find if they correspond to ingredients in the user's recipes.
+      // If all ingredients have been instanced as ingredientElement components, 
+      // then we should find if they correspond to ingredients in the user's recipes.
       if (myStashComponents.length === this.state.myStashIngredients.length) {
         this.ingredientInStash();
       }
@@ -538,9 +539,7 @@ class ShoppingList extends React.Component {
                           />
                         )
                       }
-                      else {
-                        return null;
-                      }
+                      return null;
                     })
                   }
                 </tbody>
