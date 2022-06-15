@@ -219,8 +219,6 @@ class ShoppingList extends React.Component {
       console.error(err);
     })
 
-    // IT SHOULD UPDATE state.matchingIngredients. E.g. when adding, then removing an ingredient and adding another ingredient to stash,
-    // price from previously removed stashingredient is alos subtracted
   }
 
   /**
@@ -410,10 +408,15 @@ class ShoppingList extends React.Component {
 
     // Iterates all the matching recipe ingredients found
     for (let match of bestMatches.matches) {
+      if(match.component.state.hide === false) {
+        continue;
+      }
+
       let nextMatch = match.next;
 
       // hides every recipe ingredient that matched a stash ingredient
       while (nextMatch !== undefined) {
+        // TODO SHOULD CHECK IF THE STASHINGREDIENT is hidden.
         nextMatch.component.setState({
           hide: true,
         }, () => { })
