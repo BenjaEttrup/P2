@@ -59,7 +59,7 @@ class RecipeCard extends React.Component {
                   </div>
                 </div>
               </button>
-              <button type="button col" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
+              <button type="button col" id="recipeAddBtn" class="button-add" onClick={() => this.addRecipe(this.props.recipe)}>
                 <h4 class="button-plus">+</h4>
               </button>
             </div>

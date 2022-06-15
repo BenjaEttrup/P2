@@ -25,6 +25,9 @@ class ShoppingListRecipe extends React.Component {
 
   }
 
+  /**
+   * Is called on initialization and lets shoppingList component track this recipe component.
+   */
   initShoppingListRecipe() {
     this.setState({
       inited: true,
@@ -33,10 +36,15 @@ class ShoppingListRecipe extends React.Component {
     this.props.trackShoppingListRecipeComponent(this);
   }
 
+  /**
+   * Tracks an ingredientElement (an ingredient from the shopping list) component
+   * @param {*} ingredientElement an instance of a shopping list ingredient.
+   */
   trackShoppingListElement(stashRowElementInstance, isHidden) {
     let recipeIngredientComponent = this.state.recipeIngredientComponent;
     let tempRICLength = this.state.recipeIngredientComponent.length;
 
+    // ingredientElement is added to recipeingredientComponents if it contains less elements than all of the recipe's ingredients
     if (tempRICLength < this.props.recipe.ingredients.length) {
       recipeIngredientComponent.push(stashRowElementInstance);
       tempRICLength++;
@@ -46,15 +54,17 @@ class ShoppingListRecipe extends React.Component {
       })
     }
 
+    // All instances of ingredientElements instanced by this recipe (from the map function) are now tracked.
     if ((tempRICLength === this.props.recipe.ingredients.length) && !this.state.isTrackingAllIngredientComponents) {
       this.setState({
         isTrackingAllIngredientComponents: true,
-      }, () => {
-        this.props.updateRecipePrices();
-      })
+      });
     }
   }
 
+  /**
+   * UpdateRecipePrice updates the prices recipes of all by calling updateRecipePrices from shoppingList component 
+   */
   updateRecipePrice() {
     this.props.updateRecipePrices(true);
   }
@@ -67,6 +77,10 @@ class ShoppingListRecipe extends React.Component {
     this.props.calculateTotalRecipePrice(this.props.recipe.recipe.price);
   }
 
+  /**
+   * Removes the recipe from the user's shopping list
+   * @param {*} recipe the recipe 
+   */
   hideRecipe(recipe) {
     this.setState({
       hide: true
@@ -100,13 +114,11 @@ class ShoppingListRecipe extends React.Component {
         <tbody>
           {
             this.props.recipe.ingredients.map((ingredient, ingredientIndex) => {
-              // let isHidden = this.initShoppingListIngredient(ingredient, ingredientIndex);
               return (
                 <IngredientElement
                   key={ingredientIndex}
                   ingredientIndex={ingredientIndex}
                   recipeID={this.props.recipe.recipe.recipeID}
-                  // isHidden={isHidden}
                   ingredient={ingredient}
                   shoppingList={true}
                   removeIngredient={(stashRowElement, params) => this.props.removeIngredient(stashRowElement, params)}
@@ -115,7 +127,6 @@ class ShoppingListRecipe extends React.Component {
                   trackShoppingListElement={(stashRowElementInstance, isHidden) => this.trackShoppingListElement(stashRowElementInstance, isHidden)}
                   matchIngredient={(stashIngredient, subtract, wasTrashed, addedToStash) => this.props.matchIngredient(stashIngredient, subtract, wasTrashed, addedToStash)}
                   updateMyStashIngredients={(stashIngredient) => this.props.updateMyStashIngredients(stashIngredient)}
-                  ingredientInStash={(ingredient, ingredientIndex) => this.props.ingredientInStash(ingredient, ingredientIndex)}
                 />
               )
             })

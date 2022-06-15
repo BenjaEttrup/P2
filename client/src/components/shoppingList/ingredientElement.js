@@ -24,18 +24,20 @@ class IngredientElement extends React.Component {
 
   componentDidMount() {
     if (this.props.hasOwnProperty('shoppingList') && !this.state.inited) {
-      let isHiddenOnInit = this.props.ingredientInStash(this, this.props.ingredientIndex);
-      this.initShoppingListElement(isHiddenOnInit);
+      this.initShoppingListElement();
     }
 
-    if (this.props.hasOwnProperty('passToStashComponents') && !this.state.inited) {
-      this.initStashElement(false);
+    if (this.props.hasOwnProperty('myStash') && !this.state.inited) {
+      this.initStashElement();
     }
   }
 
-  //Functions go here
+  /**
+   * initializes this shopping ingredient and calls a function that lets the recipe track this component
+   * @param {*} hide whether this ingredient should be hidden initially
+   */
   initShoppingListElement(hide) {
-    if (hide) {
+    if (!this.state.inited) {
       this.setState({
         inited: true,
         hide: hide,
@@ -43,42 +45,41 @@ class IngredientElement extends React.Component {
         this.props.trackShoppingListElement(this, hide)
       });
     }
-    else {
-      if (!this.state.inited) {
-        this.setState({
-          inited: true,
-          hide: hide,
-        }, () => {
-          this.props.trackShoppingListElement(this, hide)
-        });
-      }
-    }
   }
 
-  initStashElement(hide) {
+  /**
+   * Initializes a stash ingredient and calls a function, that lets shoppingList component track it.
+   */
+  initStashElement() {
     this.setState({
       inited: true,
-      hide: hide,
+      hide: false,
     }, () => {
-      this.props.trackStashElement(this, hide)
+      this.props.trackStashElement(this)
     })
   }
 
 
 
+  /**
+   * Removes a recipe or stash ingredient
+   * @param {*} stashRowElement 
+   * @param {*} endPoint the endpoint that we want to access when removing this ingredientElement 
+   * as it could either be a recipe ingredient or stash ingredient. 
+   */
   hideStashRowElement(stashRowElement, endPoint) {
+    // Updates the state to match a "removed" ingredient.
     this.setState({
       wasTrashed: true,
       boxChecked: false,
       hide: true,
-    }, () => {
-
     })
 
     let params = {
       endPoint: endPoint
     };
 
+    // If it is a recipe ingredient, the endpoint will be '/shoppinglist/remove/ingredient/'
     if (this.props.hasOwnProperty('recipeID')) {
       this.setState({
         hide: !this.state.hide,
@@ -89,21 +90,25 @@ class IngredientElement extends React.Component {
         this.props.updateRecipePrice()
       })
     }
+    // If it is a stash ingredient, the endpoint will be '/stash/remove/'
     else {
       params['recipeID'] = false;
-      this.props.matchIngredient(this, false, true);
       this.props.removeIngredient(stashRowElement, params);
+      this.props.matchIngredient(this, true, false);
     }
   }
 
-  addItemToStash(evt) {
-    this.setState((prevState) => ({
+  /**
+   * Sets boxChecked as false and hides the shopping list ingredient.
+   * The shopping list ingredient will be added to the stash. 
+   */
+  addItemToStash() {
+    this.setState(() => ({
       boxChecked: false,
       hide: true,
     }), () => {
-      console.log("")
-      console.log("Adding recipeIngredient to Stash")
       let stashRowElement = this;
+      // Used to format the shopping list ingredient as a stash ingredient. 
       let ingredient = this.props.ingredient;
       ingredient["amount"] = 1;
       ingredient["unit"] = "stk";
@@ -114,23 +119,24 @@ class IngredientElement extends React.Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(this.props.ingredient)
+        // updates the user's stash
       }).then(stashRowElement.props.updateMyStashIngredients(stashRowElement))
-        .then(this.props.matchIngredient(this, true, false, true))
+        // Finds all the other ingredients matching this ingredient and updates the states. 
+        .then(this.props.matchIngredient(this, false, true))
     });
   }
 
-  checkCheckBox(evt) {
+  /**
+   * Changes the state of the checkbox in a stash ingredient and updates the state on all matching ingredients from recipes.
+   */
+  checkCheckBox() {
     this.setState((prevState) => ({
       boxChecked: !prevState.boxChecked
     }), () => {
       if (this.state.boxChecked) {
-        console.log("")
-        console.log("BoxChecked")
-        this.props.matchIngredient(this, true, false);
+        this.props.matchIngredient(this, false, false);
       }
       else {
-        console.log("")
-        console.log("boxUnchecked")
         this.props.matchIngredient(this, false, false);
       }
     });
@@ -140,7 +146,6 @@ class IngredientElement extends React.Component {
   //This is the render function. This is where the
   //html is.
   render() {
-    // TODO FIX BUG WHERE LOADING THE SHOPPING LIST WITH INGREDIENTS IN MY STASH DOES NOT HIDE THE INGREDIENTS IN THE RECIPES.
     if (this.state.hide || this.state.wasTrashed) {
       return null;
     }
@@ -154,14 +159,14 @@ class IngredientElement extends React.Component {
       return (
         <tr>
           <td class="capitalize_first">{this.props.ingredient ? this.props.ingredient.title : ""}</td>
-          <td className="right-align">{this.props.ingredient ? this.props.ingredient.price : ""} kr.</td>
+          <td className="right-align">{this.props.ingredient ? Number(this.props.ingredient.price).toFixed(2) : ""} kr.</td>
           <td className="right-align">
             <button type="button" onClick={() => { this.hideStashRowElement(this.props.ingredient, '/shoppinglist/remove/ingredient/') }} className="deleteButton">
               <i className="fa fa-trash"></i></button>
           </td>
           <td className="right-align center" width="2%">
             <div className="form-check align-middle">
-              <input className="form-check-input" type="checkbox" onChange={(evt) => this.addItemToStash(evt)}
+              <input className="form-check-input" type="checkbox" onChange={() => this.addItemToStash()}
                 id="flexCheckChecked" checked={!this.state.boxChecked}>
               </input>
             </div>

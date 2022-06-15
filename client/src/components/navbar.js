@@ -54,7 +54,7 @@ class Navbar extends React.Component {
                       </button>
                       <ul class={this.props.dropdownShown ? "show dropdown-menu dropdown-card dropdown-menu-end" : "dropdown-menu dropdown-card dropdown-menu-end"}>
                         <li id='dropdown-recipes'>
-                          <Dropdown recipes={this.props.recipes} updateRecipes={this.props.updateRecipes} removeRecipe={this.props.removeRecipe} />
+                          <Dropdown dropdownShowFunction={(value) => {this.props.dropdownShowFunction(value)}} recipes={this.props.recipes} updateRecipes={this.props.updateRecipes} removeRecipe={this.props.removeRecipe} />
                         </li>
                       </ul>
                     </div>
