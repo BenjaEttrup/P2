@@ -15,9 +15,39 @@ class Dropdown extends React.Component {
     //runs before our code in the contructor
     super(props);
 
+    this.wrapperRef = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+
     //Your code here
     this.state = {
       newRecipes: []
+    }
+  }
+
+  // https://stackoverflow.com/questions/32553158/detect-click-outside-react-component
+  /* @Ben Bud https://stackoverflow.com/users/1212039/ben-bud stack overflow
+      Class Implementation:
+      After 16.3
+    Used for creating wrapperref, handleClickOutside and adding eventlistener to the document in componentDidMount. 
+  */
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  handleClickOutside(event, pressedLink) {
+    if (event.target.className === "button-plus" || "button-add") return;
+
+    if(pressedLink) {
+      this.props.dropdownShowFunction(this.props.dropdownShown);
+      return;
+    }
+
+    console.log(event.target);
+    // id= recipeAddBtn
+    
+    if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+      console.log("You clicked outside of me!");
+      this.props.dropdownShowFunction(this.props.dropdownShown);
     }
   }
 
@@ -25,7 +55,7 @@ class Dropdown extends React.Component {
   //html is.
   render() {
     return (
-      <div className="Dropdown">
+      <div ref={this.wrapperRef} className="Dropdown">
         <h5 class="dropdown-title">Opskrifter</h5>
         <div>
           <table class="table table-striped table-borderless">
@@ -57,7 +87,7 @@ class Dropdown extends React.Component {
         </div>
         <div class="btn-row">
           <Link to="/shoppingList">
-            <button class="btn btn-primary add-recipe-btn">
+            <button onClick={(event) => this.handleClickOutside(event, true)} class="btn btn-primary add-recipe-btn">
               Shopping List
             </button>
           </Link>
