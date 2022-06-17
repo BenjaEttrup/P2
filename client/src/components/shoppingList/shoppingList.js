@@ -25,6 +25,7 @@ class ShoppingList extends React.Component {
       myStashComponents: [],
       shoppingListRecipeComponents: [],
       filteredStash: false,
+      matchingIngredients: undefined,
     };
   }
 
@@ -62,19 +63,22 @@ class ShoppingList extends React.Component {
       .then((res) => {
         this.setState({
           shoppingListRecipes: res,
+          // after retrieving the recipes, the stashitems that match ingredients should be found.
         }, () => { this.filterStashItems() });
       }).catch(err => {
         console.error(err);
       });
   }
 
+
   filterStashItems() {
     let filteredStash = [];
 
     this.state.myStashIngredients.forEach(stashIngredient => {
-      let similarity;
+      let similarity = 0;
       this.state.shoppingListRecipes.forEach(recipe => {
         for (let recipeIngredient of recipe.ingredients) {
+          // the similarity between the user's stash ingredients and recipe ingredients will all be compared here.
           similarity = compareTwoStrings(stashIngredient.title, recipeIngredient.title);
           if (similarity >= 0.5) {
             break;
@@ -82,66 +86,111 @@ class ShoppingList extends React.Component {
         }
       })
 
+      // If the Sørensen dice coefficient is larger or equal to 0.5 then it is considered a match and is therefore included in the filteredStash.
       if (similarity >= 0.5) {
         filteredStash.push(stashIngredient);
       }
     })
 
+    // The stash ingredients are updated to only include the ingredients that were found in any recipe.
     this.setState({
-      myStashIngredients: filteredStash
+      myStashIngredients: filteredStash,
+      filteredStash: true,
     }, () => {
-      this.setState({
-        filteredStash: true,
-      })
-    });
+      this.updateRecipePrices();
+    })
   }
 
 
   /**
-   * @function Adds all recipe prices together
+   * Updates the sum of the recipes by adding all recipe prices together
    */
   calculateTotalRecipePrice(recipePrice) {
     this.setState((prevState) => ({
-      recipeSum: prevState.recipeSum + recipePrice
+      recipeSum: Number(prevState.recipeSum + recipePrice).toFixed(2)
     }));
   }
 
+
+  /**
+   * Finds the recipe ingredient that best matches the stash ingredient above a similarity of 0.5
+   * @param {*} stashComponent an ingredient in the user's stash
+   * @param {*} recipeIngredientComponent an ingredient in the user's recipes
+   * @param {*} scIndex the index of an ingredient in bestMatches.stashComponents 
+   * @param {*} bestMatches the stash ingredients that have or have not been mapped to recipe ingredients
+   * @returns a matching stash ingredient (component) if found
+   */
+  stashIngredientToRecipeIngredient(stashComponent, recipeIngredientComponent, scIndex, bestMatches) {
+    let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
+    if (similarity >= 0.5) {
+      let bestMatchSimilarity = bestMatches.matches[scIndex] ? bestMatches.matches[scIndex].similarity : 0;
+      if (similarity >= bestMatchSimilarity) {
+        let match = { "component": recipeIngredientComponent, "similarity": similarity, "next": undefined }
+        // if there is no existing match of the stash ingredient (component) mapping to the recipe ingredient (component)
+        if ((bestMatches.matches[scIndex] === undefined) || (similarity > bestMatchSimilarity)) {
+          bestMatches.matches[scIndex] = match;
+          return match;
+        }
+
+        // If there is an existing match, then this match should be put at the end of the linked list.
+        let tailEnd = this.linkedListTailEnd(bestMatches.matches[scIndex]);
+        tailEnd.next = match;
+        return match;
+      }
+    }
+  }
+
+
+  /**
+   * Updates the state of the now matching stash ingredient, as the shoppingListElement was added to stash.
+   * @param {*} shoppingListElement the ingredient from a shopping list
+   */
   unHideStashElement(shoppingListElement) {
-    let myStashComponents = this.state.myStashComponents;
+    let bestMatches = this.state.matchingIngredients;
+    let matchingStashIngredient = undefined;
+    let highestSimilarity = 0;
 
-    myStashComponents.forEach(component => {
-      let similarity = compareTwoStrings(component.props.ingredient.title, shoppingListElement.props.ingredient.title);
-
-      if (similarity >= 0.5) {
-        component.setState({
-          hide: false,
-          boxChecked: true,
-          wasTrashed: false
-        })
+    // Optional chaining operator is used, as this function can be called when this.state.matchingIngredients is undefined
+    bestMatches?.stashComponents.forEach((stashComponent, scIndex) => {
+      let match = this.stashIngredientToRecipeIngredient(stashComponent, shoppingListElement, scIndex, bestMatches);
+      // Handles situations where no match was found (similarity was < 0.5)
+      if (match?.similarity >= highestSimilarity) {
+        highestSimilarity = match.similarity;
+        matchingStashIngredient = stashComponent;
       }
     })
 
+    this.setState({
+      matchingIngredients: bestMatches,
+    })
+
+    // If a matching stash ingredient was found
+    matchingStashIngredient?.setState({
+      hide: false,
+      boxChecked: true,
+      wasTrashed: false
+    })
   }
 
   /**
-   * @function updates the state of myStashIngredients to add the new ingredient
-   * @param {*} stashIngredient the stashIngredient
+   * Updates the state of myStashIngredients to add the new ingredient
+   * @param {*} shoppingListElement an ingredient in a shopping list
    */
   updateMyStashIngredients(shoppingListElement) {
-    let myStashIngredients = this.state.myStashIngredients;
+    let myStashIngredients = this.state.myStashIngredients;  
     let isDuplicate = false;
-    console.log(shoppingListElement)
 
     myStashIngredients.forEach((stashIngredient, index) => {
+      // Checks if the ingredient already exists in the user's stash
       if (Number(stashIngredient.prod_id) === Number(shoppingListElement.props.ingredient.prod_id)) {
         isDuplicate = true;
         shoppingListElement.setState({
           hide: true
         })
-
       }
     })
 
+    // unhides the stash ingredient corresponding to the shoppingListElement 
     this.unHideStashElement(shoppingListElement);
     if (isDuplicate) {
       return;
@@ -149,15 +198,14 @@ class ShoppingList extends React.Component {
 
     myStashIngredients.push(shoppingListElement.props.ingredient);
 
-
-    this.setState((prevState) => ({
+    this.setState({
       myStashIngredients: myStashIngredients
-    }))
+    })
   }
 
   /**
-   * 
-   * @param {*} stashRowElement ingredient object
+   * Removes a recipe or stash ingredient from the user
+   * @param {*} stashRowElement an ingredient from the user's stash or shopping list
    * @param {*} params an object that contains the members recipeId and an endpoint (the url to access)
    */
   removeIngredient(stashRowElement, params) {
@@ -174,62 +222,34 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
-   * the stashIngredient.
-   * @param recipeComponent - The component that contains the recipe ingredients
-   * @param stashIngredient - is the ingredient that is being dragged
-   * @returns The ingredientComponent that matches the stashIngredient.
+   * Updates the total sum of all the recipes
+   * @param {*} totalRecipeSum the total sum of the recipes
    */
-  componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash) {
-    let ingredientMatch = undefined
-    recipeComponent.state.recipeIngredientComponent.forEach((ingredientComponent, ingredientIndex) => {
-      let similarity = compareTwoStrings(ingredientComponent.props.ingredient.title, stashIngredient.props.ingredient.title);
+  updateTotalRecipePrice(totalRecipeSum = undefined) {
+    // If totalRecipeSum is not undefined then this would be the sum of the recipes else we must iterate over the price of each recipe.
+    let tempRecipeSum = totalRecipeSum ? totalRecipeSum : 0;
 
-      if (similarity >= 0.5) {
-        ingredientMatch = ingredientComponent
-        return ingredientComponent;
-      }
+    if (totalRecipeSum === undefined) {
+      this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
+        tempRecipeSum += recipeComponent.state.price
+      })
+    }
+
+    this.setState({
+      recipeSum: tempRecipeSum
     })
-    return ingredientMatch;
   }
 
   /**
-   * 
-   * @param {*} priceElement Ingredient object
-   * @param {*} subtract Removes element if true, and adds element if false
-   * @function Adds or removes ingredient price from total price
-  */
-  updateTotalRecipePrice(totalRecipeSum = undefined) {
-    // Optional parameter because of async, so the state of the recipeComponents might not have set
-    // when first initalizing the shopping list
-
-    if (totalRecipeSum !== undefined) {
-      this.setState({
-        recipeSum: totalRecipeSum
-      }, () => {
-        return;
-      })
-      return;
-    }
-    let tempRecipeSum = 0;
-
-    this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      tempRecipeSum += recipeComponent.state.price
-    })
-
-    this.setState({
-      recipeSum: tempRecipeSum,
-    }, () => {
-      return
-    })
-  }
-
+   * Updates the prices of the recipes by seeing which ingredients are hidden or removed.
+   */
   updateRecipePrices() {
     let totalRecipeSum = 0;
 
     this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
       let recipeSum = 0;
 
+      // Hidden recipes should be ignored
       if (recipeComponent.state.hide) {
         return;
       }
@@ -237,22 +257,9 @@ class ShoppingList extends React.Component {
       recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
         let tempIngredientPrice = recipeIngredientComponent.props.ingredient.price;
 
+        // Hidden or deleted ingredients from a recipe should not have their prices added to the sum
         if (recipeIngredientComponent.state.hide || recipeIngredientComponent.state.wasTrashed) {
           tempIngredientPrice = 0;
-        }
-        else {
-          this.state.myStashComponents.forEach((stashComponent, scIndex) => {
-            let similarity = compareTwoStrings(stashComponent.props.ingredient.title, recipeIngredientComponent.props.ingredient.title);
-            if (similarity >= 0.5) {
-              if (!stashComponent.state.hide && stashComponent.state.boxChecked) {
-                tempIngredientPrice = 0;
-
-                recipeIngredientComponent.setState({
-                  hide: true,
-                })
-              }
-            }
-          })
         }
 
         recipeSum = Number(+recipeSum + +tempIngredientPrice).toFixed(2)
@@ -268,98 +275,164 @@ class ShoppingList extends React.Component {
   }
 
   /**
-   * The function is called when a user checks or unchecks a checkbox on a stashRowElement component. 
-   * 
-   * The function is supposed to update the hide state of the recipeIngredient component that matches
-   * the stashRowElement component. 
-   * 
-   * The function is also supposed to update the boxChecked state of the recipeIngredient component
-   * that matches the stashRowElement component. 
-   * 
-   * The function is also supposed to update the hide state of the stashRowElement component that
-   * matches the recipeIngredient component. 
-   * 
-   * The function is also supposed to update the boxChecked state of the stashRowElement component that
-   * matches the recipeIngredient component. 
-   * 
-   * The function is also supposed to update the hide state of the recipeIngredient component that
-   * matches the stashRowElement component. 
-   * 
-   * The function is also supposed to update the boxChecked state of the recipeIng
-   * @param stashIngredient - the stashRowElement component that was just checked/unchecked
-   * @param subtract - boolean
-   * @param [wasTrashed=false] - boolean
+   * It takes a recipeComponent and a stashIngredient and returns the ingredientComponent that matches
+   * the stashIngredient.
+   * @param recipeComponent - The component that contains the recipe ingredients
+   * @param stashIngredient - is the ingredient that is being dragged
+   * @returns The ingredientComponent that matches the stashIngredient.
    */
-  matchIngredient(stashIngredient, subtract, wasTrashed = false, addedToStash = false) {
-    let ingredientComponent = undefined;
+  componentDidMatch(stashIngredient) {
+    let ingredientMatch = undefined
 
-    // Updates the hide state of the recipeIngredient/stashRowElement component.
-    this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
-      ingredientComponent = this.componentDidMatch(recipeComponent, stashIngredient, subtract, addedToStash);
-      if (ingredientComponent) {
-        // The case where the trash can on the stashRowElement was pushed
-        if (wasTrashed) {
-          ingredientComponent.setState({
-            hide: false,
-            boxChecked: true,
-            wasTrashed: false,
-          }, () => {
-            this.updateRecipePrices();
-          })
-          return;
+    // Optional chaining operator used, as matchingIngredients might be undefined.
+    this.state.matchingIngredients?.stashComponents.forEach((stashComponent, scIndex) => {
+      if (stashIngredient.props.ingredient.title === stashComponent.props.ingredient.title) {
+        if (this.state.matchingIngredients.matches[scIndex] !== undefined) {
+          ingredientMatch = this.state.matchingIngredients.matches[scIndex]
+          return ingredientMatch;
         }
-
-        // Two cases: the recipeIngredient was added to stash or it wasn't
-        let hide = addedToStash ? true : stashIngredient.state.boxChecked;
-        ingredientComponent.setState({
-          hide: hide,
-          boxChecked: true,
-        }, () => {
-          this.updateRecipePrices();
-        })
-
-      }
-
-      // If no matching ingredient component was found.
-      else {
-        // IS this every reachable?
-        console.log("INITING RECIPECOMPONENT")
-        recipeComponent.setState({
-          inited: true,
-        })
       }
     })
+
+    return ingredientMatch;
   }
 
 
-  ingredientInStash(shoppingListIngredient, ingredientIndex) {
-    let isInStash = false;
-    let myStashIngredients = this.state.myStashIngredients;
-    if (ingredientIndex === undefined) {
-      return isInStash
-    }
-
-    myStashIngredients.forEach((ingredient, i) => {
-      let similarity = compareTwoStrings(ingredient.title, shoppingListIngredient.props.ingredient.title);
-
-      if (similarity >= 0.5) {
-        isInStash = true
-        shoppingListIngredient.setState({
-          hide: true,
+  /**
+   * Updates the state of ingredientMatch accordingly based on state changes in stashIngredient 
+   * and updates the price of recipes
+   * @param {*} ingredientMatch the matching ingredient
+   * @param {*} stashIngredient the stash ingredient
+   * @param {*} wasTrashed if the stashIngredient was removed or not
+   * @param {*} addedToStash if the stashIngredient was added to stash or not
+   * 
+   */
+  updateMatchState(ingredientMatch, stashIngredient, wasTrashed, addedToStash) {
+    if (ingredientMatch) {
+      // The case where the ingredientElement was removed
+      if (wasTrashed) {
+        ingredientMatch.component.setState({
+          hide: false,
+          boxChecked: true,
+          wasTrashed: false,
         }, () => {
           this.updateRecipePrices();
-          return isInStash
         })
+        return;
       }
-    });
-    return isInStash
+      // Two cases: the recipeIngredient was added to stash or it wasn't
+      // If an ingredient wasn't added to stash, then the boxchecked state of a stashIngredient must have changed.
+      let hide = addedToStash ? true : stashIngredient.state.boxChecked;
 
+      ingredientMatch.component.setState({
+        hide: hide,
+        boxChecked: true,
+      }, () => {
+        this.updateRecipePrices();
+      })
+
+    }
   }
 
-  removeRecipe(recipe) {
-    console.log(recipe);
-    console.log(`fetching endpoint = /shoppinglist/remove/recipe/${recipe.recipeID}`)
+  /**
+   * Is called when a stash/recipe ingredient is removed and updates the states of all matching ingredients
+   * @param stashIngredient - the stashRowElement component that had its box checked/unchecked or was removed
+   * @param [wasTrashed=false] - if the ingredient was removed
+   */
+  matchIngredient(stashIngredient, wasTrashed = false, addedToStash = false) {
+    let match = undefined;
+    let nextMatch = undefined;
 
+    // Finds a match and updates the hide state of the recipeIngredient/stashRowElement component.
+    match = this.componentDidMatch(stashIngredient);
+    this.updateMatchState(match, stashIngredient, wasTrashed, addedToStash);
+
+    // If a match was found, we should see if other recipes have the same ingredient
+    // these matches would be in match.next. 
+    if (match) {
+      nextMatch = match.next;
+    }
+    while (nextMatch !== undefined) {
+      this.updateMatchState(nextMatch, stashIngredient, wasTrashed, addedToStash);
+      nextMatch = nextMatch.next;
+    }
+  }
+
+  /**
+   * Finds the tail of a linked list
+   * @param {*} linkedListNode a node/element in a linked list 
+   * @returns the linkedList element, that points to undefined and is therefore the tail.
+   */
+  linkedListTailEnd(linkedListNode) {
+    let nextNode = linkedListNode;
+    while (nextNode.next !== undefined) {
+      nextNode = nextNode.next;
+    }
+
+    return nextNode;
+  }
+
+  /**
+   * Maps the user's stash ingredients to recipe ingredients 
+   * @returns an object containing all the stashComponents, and all the recipe ingredients 
+   * (ingredientElement instances) that matched a stash ingredient
+   */
+
+  matchIngredients() {
+    let bestMatches = {
+      "stashComponents": this.state.myStashComponents,
+      "matches": []
+    };
+
+    this.state.shoppingListRecipeComponents.forEach((recipeComponent, rcIndex) => {
+      recipeComponent.state.recipeIngredientComponent.forEach((recipeIngredientComponent, ricIndex) => {
+        bestMatches.stashComponents.forEach((stashComponent, scIndex) => {
+          this.stashIngredientToRecipeIngredient(stashComponent, recipeIngredientComponent, scIndex, bestMatches);
+        })
+      })
+
+    })
+
+    this.setState({
+      matchingIngredients: bestMatches
+    })
+    return bestMatches;
+  }
+
+  /**
+   * hides every recipe ingredient that was matched to an ingredient in the user's stash.
+   * and updates the prices of the recipes
+   */
+  ingredientInStash() {
+    let bestMatches = this.matchIngredients();
+
+    // Iterates all the matching recipe ingredients found
+    for (let match of bestMatches.matches) {
+      if(match.component.state.hide === false) {
+        continue;
+      }
+
+      let nextMatch = match.next;
+
+      // hides every recipe ingredient that matched a stash ingredient
+      while (nextMatch !== undefined) {
+        // TODO SHOULD CHECK IF THE STASHINGREDIENT is hidden.
+        nextMatch.component.setState({
+          hide: true,
+        }, () => { })
+        nextMatch = nextMatch.next;
+      }
+      match.component.setState({
+        hide: true,
+      }, () => { this.updateRecipePrices() })
+    }
+  }
+
+  /**
+   * @function removes a recipe by the endpoint /shoppinglist/remove/recipe/:ID and updates the total sum of the recipes
+   * @param {*} recipe a recipe from the user's shopping list
+   */
+  removeRecipe(recipe) {
     fetch(`/shoppinglist/remove/recipe/${recipe.recipeID}`, {
       method: 'DELETE',
       headers: {
@@ -372,13 +445,12 @@ class ShoppingList extends React.Component {
     this.updateRecipePrices();
   }
 
+  /** 
+   * @function Tracks a new shoppingListRecipe component and updates state.
+   * @param {*} shoppingListRecipeInstance an instance of a shoppingListRecipe component
+   */
   trackShoppingListRecipeComponent(shoppingListRecipeInstance) {
     let shoppingListComponents = this.state.shoppingListRecipeComponents;
-
-    if (this.state.shoppingListRecipeComponents.length === this.state.shoppingListRecipes.length) {
-      return;
-    }
-
     shoppingListComponents.push(shoppingListRecipeInstance);
 
     this.setState({
@@ -386,10 +458,15 @@ class ShoppingList extends React.Component {
     })
   }
 
+  /**
+   * @function tracks an ingredient component from the user's stash
+   * @param {*} stashRowElementInstance the component instance of ingredientElement. 
+   */
   trackStashElement(stashRowElementInstance) {
     let myStashComponents = this.state.myStashComponents;
     let isDuplicate = false;
 
+    // Checks if an instance of a stash ingredient already has been added 
     myStashComponents.forEach(stashComponent => {
       if (Number(stashRowElementInstance.props.ingredient.prod_id) === Number(stashComponent.props.ingredient.prod_id)) {
         isDuplicate = true;
@@ -397,18 +474,21 @@ class ShoppingList extends React.Component {
     })
     if (isDuplicate) return;
 
-
     myStashComponents.push(stashRowElementInstance);
     this.setState({
       myStashComponents: myStashComponents
-    }
-    )
+    }, () => {
+      // If all ingredients have been instanced as ingredientElement components, 
+      // then we should find if they correspond to ingredients in the user's recipes.
+      if (myStashComponents.length === this.state.myStashIngredients.length) {
+        this.ingredientInStash();
+      }
+    })
   }
 
   //This is the render function. This is where the
   //html is.
   render() {
-    console.log(this.state.filteredStash)
     return (
       <div className="ShoppingList">
         <div className="card shadow shoppingList">
@@ -428,9 +508,7 @@ class ShoppingList extends React.Component {
                       key={this.state.shoppingListRecipes.indexOf(recipe)}
                       calculateTotalRecipePrice={(recipePrice) => this.calculateTotalRecipePrice(recipePrice)}
                       recipe={recipe}
-                      ingredientInStash={(ingredient, ingredientIndex) => this.ingredientInStash(ingredient, ingredientIndex)}
                       recipeIndex={index}
-                      updateTotalRecipePrice={(stashRowElement, subtract) => this.updateTotalRecipePrice(stashRowElement, subtract)}
                       updateMyStashIngredients={(stashIngredient) => this.updateMyStashIngredients(stashIngredient)}
                       updateRecipePrices={() => this.updateRecipePrices()}
                     />
@@ -438,9 +516,9 @@ class ShoppingList extends React.Component {
                 })
               }
               <div>
-                {this.state.recipeSum > 0 ? <p id="totalPrice"> Den samlet pris er {
+                {this.state.recipeSum > 0 ? <p id="totalPrice"> Den samlede pris er {
                   this.state.recipeSum
-                } kr.</p>: <p id="emptyList">Shoppinglisten er tom.</p>}
+                } kr.</p> : <p id="emptyList">Shoppinglisten er tom.</p>}
               </div>
               <table className="table table-striped table-borderless">
                 <thead>
@@ -457,16 +535,14 @@ class ShoppingList extends React.Component {
                           <IngredientElement
                             matchIngredient={(stashIngredient, subtract, matchIngredient) => this.matchIngredient(stashIngredient, subtract, matchIngredient)}
                             key={this.state.myStashIngredients.indexOf(ingredient)}
-                            ingredient={ingredient} myStash={true}
+                            ingredient={ingredient}
+                            myStash={true}
                             removeIngredient={(stashRowElement, params) => this.removeIngredient(stashRowElement, params)}
                             trackStashElement={(stashRowElementInstance) => this.trackStashElement(stashRowElementInstance)}
-                            passToStashComponents={true}
                           />
                         )
                       }
-                      else {
-                        return null;
-                      }
+                      return null;
                     })
                   }
                 </tbody>
