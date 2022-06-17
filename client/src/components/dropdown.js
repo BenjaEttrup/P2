@@ -35,7 +35,7 @@ class Dropdown extends React.Component {
   }
 
   handleClickOutside(event, pressedLink) {
-    if (event.target.className === "button-plus") return;
+    if (event.target.className === "button-plus" || "button-add") return;
 
     if(pressedLink) {
       this.props.dropdownShowFunction(this.props.dropdownShown);
