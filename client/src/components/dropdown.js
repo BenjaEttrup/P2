@@ -35,16 +35,18 @@ class Dropdown extends React.Component {
   }
 
   handleClickOutside(event, pressedLink) {
-    if (event.target.className === "button-plus" || "button-add") return;
+    if (event.target.className === "button-plus" || event.target.className === "button-add") {
+      return;
+    };
 
-    if(pressedLink) {
+    if (pressedLink) {
       this.props.dropdownShowFunction(this.props.dropdownShown);
       return;
     }
 
     console.log(event.target);
     // id= recipeAddBtn
-    
+
     if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
       console.log("You clicked outside of me!");
       this.props.dropdownShowFunction(this.props.dropdownShown);
